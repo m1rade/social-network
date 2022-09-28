@@ -1,0 +1,13 @@
+.messages {
+    display: grid;
+    grid-template-columns: 2fr 10fr;
+}
+
+.dialogs_area {
+    border-right: 1px solid black;
+    padding: 20px;
+}
+
+.messages_area {
+    padding: 20px;
+}

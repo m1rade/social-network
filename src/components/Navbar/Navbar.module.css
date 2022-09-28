@@ -1,0 +1,14 @@
+.nav_bar {
+    grid-area: nav-bar;
+    background-color: greenyellow;
+}
+
+.linkItem a {
+    color: darkslategrey;
+    text-decoration: none;
+}
+
+.linkItem a.active {
+    background-color: chocolate;
+    display: block;
+}
