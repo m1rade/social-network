@@ -12,7 +12,7 @@ export type PostType = {
     message: string;
 };
 
-export type ActionType = updatePostMessageACType | addPostMessageACType;
+export type ProfileActionType = updatePostMessageACType | addPostMessageACType;
 
 const UPDATE_NEW_POST_MESSAGE = "UPDATE-NEW-POST-MESSAGE";
 const ADD_POST = "ADD-POST";
@@ -30,10 +30,7 @@ const initState: ProfileType = {
     newPostMessage: "",
 };
 
-const profile_reducer = (
-    state: ProfileType = initState,
-    action: ActionType
-) => {
+const profile_reducer = (state: ProfileType = initState, action: ProfileActionType): ProfileType => {
     switch (action.type) {
         case UPDATE_NEW_POST_MESSAGE:
             return { ...state, newPostMessage: action.newPostMessage };
@@ -52,19 +49,17 @@ const profile_reducer = (
     }
 };
 
-type updatePostMessageACType = ReturnType<
-    typeof updatePostMessageAC
->;
-export const updatePostMessageAC = (newPostMessage: string) => ({
-    type: UPDATE_NEW_POST_MESSAGE,
-    newPostMessage,
-} as const);
+type updatePostMessageACType = ReturnType<typeof updatePostMessageAC>;
+export const updatePostMessageAC = (newPostMessage: string) =>
+    ({
+        type: UPDATE_NEW_POST_MESSAGE,
+        newPostMessage,
+    } as const);
 
-type addPostMessageACType = ReturnType<
-    typeof addPostMessageAC
->;
-export const addPostMessageAC = () => ({
-    type: ADD_POST,
-} as const);
+type addPostMessageACType = ReturnType<typeof addPostMessageAC>;
+export const addPostMessageAC = () =>
+    ({
+        type: ADD_POST,
+    } as const);
 
 export default profile_reducer;

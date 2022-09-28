@@ -1,12 +1,22 @@
 import React from "react";
 import { connect } from "react-redux";
+import { Dispatch } from "redux";
 import { MessageArea } from "../components/Messages/MessagesArea/MessageArea";
 import {
-    addMessageActionCreator,
-    updateMessageActionCreator,
+    addMessageAC,
+    MessagesActionType,
+    MessageType,
+    updateMessageAC,
 } from "../redux/messages_reducer";
+import { AppStateType } from "../redux/store";
 
-const mapStateToProps = (state) => {
+export type MessageAreaContainerPropsType = {
+    receivedMessages: MessageType[],
+    sentMessages: MessageType[],
+    currentValue: string;
+};
+
+const mapStateToProps = (state: AppStateType): MessageAreaContainerPropsType => {
     const reversed_messages = [...state.messages.all_messages].reverse();
     return {
         receivedMessages: state.messages.all_messages,
@@ -15,9 +25,9 @@ const mapStateToProps = (state) => {
     };
 };
 
-const mapDispatchToProps = (dispatch) => ({
-    onClickSendMessage: () => dispatch(addMessageActionCreator()),
-    onTextAreaChange: (textValue) => dispatch(updateMessageActionCreator(textValue))
+const mapDispatchToProps = (dispatch: Dispatch<MessagesActionType>) => ({
+    onClickSendMessage: () => dispatch(addMessageAC()),
+    onTextAreaChange: (textValue: string) => dispatch(updateMessageAC(textValue))
 });
 
 export const MessageAreaContainer = connect(mapStateToProps, mapDispatchToProps)(MessageArea);

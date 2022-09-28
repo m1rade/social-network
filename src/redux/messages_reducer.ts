@@ -8,7 +8,7 @@ type MessagesType = {
     newMessageText: string;
 };
 
-type ActionType = updateMessageACType | addMessageACType;
+export type MessagesActionType = updateMessageACType | addMessageACType;
 
 const UPDATE_MESSAGE = "UPDATE-MESSAGE";
 const ADD_MESSAGE = "ADD-MESSAGE";
@@ -32,7 +32,7 @@ const initState: MessagesType = {
     newMessageText: "",
 };
 
-const messages_reducer = (state = initState, action: ActionType) => {
+const messages_reducer = (state: MessagesType = initState, action: MessagesActionType): MessagesType => {
     switch (action.type) {
         case UPDATE_MESSAGE:
             return { ...state, newMessageText: action.newMessageValue };
