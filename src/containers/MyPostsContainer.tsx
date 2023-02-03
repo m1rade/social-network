@@ -1,16 +1,11 @@
 import React from "react";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import { MyPosts } from "../components/Profile/MyPosts/MyPosts";
-import {
-    addPostMessageAC,
-    PostType,
-    ProfileActionType,
-    updatePostMessageAC,
-} from "../redux/profile_reducer";
-import { AppStateType } from "../redux/store";
+import {connect} from "react-redux";
+import {Dispatch} from "redux";
+import {MyPosts} from "../components/Profile/MyPosts/MyPosts";
+import {addPostMessageAC, PostType, ProfileActionType, updatePostMessageAC,} from "../redux/profile_reducer";
+import {AppStateType} from "../redux/store";
 
-export type MyPostsContainerPropsType = {
+type MyPostsContainerPropsType = {
     newPostMessage: string;
     posts: PostType[];
     avatar: string;
@@ -20,6 +15,8 @@ type MyPostsContainerDispatchType = {
     addNewPost: () => void,
     onPostChange: (textValue: string) => void
 };
+
+export type MyPostsPropsType = MyPostsContainerPropsType & MyPostsContainerDispatchType;
 
 const mapStateToProps = (state: AppStateType): MyPostsContainerPropsType => ({
     newPostMessage: state.profile.newPostMessage,
