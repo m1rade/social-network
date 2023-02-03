@@ -1,0 +1,12 @@
+.item {
+    border: 1px solid black;
+    margin-top: 15px;
+    padding: 10px;
+    max-width: 350px;
+}
+
+.item img {
+    width: 50px;
+    height: 50px;
+    border-radius: 4px;
+}
