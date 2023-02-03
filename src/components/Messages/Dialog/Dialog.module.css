@@ -1,0 +1,17 @@
+.area_wrapper {
+    display: flex;
+    align-items: flex-end;
+}
+
+.received_messages {
+    margin-bottom: 40px;
+    margin-right: 30px;
+}
+
+.sent_messages {
+    margin-right: 30px;
+}
+
+.inputField textarea {
+    display: block;
+}
