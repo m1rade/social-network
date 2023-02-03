@@ -12,7 +12,7 @@ type mapStateToPropsType = {
 export type ChatsContainerPropsType = mapStateToPropsType;
 
 
-export const ChatsContainer = (props: ChatsContainerPropsType) => {
+export const ChatsContainer: React.FC<ChatsContainerPropsType> = (props) => {
     const mappedChats = props.friends.map((f) => (
         <Chats key={f.id} userID={f.id} userName={f.name} />
     ));
