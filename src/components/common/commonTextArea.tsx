@@ -21,7 +21,7 @@ type CommonTextareaPropsType = Omit<DefaultTextareaPropsType, 'type'> & {
     buttonProps?: DefaultButtonPropsType & {buttonClassName?: string, buttonName: string}
 };
 
-export const CommonTextArea: React.FC<CommonTextareaPropsType> = ({
+const CommonTextArea: React.FC<CommonTextareaPropsType> = ({
     value,
     placeholder,
     onChange,
@@ -62,3 +62,5 @@ export const CommonTextArea: React.FC<CommonTextareaPropsType> = ({
         </>
     );
 };
+
+export default CommonTextArea;
