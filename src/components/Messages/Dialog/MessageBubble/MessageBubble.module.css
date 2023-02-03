@@ -1,0 +1,14 @@
+.message_bubble {
+    background-color: brown;
+    color: white;
+    min-width: 200px;
+    max-width: 250px;
+    min-height: 22px;
+    border-radius: 10px 10px 10px 0;
+    padding: 10px;
+    margin: 50px auto;
+}
+
+.m_text {
+    word-break: break-word;
+}
