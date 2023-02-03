@@ -2,11 +2,10 @@ import React, {ChangeEvent} from "react";
 import style from "./Dialog.module.css";
 import {MessageBubble} from "./MessageBubble/MessageBubble";
 import CommonTextarea from "../../common/commonTextArea";
-import {DialogContainerPropsType} from "../../../containers/DialogContainer";
+import {DialogPropsType} from "../../../containers/DialogContainer";
 
 
-
-export const Dialog = (props: DialogContainerPropsType) => {
+export const Dialog = (props: DialogPropsType) => {
     const onButtonClick = () => {
         props.onClickSendMessage();
     };

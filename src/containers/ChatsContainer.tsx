@@ -4,9 +4,13 @@ import {Chats} from "../components/Messages/Chats/Chats";
 import {FriendsType} from "../redux/friends_reducer";
 import {AppStateType} from "../redux/store";
 
-type ChatsContainerPropsType = {
+
+type mapStateToPropsType = {
     friends: FriendsType[]
-}
+};
+
+export type ChatsContainerPropsType = mapStateToPropsType;
+
 
 export const ChatsContainer = (props: ChatsContainerPropsType) => {
     const mappedChats = props.friends.map((f) => (
@@ -15,7 +19,7 @@ export const ChatsContainer = (props: ChatsContainerPropsType) => {
     return <>{mappedChats}</>;
 };
 
-const mapStateToProps = (state: AppStateType): ChatsContainerPropsType => ({ friends: state.friends });
+const mapStateToProps = (state: AppStateType): mapStateToPropsType => ({ friends: state.friends });
 
 const mapDispatchToProps = {};
 
