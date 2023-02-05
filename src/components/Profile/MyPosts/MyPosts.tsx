@@ -1,4 +1,4 @@
-import React, {ChangeEvent} from "react";
+import React from "react";
 import style from "./MyPosts.module.css";
 import {Post} from "./Post/Post";
 import {MyPostsPropsType} from "../../../containers/MyPostsContainer";
@@ -10,8 +10,8 @@ export const MyPosts: React.FC<MyPostsPropsType> = (props) => {
         props.addNewPost();
     };
 
-    const onTextareaChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
-        props.onPostChange(e.currentTarget.value);
+    const onTextareaChange = (newTextValue: string) => {
+        props.onPostChange(newTextValue);
     };
 
     const mappedPosts = props.posts.map((p) => (
@@ -25,10 +25,12 @@ export const MyPosts: React.FC<MyPostsPropsType> = (props) => {
                 <CommonTextArea
                     value={props.newPostMessage}
                     placeholder="Share your thoughts..."
-                    onChange={onTextareaChange}
-                    onClick={onClickAddNewPost}
+                    onTextChange={onTextareaChange}
 
-                    buttonProps={{buttonName: "Send"}}
+                    buttonProps={{
+                        buttonName: "Send",
+                        onButtonClick: onClickAddNewPost
+                    }}
                 />
             </div>
             <hr className={style.solid_line}/>

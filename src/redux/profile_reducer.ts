@@ -36,7 +36,7 @@ const profile_reducer = (state: ProfileType = initState, action: ProfileActionTy
             return { ...state, newPostMessage: action.newPostMessage };
         case ADD_POST:
             const newPostObj = {
-                id: 4,
+                id: new Date().getTime(),
                 message: state.newPostMessage,
             };
             return {

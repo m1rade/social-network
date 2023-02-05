@@ -38,7 +38,7 @@ const messages_reducer = (state: MessagesType = initState, action: MessagesActio
             return { ...state, newMessageText: action.newMessageValue };
         case ADD_MESSAGE:
             const newMessageObj = {
-                id: 5,
+                id: new Date().getTime(),
                 text: state.newMessageText,
             };
             return {

@@ -17,28 +17,34 @@ type DefaultButtonPropsType = DetailedHTMLProps<ButtonHTMLAttributes<HTMLButtonE
 type CommonTextareaPropsType = Omit<DefaultTextareaPropsType, 'type'> & {
 
     textAreaClassName?: string,
+    onTextChange?: (text: string) => void
 
-    buttonProps?: DefaultButtonPropsType & {buttonClassName?: string, buttonName: string}
+    buttonProps?: DefaultButtonPropsType & {buttonClassName?: string, buttonName: string, onButtonClick?: () => void}
 };
 
 const CommonTextArea: React.FC<CommonTextareaPropsType> = ({
     value,
     placeholder,
     onChange,
+    onTextChange,
     textAreaClassName,
 
     buttonProps,
 
     ...restTextareaProps
 }) => {
-    const {onClick, buttonName, buttonClassName, ...restButtonProps} = buttonProps || {};
+    const {onButtonClick, onClick, buttonName, buttonClassName, ...restButtonProps} = buttonProps || {};
 
     const onTextAreaChangeHandler = (e: ChangeEvent<HTMLTextAreaElement>) => {
         onChange?.(e);
+
+        onTextChange?.(e.currentTarget.value);
     };
 
     const onClickButtonHandler = (e: MouseEvent<HTMLButtonElement>) => {
-        onClick?.(e);
+        onClick?.(e)
+
+        onButtonClick?.();
     };
 
     const buttonClass = `${buttonClassName ? buttonClassName : ""} ${s.button_add}`;

@@ -1,7 +1,7 @@
-import React, {ChangeEvent} from "react";
+import React from "react";
 import style from "./Dialog.module.css";
 import {MessageBubble} from "./MessageBubble/MessageBubble";
-import CommonTextarea from "../../common/commonTextArea";
+import CommonTextArea from "../../common/commonTextArea";
 import {DialogPropsType} from "../../../containers/DialogContainer";
 
 
@@ -10,15 +10,15 @@ export const Dialog = (props: DialogPropsType) => {
         props.onClickSendMessage();
     };
 
-    const onTextareaChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
-        props.onTextareaChange(e.currentTarget.value);
+    const onTextareaChange = (newTextValue: string) => {
+        props.onTextareaChange(newTextValue);
     };
 
     const receivedMessageBubbles1 = props.receivedMessages.map((m) => (
-        <MessageBubble key={m.id} messageID={m.id} text={m.text} />
+        <MessageBubble key={m.id} messageID={m.id} text={m.text}/>
     ));
     const sentMessageBubbles1 = props.sentMessages.map((m) => (
-        <MessageBubble key={m.id} messageID={m.id} text={m.text} />
+        <MessageBubble key={m.id} messageID={m.id} text={m.text}/>
     ));
 
     return (
@@ -30,13 +30,15 @@ export const Dialog = (props: DialogPropsType) => {
                 <div className={style.sent_messages}>{sentMessageBubbles1}</div>
             </div>
             <div className={style.inputField}>
-                <CommonTextarea
+                <CommonTextArea
                     value={props.currentValue}
                     placeholder="Enter your message..."
-                    onChange={onTextareaChange}
-                    onClick={onButtonClick}
+                    onTextChange={onTextareaChange}
 
-                    buttonProps={{buttonName: "Send"}}
+                    buttonProps={{
+                        buttonName: "Send",
+                        onButtonClick: onButtonClick
+                    }}
                 />
             </div>
         </>
