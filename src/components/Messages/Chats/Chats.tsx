@@ -1,5 +1,5 @@
 import React from "react";
-import style from "./Dialogs.module.css";
+import style from "./Chats.module.css";
 import {NavLink} from "react-router-dom";
 
 type ChatsPropsType = {
