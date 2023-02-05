@@ -1,7 +1,7 @@
 import React from "react";
 import style from "./Dialog.module.css";
 import {MessageBubble} from "./MessageBubble/MessageBubble";
-import CommonTextArea from "../../common/commonTextArea";
+import CommonTextArea from "../../common/CommonTextArea";
 import {DialogPropsType} from "../../../containers/DialogContainer";
 
 

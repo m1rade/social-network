@@ -5,7 +5,7 @@ import React, {
     MouseEvent,
     TextareaHTMLAttributes
 } from "react";
-import s from "./commonTextArea.module.css";
+import s from "./CommonTextArea.module.css";
 
 
 type DefaultTextareaPropsType = DetailedHTMLProps<TextareaHTMLAttributes<HTMLTextAreaElement>,

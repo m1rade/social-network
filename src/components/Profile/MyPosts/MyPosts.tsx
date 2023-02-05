@@ -2,7 +2,7 @@ import React from "react";
 import style from "./MyPosts.module.css";
 import {Post} from "./Post/Post";
 import {MyPostsPropsType} from "../../../containers/MyPostsContainer";
-import CommonTextArea from "../../common/commonTextArea";
+import CommonTextArea from "../../common/CommonTextArea";
 
 
 export const MyPosts: React.FC<MyPostsPropsType> = (props) => {
