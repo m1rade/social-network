@@ -15,23 +15,21 @@ export const User: React.FC<UserPropsType> = ({
         <div className={s.container}>
             <div className={s.row}>
                 <div className={s.column_1}>
-                    <img
-                        className={s.avatar}
-                        src={user.photos.small}
-                        alt="small-avatar"
-                    />
-                    <button
-                        className={s.follow}
-                        onClick={() => followUnfollowHandler}>
-                        Follow
-                    </button>
+                    <div className={s.avatar}>
+                        <img src={user.photos.small} alt="small-avatar" />
+                    </div>
+                    <div className={s.follow}>
+                        <button onClick={() => followUnfollowHandler()}>
+                            {!user.followed ? "Follow" : "Unfollow"}
+                        </button>
+                    </div>
                 </div>
                 <div className={s.column_2}>
                     <div className={s.userFrame}>
-                        <div className={s.userName}>{user.name}</div>
-                        <div className={s.userStatus}>
+                        <span className={s.userName}>{user.name}</span>
+                        <span className={s.userStatus}>
                             {user.status ? user.status : " "}
-                        </div>
+                        </span>
                     </div>
                 </div>
             </div>
