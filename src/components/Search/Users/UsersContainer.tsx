@@ -11,36 +11,72 @@ import {
 import { AppStateType } from "../../../redux/store";
 import { User } from "./User/User";
 
-export const Users: React.FC<UsersPropsType> = (props) => {
-    if (props.users.length === 0) {
-        axios.get("https://social-network.samuraijs.com/api/1.0/users")
+// export const Users: React.FC<UsersPropsType> = (props) => {
+//     if (props.users.length === 0) {
+//         axios.get("https://social-network.samuraijs.com/api/1.0/users")
+//             .then((resp) => {
+//                 props.setUsers(resp.data.items);
+//             })
+//             .catch((err) => {
+//                 alert(err);
+//             });
+//     }
+
+//     const mappedUsers = props.users.map((u) => {
+//         return (
+//             <User
+//                 key={u.id}
+//                 user={u}
+//                 followUnfollowHandler={() => props.followUnfollowHandler(u.id)}
+//             />
+//         );
+//     });
+
+//     return (
+//         <div style={{height: "100vh", overflow: "auto"}}>
+//             Users
+//             <br />
+//             <hr />
+//             {mappedUsers}
+//         </div>
+//     );
+// };
+
+export class Users extends React.Component<UsersPropsType> {
+    constructor(props: UsersPropsType) {
+        super(props);
+        axios
+            .get("https://social-network.samuraijs.com/api/1.0/users")
             .then((resp) => {
-                props.setUsers(resp.data.items);
+                this.props.setUsers(resp.data.items);
             })
             .catch((err) => {
                 alert(err);
             });
     }
+    render() {
+        const mappedUsers = this.props.users.map((u) => {
+            return (
+                <User
+                    key={u.id}
+                    user={u}
+                    followUnfollowHandler={() =>
+                        this.props.followUnfollowHandler(u.id)
+                    }
+                />
+            );
+        });
 
-    const mappedUsers = props.users.map((u) => {
         return (
-            <User
-                key={u.id}
-                user={u}
-                followUnfollowHandler={() => props.followUnfollowHandler(u.id)}
-            />
+            <div style={{ height: "100vh", overflow: "auto" }}>
+                Users
+                <br />
+                <hr />
+                {mappedUsers}
+            </div>
         );
-    });
-
-    return (
-        <div style={{height: "100vh", overflow: "auto"}}>
-            Users
-            <br />
-            <hr />
-            {mappedUsers}
-        </div>
-    );
-};
+    }
+}
 
 const mapStateToProps = (state: AppStateType): mapStateToPropsType => ({
     users: state.search.items,
