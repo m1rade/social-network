@@ -1,6 +1,7 @@
 import React from "react";
 import { UserType } from "../../../../redux/search_reducer";
 import s from "./User.module.css";
+import userImagePlaceholder from "../../../../assets/icons/user.png";
 
 type UserPropsType = {
     user: UserType;
@@ -16,7 +17,7 @@ export const User: React.FC<UserPropsType> = ({
             <div className={s.row}>
                 <div className={s.column_1}>
                     <div className={s.avatar}>
-                        <img src={user.photos.small} alt="small-avatar" />
+                        <img src={user.photos.small ? user.photos.small : userImagePlaceholder} alt="small-avatar" />
                     </div>
                     <div className={s.follow}>
                         <button onClick={() => followUnfollowHandler()}>
