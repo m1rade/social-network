@@ -1,3 +1,4 @@
+import axios from "axios";
 import React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
@@ -11,6 +12,16 @@ import { AppStateType } from "../../../redux/store";
 import { User } from "./User/User";
 
 export const Users: React.FC<UsersPropsType> = (props) => {
+    if (props.users.length === 0) {
+        axios.get("https://social-network.samuraijs.com/api/1.0/users")
+            .then((resp) => {
+                props.setUsers(resp.data.items);
+            })
+            .catch((err) => {
+                alert(err);
+            });
+    }
+
     const mappedUsers = props.users.map((u) => {
         return (
             <User
@@ -22,7 +33,7 @@ export const Users: React.FC<UsersPropsType> = (props) => {
     });
 
     return (
-        <div>
+        <div style={{height: "100vh", overflow: "auto"}}>
             Users
             <br />
             <hr />
