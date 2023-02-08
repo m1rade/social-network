@@ -11,40 +11,9 @@ import {
 import { AppStateType } from "../../../redux/store";
 import { User } from "./User/User";
 
-// export const Users: React.FC<UsersPropsType> = (props) => {
-//     if (props.users.length === 0) {
-//         axios.get("https://social-network.samuraijs.com/api/1.0/users")
-//             .then((resp) => {
-//                 props.setUsers(resp.data.items);
-//             })
-//             .catch((err) => {
-//                 alert(err);
-//             });
-//     }
-
-//     const mappedUsers = props.users.map((u) => {
-//         return (
-//             <User
-//                 key={u.id}
-//                 user={u}
-//                 followUnfollowHandler={() => props.followUnfollowHandler(u.id)}
-//             />
-//         );
-//     });
-
-//     return (
-//         <div style={{height: "100vh", overflow: "auto"}}>
-//             Users
-//             <br />
-//             <hr />
-//             {mappedUsers}
-//         </div>
-//     );
-// };
 
 export class Users extends React.Component<UsersPropsType> {
-    constructor(props: UsersPropsType) {
-        super(props);
+    componentDidMount(): void {
         axios
             .get("https://social-network.samuraijs.com/api/1.0/users")
             .then((resp) => {
