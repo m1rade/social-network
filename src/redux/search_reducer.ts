@@ -34,27 +34,34 @@
 //         },
 //     ],
 
-const initialState: SearchResponseType = {
+const initialState: SearchPageDomainType = {
     items: [],
-    totalCount: 22837,
+    totalCount: 0,
     error: null,
+    curPage: 1,
+    itemsPerPage: 20,
 };
 
 const search_reducer = (
-    state: SearchResponseType = initialState,
+    state: SearchPageDomainType = initialState,
     action: SearchActionType
-): SearchResponseType => {
+): SearchPageDomainType => {
     switch (action.type) {
-        case "SET-USERS":
-            return { ...state, items: [...state.items, ...action.items] };
+        case "SET_USERS":
+            return { ...state, items: [...action.items] };
+        case "SET_TOTAL_COUNT":
+            return { ...state, totalCount: action.totalCount };
         case "FOLLOW/UNFOLLOW_USER":
             return {
                 ...state,
                 items: state.items.map((i) =>
-                    i.id === action.id ? { ...i, followed: !i.followed } : i
+                    i.id === action.id ? { ...i, followed: action.value } : i
                 ),
             };
-
+        case "SET_CURRENT_PAGE":
+            return { ...state, curPage: action.page };
+        case "SET_TOTAL_PAGES":
+            return { ...state, itemsPerPage: action.totalPages };
         default:
             return state;
     }
@@ -63,16 +70,33 @@ const search_reducer = (
 export default search_reducer;
 
 //actions
-export const follow_unfollowAC = (id: number) =>
+export const follow_unfollowAC = (id: number, value: boolean) =>
     ({
         type: "FOLLOW/UNFOLLOW_USER",
         id,
+        value,
     } as const);
 
 export const setUsersAC = (items: UserType[]) =>
     ({
-        type: "SET-USERS",
+        type: "SET_USERS",
         items,
+    } as const);
+export const setCurrentPageAC = (page: number) =>
+    ({
+        type: "SET_CURRENT_PAGE",
+        page,
+    } as const);
+export const setTotalPagesAC = (totalPages: number) =>
+    ({
+        type: "SET_TOTAL_PAGES",
+        totalPages,
+    } as const);
+
+export const setTotalCountAC = (totalCount: number) =>
+    ({
+        type: "SET_TOTAL_COUNT",
+        totalCount,
     } as const);
 
 //types
@@ -96,6 +120,14 @@ type SearchResponseType = {
     error: string | null;
 };
 
+type SearchPageDomainType = SearchResponseType & {
+    curPage: number;
+    itemsPerPage: number;
+};
+
 export type SearchActionType =
     | ReturnType<typeof follow_unfollowAC>
-    | ReturnType<typeof setUsersAC>;
+    | ReturnType<typeof setUsersAC>
+    | ReturnType<typeof setCurrentPageAC>
+    | ReturnType<typeof setTotalPagesAC>
+    | ReturnType<typeof setTotalCountAC>;
