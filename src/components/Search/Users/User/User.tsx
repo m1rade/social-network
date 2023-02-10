@@ -2,6 +2,7 @@ import React from "react";
 import { UserType } from "../../../../redux/search_reducer";
 import s from "./User.module.css";
 import userImagePlaceholder from "../../../../assets/icons/user.png";
+import { NavLink } from "react-router-dom";
 
 type UserPropsType = {
     user: UserType;
@@ -14,14 +15,12 @@ export const User: React.FC<UserPropsType> = (props) => {
             <div className={s.row}>
                 <div className={s.column_1}>
                     <div className={s.avatar}>
-                        <img
-                            src={
-                                props.user.photos.small
-                                    ? props.user.photos.small
-                                    : userImagePlaceholder
-                            }
-                            alt="small-avatar"
-                        />
+                        <NavLink className={s.userNavLink} to={`/profile` + props.user.id}>
+                            <img
+                                src={props.user.photos.small ? props.user.photos.small : userImagePlaceholder}
+                                alt="small-avatar"
+                            />
+                        </NavLink>
                     </div>
                     <div className={s.follow}>
                         <button onClick={() => props.followUnfollowHandler()}>
@@ -31,10 +30,10 @@ export const User: React.FC<UserPropsType> = (props) => {
                 </div>
                 <div className={s.column_2}>
                     <div className={s.userFrame}>
-                        <span className={s.userName}>{props.user.name}</span>
-                        <span className={s.userStatus}>
-                            {props.user.status ? props.user.status : " "}
-                        </span>
+                        <NavLink className={s.userNavLink} to={`/profile` + props.user.id}>
+                            <span className={s.userName}>{props.user.name}</span>
+                        </NavLink>
+                        <span className={s.userStatus}>{props.user.status ? props.user.status : " "}</span>
                     </div>
                 </div>
             </div>

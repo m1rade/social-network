@@ -16,7 +16,7 @@ const App = () => {
             <Navbar />
             <div className="main">
                 <Switch>
-                    <Route exact path="/profile" render={() => <ProfileContainer />} />
+                    <Route exact path="/profile/*" render={() => <ProfileContainer />} />
                     <Route exact path="/messages" render={() => <Messages />} />
                     <Route exact path="/search" render={() => <SearchPage />} />
                     <Route exact path="/news" render={() => <News />} />
