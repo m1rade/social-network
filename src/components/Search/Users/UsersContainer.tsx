@@ -1,15 +1,13 @@
 import axios from "axios";
 import React from "react";
 import { connect } from "react-redux";
-import { Dispatch } from "redux";
 import {
-    follow_unfollowAC,
-    SearchActionType,
-    setCurrentPageAC,
-    setTotalCountAC,
-    setUsersAC,
-    toggleIsFetchingAC,
-    UserType
+    follow_unfollowHandler,
+    setCurrentPage,
+    setTotalCount,
+    setUsers,
+    toggleIsFetching,
+    UserType,
 } from "../../../redux/search_reducer";
 import { AppStateType } from "../../../redux/store";
 import Preloader from "../../common/Preloader";
@@ -32,7 +30,7 @@ class UsersContainer extends React.Component<UsersContainerPropsType> {
             })
             .finally(() => {
                 this.props.toggleIsFetching(false);
-            })
+            });
     }
 
     changePageHandler = (curPage: number) => {
@@ -51,7 +49,7 @@ class UsersContainer extends React.Component<UsersContainerPropsType> {
             })
             .finally(() => {
                 this.props.toggleIsFetching(false);
-            })
+            });
     };
 
     render() {
@@ -65,7 +63,7 @@ class UsersContainer extends React.Component<UsersContainerPropsType> {
                         totalCount={this.props.totalCount}
                         curPage={this.props.curPage}
                         itemsPerPage={this.props.itemsPerPage}
-                        followUnfollowHandler={this.props.followUnfollowHandler}
+                        followUnfollowHandler={this.props.follow_unfollowHandler}
                         changePageHandler={this.changePageHandler}
                     />
                 )}
@@ -82,15 +80,14 @@ const mapStateToProps = (state: AppStateType): mapStateToPropsType => ({
     isFetching: state.search.isFetching,
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<SearchActionType>): mapDispatchToPropsType => ({
-    setUsers: (items: UserType[]) => dispatch(setUsersAC(items)),
-    followUnfollowHandler: (id: number, value: boolean) => dispatch(follow_unfollowAC(id, value)),
-    setCurrentPage: (page: number) => dispatch(setCurrentPageAC(page)),
-    setTotalCount: (totalCount: number) => dispatch(setTotalCountAC(totalCount)),
-    toggleIsFetching: (value: boolean) => dispatch(toggleIsFetchingAC(value)),
-});
+export default connect(mapStateToProps, {
+    setUsers,
+    follow_unfollowHandler,
+    setCurrentPage,
+    setTotalCount,
+    toggleIsFetching,
+})(UsersContainer);
 
-export default connect(mapStateToProps, mapDispatchToProps)(UsersContainer);
 
 //types
 type mapStateToPropsType = {
@@ -103,10 +100,10 @@ type mapStateToPropsType = {
 
 type mapDispatchToPropsType = {
     setUsers: (items: UserType[]) => void;
-    followUnfollowHandler: (id: number, value: boolean) => void;
+    follow_unfollowHandler: (id: number, value: boolean) => void;
     setCurrentPage: (page: number) => void;
     setTotalCount: (totalCount: number) => void;
     toggleIsFetching: (value: boolean) => void;
 };
 
-export type UsersContainerPropsType = mapStateToPropsType & mapDispatchToPropsType;
+type UsersContainerPropsType = mapStateToPropsType & mapDispatchToPropsType;
