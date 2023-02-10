@@ -3,24 +3,26 @@ import {connect} from "react-redux";
 import {ProfileInfo} from "../components/Profile/ProfileInfo/ProfileInfo";
 import {AppStateType} from "../redux/store";
 
-type mapStateToPropsType = {
-    name: string,
-    description: string,
-    avatar: string
-}
 
-export type ProfileInfoContainerPropsType = mapStateToPropsType;
 
 export const ProfileInfoContainer: React.FC<ProfileInfoContainerPropsType> = (props) => {
-    return <ProfileInfo name={props.name} description={props.description} avatar={props.avatar}/>
+    return <ProfileInfo name={props.name} about={props.about} photo={props.photo}/>
 };
 
 const mapStateToProps = (state: AppStateType): mapStateToPropsType => ({
-    name: state.profile.name,
-    description: state.profile.description,
-    avatar: state.profile.avatar,
+    name: state.profile.fullName,
+    about: state.profile.aboutMe,
+    photo: state.profile.photos.small,
 });
 
-const mapDispatchToProps = {};
 
-export default connect(mapStateToProps, mapDispatchToProps)(ProfileInfoContainer);
+export default connect(mapStateToProps, {})(ProfileInfoContainer);
+
+//types
+type mapStateToPropsType = {
+    name: string,
+    about: string,
+    photo: string
+}
+
+export type ProfileInfoContainerPropsType = mapStateToPropsType;

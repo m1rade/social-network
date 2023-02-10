@@ -1,19 +1,23 @@
 import React from "react";
 import style from "./ProfileInfo.module.css";
-import {ProfileInfoContainerPropsType} from "../../../containers/ProfileInfoContainer";
 
+type ProfileInfoPropsType = {
+    photo: string,
+    name: string,
+    about: string
+}
 
-export const ProfileInfo: React.FC<ProfileInfoContainerPropsType> = (props) => {
+export const ProfileInfo: React.FC<ProfileInfoPropsType> = (props) => {
 
     return (
         <div>
             <img
                 className={style.avatar}
-                src={props.avatar}
+                src={props.photo}
                 alt="avatar"
             />
             <span>{props.name}</span>
-            <div>{props.description}</div>
+            <div>{props.about}</div>
         </div>
     );
 };

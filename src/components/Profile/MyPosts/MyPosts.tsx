@@ -1,9 +1,16 @@
 import React from "react";
 import style from "./MyPosts.module.css";
 import {Post} from "./Post/Post";
-import {MyPostsPropsType} from "../../../containers/MyPostsContainer";
 import CommonTextArea from "../../common/CommonTextArea";
+import { PostType } from "../../../redux/profile_reducer";
 
+type MyPostsPropsType = {
+    newPostMessage: string;
+    posts: PostType[];
+    photo: string;
+    addNewPost: () => void
+    onPostChange: (newTextValue: string) => void
+};
 
 export const MyPosts: React.FC<MyPostsPropsType> = (props) => {
     const onClickAddNewPost = () => {
@@ -15,7 +22,7 @@ export const MyPosts: React.FC<MyPostsPropsType> = (props) => {
     };
 
     const mappedPosts = props.posts.map((p) => (
-        <Post key={p.id} postID={p.id} message={p.message} avatar={props.avatar}/>
+        <Post key={p.id} postID={p.id} message={p.message} avatar={props.photo}/>
     ));
 
     return (
