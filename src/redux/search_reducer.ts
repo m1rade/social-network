@@ -40,6 +40,7 @@ const initialState: SearchPageDomainType = {
     error: null,
     curPage: 1,
     itemsPerPage: 20,
+    isFetching: false,
 };
 
 const search_reducer = (
@@ -62,6 +63,8 @@ const search_reducer = (
             return { ...state, curPage: action.page };
         case "SET_TOTAL_PAGES":
             return { ...state, itemsPerPage: action.totalPages };
+        case "TOGGLE_IS_FETCHING":
+            return { ...state, isFetching: action.value };
         default:
             return state;
     }
@@ -99,6 +102,12 @@ export const setTotalCountAC = (totalCount: number) =>
         totalCount,
     } as const);
 
+export const toggleIsFetchingAC = (value: boolean) =>
+    ({
+        type: "TOGGLE_IS_FETCHING",
+        value,
+    } as const);
+
 //types
 export type UserType = {
     name: string;
@@ -123,6 +132,7 @@ type SearchResponseType = {
 type SearchPageDomainType = SearchResponseType & {
     curPage: number;
     itemsPerPage: number;
+    isFetching: boolean;
 };
 
 export type SearchActionType =
@@ -130,4 +140,5 @@ export type SearchActionType =
     | ReturnType<typeof setUsersAC>
     | ReturnType<typeof setCurrentPageAC>
     | ReturnType<typeof setTotalPagesAC>
-    | ReturnType<typeof setTotalCountAC>;
+    | ReturnType<typeof setTotalCountAC>
+    | ReturnType<typeof toggleIsFetchingAC>;

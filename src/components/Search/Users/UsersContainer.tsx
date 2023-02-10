@@ -8,13 +8,17 @@ import {
     setCurrentPageAC,
     setTotalCountAC,
     setUsersAC,
-    UserType,
+    toggleIsFetchingAC,
+    UserType
 } from "../../../redux/search_reducer";
 import { AppStateType } from "../../../redux/store";
+import Preloader from "../../common/Preloader";
+
 import { Users } from "./Users";
 
 class UsersContainer extends React.Component<UsersContainerPropsType> {
     componentDidMount() {
+        this.props.toggleIsFetching(true);
         axios
             .get(
                 `https://social-network.samuraijs.com/api/1.0/users?count=${this.props.itemsPerPage}&page=${this.props.curPage}`
@@ -25,12 +29,16 @@ class UsersContainer extends React.Component<UsersContainerPropsType> {
             })
             .catch((err) => {
                 alert(err);
-            });
+            })
+            .finally(() => {
+                this.props.toggleIsFetching(false);
+            })
     }
 
     changePageHandler = (curPage: number) => {
         this.props.setCurrentPage(curPage);
 
+        this.props.toggleIsFetching(true);
         axios
             .get(
                 `https://social-network.samuraijs.com/api/1.0/users?count=${this.props.itemsPerPage}&page=${curPage}`
@@ -40,19 +48,28 @@ class UsersContainer extends React.Component<UsersContainerPropsType> {
             })
             .catch((err) => {
                 alert(err);
-            });
+            })
+            .finally(() => {
+                this.props.toggleIsFetching(false);
+            })
     };
 
     render() {
         return (
-            <Users
-                users={this.props.users}
-                totalCount={this.props.totalCount}
-                curPage={this.props.curPage}
-                itemsPerPage={this.props.itemsPerPage}
-                followUnfollowHandler={this.props.followUnfollowHandler}
-                changePageHandler={this.changePageHandler}
-            />
+            <>
+                {this.props.isFetching ? (
+                    <Preloader />
+                ) : (
+                    <Users
+                        users={this.props.users}
+                        totalCount={this.props.totalCount}
+                        curPage={this.props.curPage}
+                        itemsPerPage={this.props.itemsPerPage}
+                        followUnfollowHandler={this.props.followUnfollowHandler}
+                        changePageHandler={this.changePageHandler}
+                    />
+                )}
+            </>
         );
     }
 }
@@ -62,6 +79,7 @@ const mapStateToProps = (state: AppStateType): mapStateToPropsType => ({
     totalCount: state.search.totalCount,
     curPage: state.search.curPage,
     itemsPerPage: state.search.itemsPerPage,
+    isFetching: state.search.isFetching,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<SearchActionType>): mapDispatchToPropsType => ({
@@ -69,6 +87,7 @@ const mapDispatchToProps = (dispatch: Dispatch<SearchActionType>): mapDispatchTo
     followUnfollowHandler: (id: number, value: boolean) => dispatch(follow_unfollowAC(id, value)),
     setCurrentPage: (page: number) => dispatch(setCurrentPageAC(page)),
     setTotalCount: (totalCount: number) => dispatch(setTotalCountAC(totalCount)),
+    toggleIsFetching: (value: boolean) => dispatch(toggleIsFetchingAC(value)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(UsersContainer);
@@ -79,6 +98,7 @@ type mapStateToPropsType = {
     totalCount: number;
     curPage: number;
     itemsPerPage: number;
+    isFetching: boolean;
 };
 
 type mapDispatchToPropsType = {
@@ -86,6 +106,7 @@ type mapDispatchToPropsType = {
     followUnfollowHandler: (id: number, value: boolean) => void;
     setCurrentPage: (page: number) => void;
     setTotalCount: (totalCount: number) => void;
+    toggleIsFetching: (value: boolean) => void;
 };
 
 export type UsersContainerPropsType = mapStateToPropsType & mapDispatchToPropsType;
