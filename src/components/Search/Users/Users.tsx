@@ -1,6 +1,5 @@
 import React from "react";
 import { UserType } from "../../../redux/search_reducer";
-import getPageList from "../../../utils/getPageList";
 import { Pagination } from "./Pagination/Pagination";
 import { User } from "./User/User";
 
