@@ -1,39 +1,3 @@
-// [
-//         {
-//             name: "Puss in boots",
-//             id: 27770,
-//             uniqueUrlName: null,
-//             photos: {
-//                 small: "https://www.looper.com/img/gallery/the-ending-of-puss-in-boots-the-last-wish-explained/intro-1671811424.webp",
-//                 large: "",
-//             },
-//             status: "Busy",
-//             followed: false,
-//         },
-//         {
-//             name: "Puss in boots",
-//             id: 27771,
-//             uniqueUrlName: null,
-//             photos: {
-//                 small: "https://www.looper.com/img/gallery/the-ending-of-puss-in-boots-the-last-wish-explained/intro-1671811424.webp",
-//                 large: "",
-//             },
-//             status: "Busy",
-//             followed: false,
-//         },
-//         {
-//             name: "Puss in boots",
-//             id: 27772,
-//             uniqueUrlName: null,
-//             photos: {
-//                 small: "https://www.looper.com/img/gallery/the-ending-of-puss-in-boots-the-last-wish-explained/intro-1671811424.webp",
-//                 large: "",
-//             },
-//             status: "Busy",
-//             followed: false,
-//         },
-//     ],
-
 const initialState: SearchPageDomainType = {
     items: [],
     totalCount: 0,
