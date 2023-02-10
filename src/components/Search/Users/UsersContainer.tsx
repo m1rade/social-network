@@ -11,10 +11,9 @@ import {
     UserType,
 } from "../../../redux/search_reducer";
 import { AppStateType } from "../../../redux/store";
-import { User } from "./User/User";
-import s from "./Users.module.css";
+import { Users } from "./Users";
 
-export class Users extends React.Component<UsersPropsType> {
+class UsersContainer extends React.Component<UsersContainerPropsType> {
     componentDidMount() {
         axios
             .get(
@@ -28,15 +27,6 @@ export class Users extends React.Component<UsersPropsType> {
                 alert(err);
             });
     }
-
-    countPages = () => {
-        const totalPages = Math.ceil(this.props.totalCount / this.props.itemsPerPage);
-        let pagesArr = [];
-        for (let i = 1; i <= totalPages; i++) {
-            pagesArr.push(i);
-        }
-        return pagesArr;
-    };
 
     changePageHandler = (curPage: number) => {
         this.props.setCurrentPage(curPage);
@@ -54,38 +44,15 @@ export class Users extends React.Component<UsersPropsType> {
     };
 
     render() {
-        const mappedUsers = this.props.users.map((u) => {
-            return (
-                <User
-                    key={u.id}
-                    user={u}
-                    followUnfollowHandler={() => this.props.followUnfollowHandler(u.id, !u.followed)}
-                />
-            );
-        });
-
-        const mappedPages = this.countPages().map((p) => {
-            const spanPageClass = this.props.curPage === p ? `${s.currentPage} ${s.page}` : s.page;
-
-            return (
-                <span key={p} className={spanPageClass} onClick={() => this.changePageHandler(p)}>
-                    {p}{" "}
-                </span>
-            );
-        });
-
         return (
-            <div style={{ height: "100vh", overflow: "auto" }}>
-                <span>Users</span>
-                <br />
-                <hr />
-                <div>
-                    <span>Pages:</span>
-                    <br />
-                    {mappedPages}
-                    {mappedUsers}
-                </div>
-            </div>
+            <Users
+                users={this.props.users}
+                totalCount={this.props.totalCount}
+                curPage={this.props.curPage}
+                itemsPerPage={this.props.itemsPerPage}
+                followUnfollowHandler={this.props.followUnfollowHandler}
+                changePageHandler={this.changePageHandler}
+            />
         );
     }
 }
@@ -101,10 +68,10 @@ const mapDispatchToProps = (dispatch: Dispatch<SearchActionType>): mapDispatchTo
     setUsers: (items: UserType[]) => dispatch(setUsersAC(items)),
     followUnfollowHandler: (id: number, value: boolean) => dispatch(follow_unfollowAC(id, value)),
     setCurrentPage: (page: number) => dispatch(setCurrentPageAC(page)),
-    setTotalCount: (totalCount: number) => dispatch(setTotalCountAC(totalCount))
+    setTotalCount: (totalCount: number) => dispatch(setTotalCountAC(totalCount)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Users);
+export default connect(mapStateToProps, mapDispatchToProps)(UsersContainer);
 
 //types
 type mapStateToPropsType = {
@@ -118,7 +85,7 @@ type mapDispatchToPropsType = {
     setUsers: (items: UserType[]) => void;
     followUnfollowHandler: (id: number, value: boolean) => void;
     setCurrentPage: (page: number) => void;
-    setTotalCount: (totalCount: number) => void
+    setTotalCount: (totalCount: number) => void;
 };
 
-export type UsersPropsType = mapStateToPropsType & mapDispatchToPropsType;
+export type UsersContainerPropsType = mapStateToPropsType & mapDispatchToPropsType;
