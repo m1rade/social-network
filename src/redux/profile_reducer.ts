@@ -9,13 +9,13 @@ const initState: ProfileDomainType = {
     userInfo: {
         aboutMe: "Cooool cat's description here",
         contacts: {
-            facebook: "facebook.com",
+            facebook: "",
             website: "",
-            vk: "vk.com/cat",
-            twitter: "https://twitter.com/",
-            instagram: "instagra.com/",
+            vk: "",
+            twitter: "",
+            instagram: "",
             youtube: "",
-            github: "github.com/",
+            github: "",
             mainLink: "",
         },
         lookingForAJob: false,
@@ -81,7 +81,7 @@ export const setUserInfo = (userInfo: ProfileResponseType) =>
 //types
 export type ProfileResponseType = {
     aboutMe: string;
-    contacts: ContactsType;
+    contacts: ContactsDomainType;
     lookingForAJob: boolean;
     lookingForAJobDescription: string;
     fullName: string;
@@ -89,15 +89,8 @@ export type ProfileResponseType = {
     photos: UserPhotoType;
 };
 
-type ContactsType = {
-    facebook: string ;
-    website: string;
-    vk: string;
-    twitter: string;
-    instagram: string;
-    youtube: string;
-    github: string;
-    mainLink: string;
+type ContactsDomainType = {
+    [key: string]: string;
 };
 
 export type PostType = {

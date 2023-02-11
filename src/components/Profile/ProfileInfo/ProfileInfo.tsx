@@ -7,6 +7,16 @@ type ProfileInfoPropsType = {
 };
 
 export const ProfileInfo: React.FC<ProfileInfoPropsType> = (props) => {
+    const userContacts = Object.keys(props.userInfo.contacts)
+        .filter((c) => props.userInfo.contacts[c] !== null)
+        .map((c, i) => (
+            <span key={i}>
+                <a key={i} href={props.userInfo.contacts[c]} target="_blank" rel="noreferrer noopener">
+                    {c}
+                </a>
+            </span>
+        ));
+
     return (
         <div className={s.container}>
             <div className={s.row_1}>
@@ -33,14 +43,7 @@ export const ProfileInfo: React.FC<ProfileInfoPropsType> = (props) => {
             <div className={s.row_2}>
                 <div className={s.contactsCol}>
                     <div>Contacts: </div>
-                    <span><a href={props.userInfo.contacts.mainLink}>Site</a></span>
-                    <span><a href={props.userInfo.contacts.website}>WebSite</a></span>
-                    <span><a href={props.userInfo.contacts.vk}>Vk</a></span>
-                    <span><a href={props.userInfo.contacts.facebook}>Facebook</a></span>
-                    <span><a href={props.userInfo.contacts.youtube}>Youtube</a></span>
-                    <span><a href={props.userInfo.contacts.instagram}>Instagram</a></span>
-                    <span><a href={props.userInfo.contacts.github}>Github</a></span>
-                    <span><a href={props.userInfo.contacts.twitter}>Twitter</a></span>
+                    {userContacts}
                 </div>
             </div>
         </div>
