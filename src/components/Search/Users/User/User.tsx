@@ -15,7 +15,7 @@ export const User: React.FC<UserPropsType> = (props) => {
             <div className={s.row}>
                 <div className={s.column_1}>
                     <div className={s.avatar}>
-                        <NavLink className={s.userNavLink} to={`/profile` + props.user.id}>
+                        <NavLink className={s.userNavLink} to={`profile/` + props.user.id}>
                             <img
                                 src={props.user.photos.small ? props.user.photos.small : userImagePlaceholder}
                                 alt="small-avatar"
@@ -30,7 +30,7 @@ export const User: React.FC<UserPropsType> = (props) => {
                 </div>
                 <div className={s.column_2}>
                     <div className={s.userFrame}>
-                        <NavLink className={s.userNavLink} to={`/profile` + props.user.id}>
+                        <NavLink className={s.userNavLink} to={`profile/` + props.user.id}>
                             <span className={s.userName}>{props.user.name}</span>
                         </NavLink>
                         <span className={s.userStatus}>{props.user.status ? props.user.status : " "}</span>
