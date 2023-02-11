@@ -6,24 +6,26 @@ const SET_USER_INFO = "SET_USER_INFO";
 const TOGGLE_IS_FETCHING = "TOGGLE_IS_FETCHING";
 
 const initState: ProfileDomainType = {
-    aboutMe: "Cooool cat's description here",
-    contacts: {
-        facebook: "facebook.com",
-        website: null,
-        vk: "vk.com/cat",
-        twitter: "https://twitter.com/",
-        instagram: "instagra.com/",
-        youtube: null,
-        github: "github.com/",
-        mainLink: null,
-    },
-    lookingForAJob: false,
-    lookingForAJobDescription: "gfgf",
-    fullName: "Cooool cat",
-    userId: 1,
-    photos: {
-        small: "https://i.pinimg.com/originals/ae/24/87/ae24874dd301843548c034a3d2973658.png",
-        large: "",
+    userInfo: {
+        aboutMe: "Cooool cat's description here",
+        contacts: {
+            facebook: "facebook.com",
+            website: "",
+            vk: "vk.com/cat",
+            twitter: "https://twitter.com/",
+            instagram: "instagra.com/",
+            youtube: "",
+            github: "github.com/",
+            mainLink: "",
+        },
+        lookingForAJob: false,
+        lookingForAJobDescription: "gfgf",
+        fullName: "Cooool cat",
+        userId: 1,
+        photos: {
+            small: "https://i.pinimg.com/originals/ae/24/87/ae24874dd301843548c034a3d2973658.png",
+            large: "",
+        },
     },
     posts: [
         { id: 1, message: "How are you today?" },
@@ -37,7 +39,7 @@ const initState: ProfileDomainType = {
 const profile_reducer = (state: ProfileDomainType = initState, action: ProfileActionType): ProfileDomainType => {
     switch (action.type) {
         case SET_USER_INFO:
-            return { ...state, ...action.userInfo };
+            return { ...state, userInfo: action.userInfo };
         case UPDATE_NEW_POST_MESSAGE:
             return { ...state, newPostMessage: action.newPostMessage };
         case ADD_POST:
@@ -70,14 +72,14 @@ export const addPostMessage = () =>
         type: ADD_POST,
     } as const);
 
-export const setUserInfo = (userInfo: ProfileDomainType) =>
+export const setUserInfo = (userInfo: ProfileResponseType) =>
     ({
         type: SET_USER_INFO,
         userInfo,
     } as const);
 
 //types
-type ProfileResponseType = {
+export type ProfileResponseType = {
     aboutMe: string;
     contacts: ContactsType;
     lookingForAJob: boolean;
@@ -88,14 +90,14 @@ type ProfileResponseType = {
 };
 
 type ContactsType = {
-    facebook: string | null;
-    website: string | null;
-    vk: string | null;
-    twitter: string | null;
-    instagram: string | null;
-    youtube: string | null;
-    github: string | null;
-    mainLink: string | null;
+    facebook: string ;
+    website: string;
+    vk: string;
+    twitter: string;
+    instagram: string;
+    youtube: string;
+    github: string;
+    mainLink: string;
 };
 
 export type PostType = {
@@ -103,11 +105,13 @@ export type PostType = {
     message: string;
 };
 
-export type ProfileDomainType = ProfileResponseType & {
+export type ProfileDomainType = {
+    userInfo: ProfileResponseType;
     posts: PostType[];
     newPostMessage: string;
     isFetching: boolean;
 };
+
 export type ProfileActionType =
     | ReturnType<typeof updatePostMessage>
     | ReturnType<typeof addPostMessage>

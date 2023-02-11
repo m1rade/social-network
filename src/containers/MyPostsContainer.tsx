@@ -3,13 +3,12 @@ import {connect} from "react-redux";
 import {Dispatch} from "redux";
 import {MyPosts} from "../components/Profile/MyPosts/MyPosts";
 import {addPostMessage, PostType, ProfileActionType, updatePostMessage,} from "../redux/profile_reducer";
-import { UserPhotoType } from "../redux/search_reducer";
 import {AppStateType} from "../redux/store";
 
 type MyPostsContainerPropsType = {
     newPostMessage: string;
     posts: PostType[];
-    avatar: UserPhotoType;
+    avatar: string;
 };
 
 type MyPostsContainerDispatchType = {
@@ -20,7 +19,7 @@ type MyPostsContainerDispatchType = {
 const mapStateToProps = (state: AppStateType): MyPostsContainerPropsType => ({
     newPostMessage: state.profile.newPostMessage,
     posts: state.profile.posts,
-    avatar: state.profile.photos,
+    avatar: state.profile.userInfo.photos.small,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<ProfileActionType>): MyPostsContainerDispatchType => ({
