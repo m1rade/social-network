@@ -1,3 +1,7 @@
+.container {
+    position: relative;
+}
+
 .solid_line {
     border: none;
     height: 2px;

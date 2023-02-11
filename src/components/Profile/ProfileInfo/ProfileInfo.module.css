@@ -1,5 +1,57 @@
+.container {
+    height: auto;
+    width: 50%;
+    
+    border: 1px solid;
+    position: relative;
+}
+
+
+.row_1 {
+    display: flex;
+}
+
+.row_2 {
+    border: 1px solid;
+}
+
+.pictureCol {
+
+}
+
+.infoCol {
+    margin: 20px;
+}
+
 .avatar {
-    border-radius: 4px;
-    width: 70px;
-    height: 70px;
+    border: 1px solid;
+}
+
+.avatar img {
+    width: 125px;
+    height: 125px;
+}
+
+.personalInfo {
+    margin-bottom: 15px;
+    border: 1px solid;
+}
+
+.fullName {
+    font-size: 21pt;
+    font-weight: bold;
+}
+
+.aboutMe {
+
+}
+
+.jobSeeking {
+    margin-bottom: 15px;
+}
+
+.contactsCol {
+    display: flex;
+    flex-direction: column;
+
 }

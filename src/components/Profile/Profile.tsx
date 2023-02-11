@@ -1,7 +1,7 @@
 import React from "react";
 import Preloader from "../common/Preloader";
 import { MyPosts } from "./MyPosts/MyPosts";
-import style from "./Profile.module.css";
+import s from "./Profile.module.css";
 import { ProfileContainerType } from "./ProfileContainer";
 import { ProfileInfo } from "./ProfileInfo/ProfileInfo";
 
@@ -11,17 +11,13 @@ export const Profile: React.FC<ProfileContainerType> = (props) => {
         return <div><Preloader /></div>
     }
 
-    return (
-        <div className={style.profile}>
-            <ProfileInfo
-                name={props.userInfo.fullName}
-                photo={props.userInfo.photos.small}
-                about={props.userInfo.aboutMe}
-            />
+return (
+        <div className={s.profile}>
+            <ProfileInfo userInfo={{ ...props.userInfo }} />
             <MyPosts
-                posts={props.userInfo.posts}
+                posts={props.posts}
                 photo={props.userInfo.photos.small}
-                newPostMessage={props.userInfo.newPostMessage}
+                newPostMessage={props.newPostMessage}
                 addNewPost={props.addPostMessage}
                 onPostChange={props.updatePostMessage}
             />

@@ -1,5 +1,5 @@
 import React from "react";
-import style from "./MyPosts.module.css";
+import s from "./MyPosts.module.css";
 import {Post} from "./Post/Post";
 import CommonTextArea from "../../common/CommonTextArea";
 import { PostType } from "../../../redux/profile_reducer";
@@ -27,7 +27,7 @@ export const MyPosts: React.FC<MyPostsPropsType> = (props) => {
 
     return (
         <>
-            <div>
+            <div className={s.container}>
                 <div>my posts</div>
                 <CommonTextArea
                     value={props.newPostMessage}
@@ -40,7 +40,7 @@ export const MyPosts: React.FC<MyPostsPropsType> = (props) => {
                     }}
                 />
             </div>
-            <hr className={style.solid_line}/>
+            <hr className={s.solid_line}/>
             <div>{mappedPosts}</div>
         </>
     );

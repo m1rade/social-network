@@ -1,7 +1,7 @@
 import axios from "axios";
 import React from "react";
 import { connect } from "react-redux";
-import { addPostMessage, ProfileDomainType, setUserInfo, updatePostMessage } from "../../redux/profile_reducer";
+import { addPostMessage, PostType, ProfileResponseType, setUserInfo, updatePostMessage } from "../../redux/profile_reducer";
 import { toggleIsFetching } from "../../redux/search_reducer";
 import { AppStateType } from "../../redux/store";
 import Preloader from "../common/Preloader";
@@ -29,8 +29,10 @@ class ProfileContainer extends React.Component<ProfileContainerType> {
 }
 
 const mapStateToProps = (state: AppStateType): mapStateToPropsType => ({
-    userInfo: state.profile,
+    userInfo: state.profile.userInfo,
     isFetching: state.profile.isFetching,
+    newPostMessage: state.profile.newPostMessage,
+    posts: state.profile.posts
 });
 
 export default connect(mapStateToProps, {
@@ -42,12 +44,14 @@ export default connect(mapStateToProps, {
 
 //types
 type mapStateToPropsType = {
-    userInfo: ProfileDomainType;
+    userInfo: ProfileResponseType;
+    posts: PostType[];
     isFetching: boolean;
+    newPostMessage: string
 };
 
 type mapDispatchToPropsType = {
-    setUserInfo: (userInfo: ProfileDomainType) => void;
+    setUserInfo: (userInfo: ProfileResponseType) => void;
     addPostMessage: () => void;
     updatePostMessage: (newPostMessage: string) => void;
     toggleIsFetching: (value: boolean) => void;
