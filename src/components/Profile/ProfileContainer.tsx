@@ -1,17 +1,32 @@
 import axios from "axios";
 import React from "react";
 import { connect } from "react-redux";
-import { addPostMessage, PostType, ProfileResponseType, setUserInfo, updatePostMessage } from "../../redux/profile_reducer";
+import { RouteComponentProps, withRouter } from "react-router-dom";
+import {
+    addPostMessage,
+    PostType,
+    ProfileResponseType,
+    setUserInfo,
+    updatePostMessage,
+} from "../../redux/profile_reducer";
 import { toggleIsFetching } from "../../redux/search_reducer";
 import { AppStateType } from "../../redux/store";
 import Preloader from "../common/Preloader";
 import { Profile } from "./Profile";
 
-class ProfileContainer extends React.Component<ProfileContainerType> {
+class ProfileContainer extends React.Component<ProfileContainerPropsType> {
     componentDidMount() {
+        
         this.props.toggleIsFetching(true);
+        console.log("Loading");
+
+        let userID = this.props.match.params.userID;
+        if (!userID) {
+            userID = "2";
+        }
+
         axios
-            .get(`https://social-network.samuraijs.com/api/1.0/profile/2`)
+            .get(`https://social-network.samuraijs.com/api/1.0/profile/` + userID)
             .then((resp) => {
                 this.props.setUserInfo(resp.data);
             })
@@ -32,22 +47,25 @@ const mapStateToProps = (state: AppStateType): mapStateToPropsType => ({
     userInfo: state.profile.userInfo,
     isFetching: state.profile.isFetching,
     newPostMessage: state.profile.newPostMessage,
-    posts: state.profile.posts
+    posts: state.profile.posts,
 });
+
+const WithURLProfileContainer = withRouter(ProfileContainer);
 
 export default connect(mapStateToProps, {
     setUserInfo,
     addPostMessage,
     updatePostMessage,
     toggleIsFetching,
-})(ProfileContainer);
+})(WithURLProfileContainer);
+
 
 //types
 type mapStateToPropsType = {
     userInfo: ProfileResponseType;
     posts: PostType[];
     isFetching: boolean;
-    newPostMessage: string
+    newPostMessage: string;
 };
 
 type mapDispatchToPropsType = {
@@ -57,4 +75,9 @@ type mapDispatchToPropsType = {
     toggleIsFetching: (value: boolean) => void;
 };
 
-export type ProfileContainerType = mapStateToPropsType & mapDispatchToPropsType;
+type PathParamsType = {
+    userID: string;
+};
+
+type ProfileContainerPropsType = RouteComponentProps<PathParamsType> & ProfileContainerOwnType;
+export type ProfileContainerOwnType = mapStateToPropsType & mapDispatchToPropsType;
