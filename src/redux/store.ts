@@ -1,4 +1,5 @@
 import { combineReducers, createStore } from "redux";
+import auth_reducer from "./auth_reducer";
 import friends_reducer from "./friends_reducer";
 import messages_reducer from "./messages_reducer";
 import profile_reducer from "./profile_reducer";
@@ -9,6 +10,7 @@ const rootReducer = combineReducers({
     messages: messages_reducer,
     friends: friends_reducer,
     search: search_reducer,
+    auth: auth_reducer,
 });
 
 export type AppStateType = ReturnType<typeof rootReducer>;

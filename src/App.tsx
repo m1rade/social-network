@@ -1,6 +1,7 @@
+import React from 'react';
 import { Route, Switch } from "react-router-dom";
 import "./App.css";
-import { Header } from "./components/Header/Header";
+import HeaderContainer from './components/Header/HeaderContainer';
 import { Messages } from "./components/Messages/Messages";
 import { Music } from "./components/Music";
 import { Navbar } from "./components/Navbar/Navbar";
@@ -9,10 +10,10 @@ import ProfileContainer from "./components/Profile/ProfileContainer";
 import { SearchPage } from "./components/Search/SearchPage";
 import { Settings } from "./components/Settings";
 
-const App = () => {
+const App: React.FC<any> = () => {
     return (
         <div className="app-wrapper">
-            <Header />
+            <HeaderContainer />
             <Navbar />
             <div className="main">
                 <Switch>

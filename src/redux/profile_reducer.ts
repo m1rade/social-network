@@ -53,7 +53,7 @@ const profile_reducer = (state: ProfileDomainType = initState, action: ProfileAc
                 newPostMessage: "",
             };
         case TOGGLE_IS_FETCHING:
-            return { ...state, isFetching: action.payload.value };
+            return { ...state, isFetching: action.value };
         default:
             return state;
     }
