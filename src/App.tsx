@@ -16,6 +16,7 @@ const App = () => {
             <Navbar />
             <div className="main">
                 <Switch>
+                    <Route exact path={"/"} render={() => <ProfileContainer />} />
                     <Route exact path="/profile/:userID?" render={() => <ProfileContainer />} />
                     <Route exact path="/messages" render={() => <Messages />} />
                     <Route exact path="/search" render={() => <SearchPage />} />
