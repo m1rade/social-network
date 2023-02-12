@@ -18,7 +18,6 @@ class ProfileContainer extends React.Component<ProfileContainerPropsType> {
     componentDidMount() {
         
         this.props.toggleIsFetching(true);
-        console.log("Loading");
 
         let userID = this.props.match.params.userID;
         if (!userID) {
