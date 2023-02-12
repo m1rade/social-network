@@ -33,7 +33,7 @@ const search_reducer = (
         case SET_TOTAL_PAGES:
             return { ...state, itemsPerPage: action.totalPages };
         case TOGGLE_IS_FETCHING:
-            return { ...state, isFetching: action.value };
+            return { ...state, isFetching: action.payload.value };
         default:
             return state;
     }
@@ -74,7 +74,9 @@ export const setTotalCount = (totalCount: number) =>
 export const toggleIsFetching = (value: boolean) =>
     ({
         type: TOGGLE_IS_FETCHING,
-        value,
+        payload: {
+            value,
+        }
     } as const);
 
 //types
