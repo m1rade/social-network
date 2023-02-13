@@ -26,7 +26,7 @@ const search_reducer = (
         case FOLLOW_UNFOLLOW_USER:
             return {
                 ...state,
-                items: state.items.map((i) => (i.id === action.id ? { ...i, followed: action.value } : i)),
+                items: state.items.map((i) => (i.id === action.id ? { ...i, followed: action.followed } : i)),
             };
         case SET_CURRENT_PAGE:
             return { ...state, curPage: action.page };
@@ -42,11 +42,11 @@ const search_reducer = (
 export default search_reducer;
 
 //actions
-export const follow_unfollowHandler = (id: number, value: boolean) =>
+export const follow_unfollowHandler = (id: number, followed: boolean) =>
     ({
         type: FOLLOW_UNFOLLOW_USER,
         id,
-        value,
+        followed,
     } as const);
 
 export const setUsers = (items: UserType[]) =>

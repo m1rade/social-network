@@ -18,7 +18,7 @@ export const Users: React.FC<UsersPropsType> = (props) => {
             <User
                 key={u.id}
                 user={u}
-                followUnfollowHandler={() => props.followUnfollowHandler(u.id, !u.followed)}
+                followUnfollowHandler={() => props.followUnfollowHandler(u.id, u.followed)}
             />
         );
     });

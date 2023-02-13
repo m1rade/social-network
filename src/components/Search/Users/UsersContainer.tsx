@@ -11,15 +11,17 @@ import {
 } from "../../../redux/search_reducer";
 import { AppStateType } from "../../../redux/store";
 import Preloader from "../../common/Preloader";
-
 import { Users } from "./Users";
+
+const API_KEYS = "d85e69be-8131-4e67-a4be-aab397617799";
 
 class UsersContainer extends React.Component<UsersContainerPropsType> {
     componentDidMount() {
         this.props.toggleIsFetching(true);
         axios
             .get(
-                `https://social-network.samuraijs.com/api/1.0/users?count=${this.props.itemsPerPage}&page=${this.props.curPage}`
+                `https://social-network.samuraijs.com/api/1.0/users?count=${this.props.itemsPerPage}&page=${this.props.curPage}`,
+                { withCredentials: true }
             )
             .then((resp) => {
                 this.props.setUsers(resp.data.items);
@@ -39,7 +41,8 @@ class UsersContainer extends React.Component<UsersContainerPropsType> {
         this.props.toggleIsFetching(true);
         axios
             .get(
-                `https://social-network.samuraijs.com/api/1.0/users?count=${this.props.itemsPerPage}&page=${curPage}`
+                `https://social-network.samuraijs.com/api/1.0/users?count=${this.props.itemsPerPage}&page=${curPage}`,
+                { withCredentials: true }
             )
             .then((resp) => {
                 this.props.setUsers(resp.data.items);
@@ -50,6 +53,56 @@ class UsersContainer extends React.Component<UsersContainerPropsType> {
             .finally(() => {
                 this.props.toggleIsFetching(false);
             });
+    };
+
+    followUnfollowHandler = (userID: number, followed: boolean) => {
+        this.props.toggleIsFetching(true);
+        debugger
+        if (!followed) {
+            axios
+                .post(
+                    `https://social-network.samuraijs.com/api/1.0/follow/${userID}`,
+                    {},
+                    {
+                        withCredentials: true,
+                        headers: {
+                            "API-KEYS": API_KEYS
+                        },
+                    }
+                )
+                .then((resp) => {
+                    if (resp.data.resultCode === 0) {
+                        this.props.setUsers(resp.data.items);
+                        this.props.follow_unfollowHandler(userID, !followed);
+                    }
+                })
+                .catch((err) => {
+                    alert(err);
+                })
+                .finally(() => {
+                    this.props.toggleIsFetching(false);
+                });
+        } else {
+            axios
+                .delete(`https://social-network.samuraijs.com/api/1.0/follow/${userID}`, {
+                    withCredentials: true,
+                    headers: {
+                        "API-KEYS": API_KEYS
+                    },
+                })
+                .then((resp) => {
+                    if (resp.data.resultCode === 0) {
+                        this.props.setUsers(resp.data.items);
+                        this.props.follow_unfollowHandler(userID, !followed);
+                    }
+                })
+                .catch((err) => {
+                    alert(err);
+                })
+                .finally(() => {
+                    this.props.toggleIsFetching(false);
+                });
+        }
     };
 
     render() {
@@ -63,7 +116,7 @@ class UsersContainer extends React.Component<UsersContainerPropsType> {
                         totalCount={this.props.totalCount}
                         curPage={this.props.curPage}
                         itemsPerPage={this.props.itemsPerPage}
-                        followUnfollowHandler={this.props.follow_unfollowHandler}
+                        followUnfollowHandler={this.followUnfollowHandler}
                         changePageHandler={this.changePageHandler}
                     />
                 )}
@@ -88,7 +141,6 @@ export default connect(mapStateToProps, {
     toggleIsFetching,
 })(UsersContainer);
 
-
 //types
 type mapStateToPropsType = {
     users: UserType[];
@@ -100,7 +152,7 @@ type mapStateToPropsType = {
 
 type mapDispatchToPropsType = {
     setUsers: (items: UserType[]) => void;
-    follow_unfollowHandler: (id: number, value: boolean) => void;
+    follow_unfollowHandler: (id: number, followed: boolean) => void;
     setCurrentPage: (page: number) => void;
     setTotalCount: (totalCount: number) => void;
     toggleIsFetching: (value: boolean) => void;
