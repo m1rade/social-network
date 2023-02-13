@@ -13,7 +13,7 @@ import { AppStateType } from "../../../redux/store";
 import Preloader from "../../common/Preloader";
 import { Users } from "./Users";
 
-const API_KEYS = "d85e69be-8131-4e67-a4be-aab397617799";
+const API_KEY = "d85e69be-8131-4e67-a4be-aab397617799";
 
 class UsersContainer extends React.Component<UsersContainerPropsType> {
     componentDidMount() {
@@ -57,7 +57,7 @@ class UsersContainer extends React.Component<UsersContainerPropsType> {
 
     followUnfollowHandler = (userID: number, followed: boolean) => {
         this.props.toggleIsFetching(true);
-        debugger
+
         if (!followed) {
             axios
                 .post(
@@ -66,13 +66,12 @@ class UsersContainer extends React.Component<UsersContainerPropsType> {
                     {
                         withCredentials: true,
                         headers: {
-                            "API-KEYS": API_KEYS
+                            "API-KEY": API_KEY,
                         },
                     }
                 )
                 .then((resp) => {
                     if (resp.data.resultCode === 0) {
-                        this.props.setUsers(resp.data.items);
                         this.props.follow_unfollowHandler(userID, !followed);
                     }
                 })
@@ -87,12 +86,11 @@ class UsersContainer extends React.Component<UsersContainerPropsType> {
                 .delete(`https://social-network.samuraijs.com/api/1.0/follow/${userID}`, {
                     withCredentials: true,
                     headers: {
-                        "API-KEYS": API_KEYS
+                        "API-KEY": API_KEY,
                     },
                 })
                 .then((resp) => {
                     if (resp.data.resultCode === 0) {
-                        this.props.setUsers(resp.data.items);
                         this.props.follow_unfollowHandler(userID, !followed);
                     }
                 })
