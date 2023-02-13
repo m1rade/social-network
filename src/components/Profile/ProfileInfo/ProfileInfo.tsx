@@ -1,6 +1,7 @@
 import React from "react";
 import { ProfileResponseType } from "../../../redux/profile_reducer";
 import s from "./ProfileInfo.module.css";
+import userImagePlaceholder from "./../../../assets/icons/user.png";
 
 type ProfileInfoPropsType = {
     userInfo: ProfileResponseType;
@@ -22,7 +23,10 @@ export const ProfileInfo: React.FC<ProfileInfoPropsType> = (props) => {
             <div className={s.row_1}>
                 <div className={s.pictureCol}>
                     <div className={s.avatar}>
-                        <img src={props.userInfo.photos.large} alt="avatar" />
+                        <img
+                            src={props.userInfo.photos.large ? props.userInfo.photos.large : userImagePlaceholder}
+                            alt="avatar"
+                        />
                     </div>
                 </div>
                 <div className={s.infoCol}>
