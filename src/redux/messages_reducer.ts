@@ -1,7 +1,7 @@
 export type MessageType = {
-    id: number,
-    text: string
-}
+    id: number;
+    text: string;
+};
 
 type MessagesType = {
     all_messages: MessageType[];
@@ -32,7 +32,7 @@ const initState: MessagesType = {
     newMessageText: "",
 };
 
-const messages_reducer = (state: MessagesType = initState, action: MessagesActionType): MessagesType => {
+const messagesReducer = (state: MessagesType = initState, action: MessagesActionType): MessagesType => {
     switch (action.type) {
         case UPDATE_MESSAGE:
             return { ...state, newMessageText: action.newMessageValue };
@@ -50,15 +50,17 @@ const messages_reducer = (state: MessagesType = initState, action: MessagesActio
     }
 };
 
-export default messages_reducer;
+export default messagesReducer;
 
 export type updateMessageACType = ReturnType<typeof updateMessageAC>;
-export const updateMessageAC = (newMessageValue: string) => ({
-    type: UPDATE_MESSAGE,
-    newMessageValue,
-} as const);
+export const updateMessageAC = (newMessageValue: string) =>
+    ({
+        type: UPDATE_MESSAGE,
+        newMessageValue,
+    } as const);
 
 export type addMessageACType = ReturnType<typeof addMessageAC>;
-export const addMessageAC = () => ({
-    type: ADD_MESSAGE,
-} as const);
+export const addMessageAC = () =>
+    ({
+        type: ADD_MESSAGE,
+    } as const);

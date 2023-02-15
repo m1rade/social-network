@@ -37,7 +37,7 @@ const initState: ProfileDomainType = {
     isFetching: false,
 };
 
-const profile_reducer = (state: ProfileDomainType = initState, action: ProfileActionType): ProfileDomainType => {
+const profileReducer = (state: ProfileDomainType = initState, action: ProfileActionType): ProfileDomainType => {
     switch (action.type) {
         case SET_USER_INFO:
             return { ...state, userInfo: action.userInfo };
@@ -59,7 +59,7 @@ const profile_reducer = (state: ProfileDomainType = initState, action: ProfileAc
             return state;
     }
 };
-export default profile_reducer;
+export default profileReducer;
 
 //actions
 export const updatePostMessage = (newPostMessage: string) =>

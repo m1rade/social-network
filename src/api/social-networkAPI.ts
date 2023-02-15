@@ -18,10 +18,10 @@ export const userAPI = {
         return resp.data;
     },
     followUser(userID: number) {
-        return instance.post<ResponseType>(`follow/${userID}`);
+        return instance.post<GeneralResponseType>(`follow/${userID}`);
     },
     unfollowUser(userID: number) {
-        return instance.delete<ResponseType>(`follow/${userID}`);
+        return instance.delete<GeneralResponseType>(`follow/${userID}`);
     },
 };
 
@@ -36,8 +36,8 @@ export type UserType = {
 };
 
 export type UserPhotoType = {
-    small: string;
-    large: string;
+    small: string | null;
+    large: string | null;
 };
 
 export type UsersResponseType = {
@@ -46,14 +46,14 @@ export type UsersResponseType = {
     error: string;
 };
 
-export type ResponseType<T = {}> = {
+export type GeneralResponseType<T = {}> = {
     data: T;
     messages: string[];
     fieldErrors: string[];
     resultCode: number;
 };
 
-export enum ResultCode {
+export enum ServerResultCode {
     OK = 0,
     Error = 1,
 }

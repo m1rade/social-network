@@ -1,19 +1,18 @@
-import thunkMiddleware from "redux-thunk";
 import { applyMiddleware, combineReducers, createStore } from "redux";
-import auth_reducer from "./auth_reducer";
+import thunkMiddleware from "redux-thunk";
+import authReducer from "./auth_reducer";
 import friends_reducer from "./friends_reducer";
-import messages_reducer from "./messages_reducer";
-import profile_reducer from "./profile_reducer";
-import search_reducer from "./search_reducer";
+import messagesReducer from "./messages_reducer";
+import profileReducer from "./profile_reducer";
+import searchReducer from "./search_reducer";
 
 const rootReducer = combineReducers({
-    profile: profile_reducer,
-    messages: messages_reducer,
+    profile: profileReducer,
+    messages: messagesReducer,
     friends: friends_reducer,
-    search: search_reducer,
-    auth: auth_reducer,
+    search: searchReducer,
+    auth: authReducer,
 });
-
 
 const store = createStore(rootReducer, applyMiddleware(thunkMiddleware));
 

@@ -1,4 +1,4 @@
-import { ResultCode, userAPI, UserType } from "../api/social-networkAPI";
+import { ServerResultCode, userAPI, UsersResponseType, UserType } from "../api/social-networkAPI";
 import { AppDispatchType } from "./store";
 
 const SET_USERS = "SET_USERS";
@@ -11,13 +11,16 @@ const TOGGLE_IS_FETCHING = "TOGGLE_IS_FETCHING";
 const initialState: SearchPageDomainType = {
     items: [],
     totalCount: 0,
-    error: null,
+    error: "",
     curPage: 1,
     itemsPerPage: 20,
     isFetching: false,
 };
 
-const search_reducer = (state: SearchPageDomainType = initialState, action: SearchActionType): SearchPageDomainType => {
+const searchReducer = (
+    state: SearchPageDomainType = initialState,
+    action: SearchPageActionType
+): SearchPageDomainType => {
     switch (action.type) {
         case SET_USERS:
             return { ...state, items: [...action.items] };
@@ -39,7 +42,7 @@ const search_reducer = (state: SearchPageDomainType = initialState, action: Sear
     }
 };
 
-export default search_reducer;
+export default searchReducer;
 
 //actions
 export const follow_unfollowHandler = (id: number, followed: boolean) =>
@@ -105,7 +108,7 @@ export const follow_UnfollowUserThunk = (userID: number, followed: boolean) => a
         if (!isUserFollowed) {
             try {
                 const resp = await userAPI.followUser(userID);
-                if (resp.data.resultCode === ResultCode.OK) {
+                if (resp.data.resultCode === ServerResultCode.OK) {
                     dispatch(follow_unfollowHandler(userID, !followed));
                     dispatch(toggleIsFetching(false));
                 } else {
@@ -116,7 +119,7 @@ export const follow_UnfollowUserThunk = (userID: number, followed: boolean) => a
             }
         } else {
             const resp = await userAPI.unfollowUser(userID);
-            if (resp.data.resultCode === ResultCode.OK) {
+            if (resp.data.resultCode === ServerResultCode.OK) {
                 dispatch(follow_unfollowHandler(userID, !followed));
                 dispatch(toggleIsFetching(false));
             } else {
@@ -131,20 +134,14 @@ export const follow_UnfollowUserThunk = (userID: number, followed: boolean) => a
 };
 
 //types
-type SearchResponseType = {
-    items: UserType[];
-    totalCount: number;
-    error: string | null;
-};
-
-type SearchPageDomainType = SearchResponseType & {
+type SearchPageDomainType = UsersResponseType & {
     curPage: number;
     itemsPerPage: number;
     isFetching: boolean;
 };
 
 export type ToggleIsFetchingType = ReturnType<typeof toggleIsFetching>;
-export type SearchActionType =
+export type SearchPageActionType =
     | ReturnType<typeof follow_unfollowHandler>
     | ReturnType<typeof setUsers>
     | ReturnType<typeof setCurrentPage>

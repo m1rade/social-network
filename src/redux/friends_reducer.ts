@@ -1,5 +1,5 @@
 export type FriendsType = { id: number; name: string };
-export type FriendsActionType = Friends_reducerACType;
+export type FriendsActionType = FriendsReducerACType;
 
 const initState: FriendsType[] = [
     { id: 1, name: "Laura" },
@@ -9,7 +9,7 @@ const initState: FriendsType[] = [
     { id: 5, name: "Max" },
 ];
 
-const friends_reducer = (state: FriendsType[] = initState, { type, payload }: FriendsActionType): FriendsType[] => {
+const friendsReducer = (state: FriendsType[] = initState, { type, payload }: FriendsActionType): FriendsType[] => {
     switch (type) {
         case "":
             return {...state};
@@ -19,10 +19,10 @@ const friends_reducer = (state: FriendsType[] = initState, { type, payload }: Fr
     }
 };
 
-export default friends_reducer;
+export default friendsReducer;
 
-export type Friends_reducerACType = ReturnType<typeof friends_reducerAC>;
-export const friends_reducerAC = (payload: any) => ({
+export type FriendsReducerACType = ReturnType<typeof friendsReducerAC>;
+export const friendsReducerAC = (payload: any) => ({
     type: "",
     payload,
 });
