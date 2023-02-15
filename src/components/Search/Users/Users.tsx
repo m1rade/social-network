@@ -1,5 +1,5 @@
 import React from "react";
-import { UserType } from "../../../redux/search_reducer";
+import { UserType } from "../../../api/social-networkAPI";
 import { Pagination } from "./Pagination/Pagination";
 import { User } from "./User/User";
 

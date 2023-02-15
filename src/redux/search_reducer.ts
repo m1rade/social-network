@@ -1,9 +1,12 @@
-const SET_USERS = "SET_USERS"
-const SET_TOTAL_COUNT = "SET_TOTAL_COUNT"
-const FOLLOW_UNFOLLOW_USER = "FOLLOW_UNFOLLOW_USER"
+import { ResultCode, userAPI, UserType } from "../api/social-networkAPI";
+import { AppDispatchType } from "./store";
+
+const SET_USERS = "SET_USERS";
+const SET_TOTAL_COUNT = "SET_TOTAL_COUNT";
+const FOLLOW_UNFOLLOW_USER = "FOLLOW_UNFOLLOW_USER";
 const SET_CURRENT_PAGE = "SET_CURRENT_PAGE";
 const SET_TOTAL_PAGES = "SET_TOTAL_PAGES";
-const TOGGLE_IS_FETCHING = "TOGGLE_IS_FETCHING"
+const TOGGLE_IS_FETCHING = "TOGGLE_IS_FETCHING";
 
 const initialState: SearchPageDomainType = {
     items: [],
@@ -14,10 +17,7 @@ const initialState: SearchPageDomainType = {
     isFetching: false,
 };
 
-const search_reducer = (
-    state: SearchPageDomainType = initialState,
-    action: SearchActionType
-): SearchPageDomainType => {
+const search_reducer = (state: SearchPageDomainType = initialState, action: SearchActionType): SearchPageDomainType => {
     switch (action.type) {
         case SET_USERS:
             return { ...state, items: [...action.items] };
@@ -74,24 +74,63 @@ export const setTotalCount = (totalCount: number) =>
 export const toggleIsFetching = (value: boolean) =>
     ({
         type: TOGGLE_IS_FETCHING,
-        value
+        value,
     } as const);
 
+// thunks
+export const getUsersThunk = (itemsPerPage: number, curPage: number) => async (dispatch: AppDispatchType) => {
+    dispatch(toggleIsFetching(true));
+
+    try {
+        const data = await userAPI.getUsers(itemsPerPage, curPage);
+        if (data.error === null) {
+            curPage !== 1 && dispatch(setCurrentPage(curPage));
+            dispatch(setUsers(data.items));
+            dispatch(setTotalCount(data.totalCount));
+        } else {
+            alert(data.error);
+        }
+    } catch (err) {
+        alert(err);
+    } finally {
+        dispatch(toggleIsFetching(false));
+    }
+};
+
+export const follow_UnfollowUserThunk = (userID: number, followed: boolean) => async (dispatch: AppDispatchType) => {
+    dispatch(toggleIsFetching(true));
+
+    try {
+        const isUserFollowed = await userAPI.isUserFollowed(userID);
+        if (!isUserFollowed) {
+            try {
+                const resp = await userAPI.followUser(userID);
+                if (resp.data.resultCode === ResultCode.OK) {
+                    dispatch(follow_unfollowHandler(userID, !followed));
+                    dispatch(toggleIsFetching(false));
+                } else {
+                    alert(resp.data.messages);
+                }
+            } catch (err) {
+                alert(err);
+            }
+        } else {
+            const resp = await userAPI.unfollowUser(userID);
+            if (resp.data.resultCode === ResultCode.OK) {
+                dispatch(follow_unfollowHandler(userID, !followed));
+                dispatch(toggleIsFetching(false));
+            } else {
+                alert(resp.data.messages);
+            }
+        }
+    } catch (err) {
+        alert(err);
+    } finally {
+        dispatch(toggleIsFetching(false));
+    }
+};
+
 //types
-export type UserType = {
-    name: string;
-    id: number;
-    uniqueUrlName: string | null;
-    photos: UserPhotoType;
-    status?: string | null;
-    followed: boolean;
-};
-
-export type UserPhotoType = {
-    small: string;
-    large: string;
-};
-
 type SearchResponseType = {
     items: UserType[];
     totalCount: number;
@@ -104,7 +143,7 @@ type SearchPageDomainType = SearchResponseType & {
     isFetching: boolean;
 };
 
-export type ToggleIsFetchingType = ReturnType<typeof toggleIsFetching>
+export type ToggleIsFetchingType = ReturnType<typeof toggleIsFetching>;
 export type SearchActionType =
     | ReturnType<typeof follow_unfollowHandler>
     | ReturnType<typeof setUsers>

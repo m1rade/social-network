@@ -1,4 +1,5 @@
-import { combineReducers, createStore } from "redux";
+import thunkMiddleware from "redux-thunk";
+import { applyMiddleware, combineReducers, createStore } from "redux";
 import auth_reducer from "./auth_reducer";
 import friends_reducer from "./friends_reducer";
 import messages_reducer from "./messages_reducer";
@@ -13,11 +14,13 @@ const rootReducer = combineReducers({
     auth: auth_reducer,
 });
 
-export type AppStateType = ReturnType<typeof rootReducer>;
 
-const store = createStore(rootReducer);
+const store = createStore(rootReducer, applyMiddleware(thunkMiddleware));
 
 export default store;
+
+export type AppStateType = ReturnType<typeof rootReducer>;
+export type AppDispatchType = typeof store.dispatch;
 
 // @ts-ignore
 window.store = store;

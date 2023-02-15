@@ -1,4 +1,5 @@
-import { ToggleIsFetchingType, UserPhotoType } from "./search_reducer";
+import { UserPhotoType } from "../api/social-networkAPI";
+import { ToggleIsFetchingType } from "./search_reducer";
 
 const UPDATE_NEW_POST_MESSAGE = "UPDATE-NEW-POST-MESSAGE";
 const ADD_POST = "ADD-POST";
