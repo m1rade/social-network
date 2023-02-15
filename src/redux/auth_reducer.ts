@@ -1,25 +1,24 @@
-import { ToggleIsFetchingType } from "./search_reducer";
+import { authAPI } from "../api/social-networkAPI";
+import { ServerResultCode } from "./../api/social-networkAPI";
+import { toggleIsFetching, ToggleIsFetchingType } from "./search_reducer";
+import { AppDispatchType } from "./store";
 
-const SET_AUTH_USER_DATA = "SET_AUTH_USER_DATA";
+const SET_USER_LOGIN = "SET_USER_LOGIN";
 const TOGGLE_IS_FETCHING = "TOGGLE_IS_FETCHING";
+const SET_IS_USER_LOGGED_IN = "SET_IS_USER_LOGGED_IN";
 
-const initialState: AuthStateType = {
-    data: {
-        id: 0,
-        login: "",
-        email: "",
-    },
-    messages: [],
-    fieldsErrors: [],
-    resultCode: 0,
+const initialState: AuthDomainType = {
+    login: "",
     isFetching: false,
-    isAuth: false,
+    isUserLoggedIn: false,
 };
 
-const authReducer = (state: AuthStateType = initialState, action: ActionType): AuthStateType => {
+const authReducer = (state: AuthDomainType = initialState, action: ActionType): AuthDomainType => {
     switch (action.type) {
-        case SET_AUTH_USER_DATA:
-            return { ...state, data: { ...action.data.data }, isAuth: true };
+        case SET_IS_USER_LOGGED_IN:
+            return { ...state, isUserLoggedIn: action.value };
+        case SET_USER_LOGIN:
+            return { ...state, login: action.login };
         case TOGGLE_IS_FETCHING:
             return { ...state, isFetching: action.value };
         default:
@@ -30,29 +29,42 @@ const authReducer = (state: AuthStateType = initialState, action: ActionType): A
 export default authReducer;
 
 //actions
-export const setAuthUserData = (data: AuthStateType) =>
+export const setUserLogin = (login: string) =>
     ({
-        type: SET_AUTH_USER_DATA,
-        data,
+        type: SET_USER_LOGIN,
+        login,
     } as const);
 
+export const setIsUserLoggedIn = (value: boolean) =>
+    ({
+        type: SET_IS_USER_LOGGED_IN,
+        value,
+    } as const);
+
+// thunks
+export const checkUserAuthentication = () => async (dispatch: AppDispatchType) => {
+    dispatch(toggleIsFetching(true));
+
+    try {
+        const data = await authAPI.authorizeUser();
+        if (data.resultCode === ServerResultCode.OK) {
+            dispatch(setIsUserLoggedIn(true));
+            dispatch(setUserLogin(data.data.login));
+        } else {
+            alert(data.messages);
+        }
+    } catch (err) {
+        alert(err);
+    } finally {
+        dispatch(toggleIsFetching(false));
+    }
+};
+
 //types
-type AuthResponseType = {
-    data: AuthDataResponseType;
-    messages: string[];
-    fieldsErrors: string[];
-    resultCode: number;
-};
-
-type AuthDataResponseType = {
-    id: number;
-    email: string;
+export type AuthDomainType = {
     login: string;
-};
-
-export type AuthStateType = AuthResponseType & {
     isFetching: boolean;
-    isAuth: boolean;
+    isUserLoggedIn: boolean;
 };
 
-type ActionType = ReturnType<typeof setAuthUserData> | ToggleIsFetchingType;
+type ActionType = ReturnType<typeof setUserLogin> | ToggleIsFetchingType | ReturnType<typeof setIsUserLoggedIn>;

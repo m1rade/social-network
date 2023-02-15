@@ -5,7 +5,7 @@ import userImagePlaceholder from "./../../../../assets/icons/user.png"
 type PostPropsType = {
     postID: number
     message: string
-    avatar: string
+    avatar: string | null
 }
 
 export const Post: React.FC<PostPropsType> = (props) => {

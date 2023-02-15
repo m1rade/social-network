@@ -45,30 +45,30 @@ const searchReducer = (
 export default searchReducer;
 
 //actions
-export const follow_unfollowHandler = (id: number, followed: boolean) =>
+const follow_unfollowHandler = (id: number, followed: boolean) =>
     ({
         type: FOLLOW_UNFOLLOW_USER,
         id,
         followed,
     } as const);
 
-export const setUsers = (items: UserType[]) =>
+const setUsers = (items: UserType[]) =>
     ({
         type: SET_USERS,
         items,
     } as const);
-export const setCurrentPage = (page: number) =>
+const setCurrentPage = (page: number) =>
     ({
         type: SET_CURRENT_PAGE,
         page,
     } as const);
-export const setTotalPages = (totalPages: number) =>
+const setTotalPages = (totalPages: number) =>
     ({
         type: SET_TOTAL_PAGES,
         totalPages,
     } as const);
 
-export const setTotalCount = (totalCount: number) =>
+const setTotalCount = (totalCount: number) =>
     ({
         type: SET_TOTAL_COUNT,
         totalCount,

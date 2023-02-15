@@ -1,7 +1,7 @@
 import React from "react";
 import {connect} from "react-redux";
+import { ProfileResponseType } from "../api/social-networkAPI";
 import {ProfileInfo} from "../components/Profile/ProfileInfo/ProfileInfo";
-import { ProfileResponseType } from "../redux/profile_reducer";
 import {AppStateType} from "../redux/store";
 
 

@@ -1,7 +1,7 @@
 import React from "react";
-import { ProfileResponseType } from "../../../redux/profile_reducer";
 import s from "./ProfileInfo.module.css";
 import userImagePlaceholder from "./../../../assets/icons/user.png";
+import { ProfileResponseType } from "../../../api/social-networkAPI";
 
 type ProfileInfoPropsType = {
     userInfo: ProfileResponseType;

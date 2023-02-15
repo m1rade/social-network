@@ -1,40 +1,21 @@
-import axios from "axios";
 import React from "react";
 import { connect } from "react-redux";
 import { RouteComponentProps, withRouter } from "react-router-dom";
+import { ProfileResponseType } from "../../api/social-networkAPI";
 import {
     addPostMessage,
+    fetchProfile,
     PostType,
-    ProfileResponseType,
-    setUserInfo,
-    updatePostMessage,
+    updatePostMessage
 } from "../../redux/profile_reducer";
-import { toggleIsFetching } from "../../redux/search_reducer";
 import { AppStateType } from "../../redux/store";
 import Preloader from "../common/Preloader";
 import { Profile } from "./Profile";
 
-class ProfileContainer extends React.Component<ProfileContainerPropsType> {
+class ProfileContainer extends React.Component<ProfileContainerPropsType, AppStateType> {
     componentDidMount() {
-        
-        this.props.toggleIsFetching(true);
-
         let userID = this.props.match.params.userID;
-        if (!userID) {
-            userID = "2";
-        }
-
-        axios
-            .get(`https://social-network.samuraijs.com/api/1.0/profile/` + userID)
-            .then((resp) => {
-                this.props.setUserInfo(resp.data);
-            })
-            .catch((err) => {
-                alert(err);
-            })
-            .finally(() => {
-                this.props.toggleIsFetching(false);
-            });
+        this.props.fetchProfile(userID);
     }
 
     render() {
@@ -52,12 +33,10 @@ const mapStateToProps = (state: AppStateType): mapStateToPropsType => ({
 const WithURLProfileContainer = withRouter(ProfileContainer);
 
 export default connect(mapStateToProps, {
-    setUserInfo,
     addPostMessage,
     updatePostMessage,
-    toggleIsFetching,
+    fetchProfile,
 })(WithURLProfileContainer);
-
 
 //types
 type mapStateToPropsType = {
@@ -68,10 +47,9 @@ type mapStateToPropsType = {
 };
 
 type mapDispatchToPropsType = {
-    setUserInfo: (userInfo: ProfileResponseType) => void;
+    fetchProfile: (userID: string) => void;
     addPostMessage: () => void;
     updatePostMessage: (newPostMessage: string) => void;
-    toggleIsFetching: (value: boolean) => void;
 };
 
 type PathParamsType = {

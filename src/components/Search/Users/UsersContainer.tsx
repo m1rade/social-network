@@ -9,7 +9,7 @@ import { AppStateType } from "../../../redux/store";
 import Preloader from "../../common/Preloader";
 import { Users } from "./Users";
 
-class UsersContainer extends React.Component<UsersContainerPropsType> {
+class UsersContainer extends React.Component<UsersContainerPropsType, AppStateType> {
     componentDidMount() {
         this.props.getUsersThunk(this.props.itemsPerPage, this.props.curPage);
     }

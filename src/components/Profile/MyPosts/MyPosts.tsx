@@ -7,7 +7,7 @@ import { PostType } from "../../../redux/profile_reducer";
 type MyPostsPropsType = {
     newPostMessage: string;
     posts: PostType[];
-    photo: string;
+    photo: string | null;
     addNewPost: () => void
     onPostChange: (newTextValue: string) => void
 };

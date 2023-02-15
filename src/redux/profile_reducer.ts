@@ -1,5 +1,7 @@
-import { UserPhotoType } from "../api/social-networkAPI";
-import { ToggleIsFetchingType } from "./search_reducer";
+import { ProfileResponseType } from "../api/social-networkAPI";
+import { profileAPI } from "./../api/social-networkAPI";
+import { toggleIsFetching, ToggleIsFetchingType } from "./search_reducer";
+import { AppDispatchType } from "./store";
 
 const UPDATE_NEW_POST_MESSAGE = "UPDATE-NEW-POST-MESSAGE";
 const ADD_POST = "ADD-POST";
@@ -79,21 +81,25 @@ export const setUserInfo = (userInfo: ProfileResponseType) =>
         userInfo,
     } as const);
 
+//thunks
+export const fetchProfile = (userID: string) => async (dispatch: AppDispatchType) => {
+    dispatch(toggleIsFetching(true));
+
+    if (!userID) {
+        userID = "2";
+    }
+
+    try {
+        const userRespData = await profileAPI.fetchProfile(userID);
+        dispatch(setUserInfo(userRespData));
+    } catch (err) {
+        alert(err);
+    } finally {
+        dispatch(toggleIsFetching(false));
+    }
+};
+
 //types
-export type ProfileResponseType = {
-    aboutMe: string;
-    contacts: ContactsDomainType;
-    lookingForAJob: boolean;
-    lookingForAJobDescription: string;
-    fullName: string;
-    userId: number;
-    photos: UserPhotoType;
-};
-
-type ContactsDomainType = {
-    [key: string]: string;
-};
-
 export type PostType = {
     id: number;
     message: string;

@@ -18,11 +18,25 @@ export const userAPI = {
         return resp.data;
     },
     followUser(userID: number) {
-        return instance.post<GeneralResponseType>(`follow/${userID}`);
+        return instance.post<ServerResponseType>(`follow/${userID}`);
     },
     unfollowUser(userID: number) {
-        return instance.delete<GeneralResponseType>(`follow/${userID}`);
+        return instance.delete<ServerResponseType>(`follow/${userID}`);
     },
+};
+
+export const authAPI = {
+    async authorizeUser() {
+        const resp = await instance.get<ServerResponseType<AuthUserDataType>>(`auth/me`);
+        return resp.data;
+    },
+};
+
+export const profileAPI = {
+    async fetchProfile(userID: string) {
+        const resp = await instance.get<ProfileResponseType>(`profile/${userID}`);
+        return resp.data;
+    }
 };
 
 //types
@@ -46,7 +60,27 @@ export type UsersResponseType = {
     error: string;
 };
 
-export type GeneralResponseType<T = {}> = {
+export type ProfileResponseType = {
+    aboutMe: string;
+    contacts: ContactsDomainType;
+    lookingForAJob: boolean;
+    lookingForAJobDescription: string;
+    fullName: string;
+    userId: number;
+    photos: UserPhotoType;
+};
+
+type ContactsDomainType = {
+    [key: string]: string;
+};
+
+export type AuthUserDataType = {
+    id: number;
+    email: string;
+    login: string;
+};
+
+export type ServerResponseType<T = {}> = {
     data: T;
     messages: string[];
     fieldErrors: string[];
