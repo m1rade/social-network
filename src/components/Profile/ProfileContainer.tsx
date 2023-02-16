@@ -2,28 +2,24 @@ import React from "react";
 import { connect } from "react-redux";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import { ProfileResponseType } from "../../api/social-networkAPI";
-import {
-    addPostMessage,
-    fetchProfile,
-    PostType,
-    updatePostMessage
-} from "../../redux/profile_reducer";
+import { addPostMessage, fetchProfile, PostType, updatePostMessage } from "../../redux/profile_reducer";
 import { AppStateType } from "../../redux/store";
 import Preloader from "../common/Preloader";
 import { Profile } from "./Profile";
 
-class ProfileContainer extends React.Component<ProfileContainerPropsType, AppStateType> {
+class ProfileContainer extends React.Component<ProfileContainerPropsType> {
     componentDidMount() {
-        let userID = this.props.match.params.userID;
-        this.props.fetchProfile(userID);
+        this.props.fetchProfile(this.props.match.params.userID);
     }
 
     render() {
-        return <>{this.props.isFetching ? <Preloader /> : <Profile {...this.props} />}</>;
+        const { history, location, match, staticContext, fetchProfile, ...restProps } = this.props;
+        
+        return <>{this.props.isFetching ? <Preloader /> : <Profile {...restProps} />}</>;
     }
 }
 
-const mapStateToProps = (state: AppStateType): mapStateToPropsType => ({
+const mapStateToProps = (state: AppStateType): MapStatePropsType => ({
     userInfo: state.profile.userInfo,
     isFetching: state.profile.isFetching,
     newPostMessage: state.profile.newPostMessage,
@@ -32,21 +28,21 @@ const mapStateToProps = (state: AppStateType): mapStateToPropsType => ({
 
 const WithURLProfileContainer = withRouter(ProfileContainer);
 
-export default connect(mapStateToProps, {
+export default connect<MapStatePropsType, MapDispatchPropsType, {}, AppStateType>(mapStateToProps, {
     addPostMessage,
     updatePostMessage,
     fetchProfile,
 })(WithURLProfileContainer);
 
 //types
-type mapStateToPropsType = {
+type MapStatePropsType = {
     userInfo: ProfileResponseType;
     posts: PostType[];
     isFetching: boolean;
     newPostMessage: string;
 };
 
-type mapDispatchToPropsType = {
+type MapDispatchPropsType = {
     fetchProfile: (userID: string) => void;
     addPostMessage: () => void;
     updatePostMessage: (newPostMessage: string) => void;
@@ -56,5 +52,5 @@ type PathParamsType = {
     userID: string;
 };
 
-type ProfileContainerPropsType = RouteComponentProps<PathParamsType> & ProfileContainerOwnType;
-export type ProfileContainerOwnType = mapStateToPropsType & mapDispatchToPropsType;
+export type ProfileOwnPropsType = MapStatePropsType & MapDispatchPropsType;
+type ProfileContainerPropsType = RouteComponentProps<PathParamsType> & ProfileOwnPropsType;

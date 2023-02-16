@@ -4,7 +4,7 @@ import { checkUserAuthentication } from "../../redux/auth_reducer";
 import { AppStateType } from "../../redux/store";
 import { Header } from "./Header";
 
-class HeaderContainer extends React.Component<HeaderContainerPropsType, AppStateType> {
+class HeaderContainer extends React.Component<HeaderContainerPropsType> {
     componentDidMount() {
         this.props.checkUserAuthentication();
     }
@@ -14,22 +14,22 @@ class HeaderContainer extends React.Component<HeaderContainerPropsType, AppState
     }
 }
 
-const mapStateToProps = (state: AppStateType) => ({
+const mapStateToProps = (state: AppStateType): MapStatePropsType => ({
     isUserLoggedIn: state.auth.isUserLoggedIn,
     login: state.auth.data.login,
 });
 
-export default connect(mapStateToProps, {
+export default connect<MapStatePropsType, MapDispatchPropsType, {}, AppStateType>(mapStateToProps, {
     checkUserAuthentication,
 })(HeaderContainer);
 
 //types
-type mapStateToPropsType = {
+type MapStatePropsType = {
     isUserLoggedIn: boolean;
     login: string;
 };
-type mapDispatchToPropsType = {
+type MapDispatchPropsType = {
     checkUserAuthentication: () => void;
 };
 
-type HeaderContainerPropsType = mapStateToPropsType & mapDispatchToPropsType;
+type HeaderContainerPropsType = MapStatePropsType & MapDispatchPropsType;

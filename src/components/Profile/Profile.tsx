@@ -2,10 +2,12 @@ import React from "react";
 import Preloader from "../common/Preloader";
 import { MyPosts } from "./MyPosts/MyPosts";
 import s from "./Profile.module.css";
-import { ProfileContainerOwnType } from "./ProfileContainer";
+import { ProfileOwnPropsType } from "./ProfileContainer";
 import { ProfileInfo } from "./ProfileInfo/ProfileInfo";
 
-export const Profile: React.FC<ProfileContainerOwnType> = (props) => {
+type ProfileSuperPropsType = Omit<ProfileOwnPropsType, "fetchProfile">;
+
+export const Profile: React.FC<ProfileSuperPropsType> = (props) => {
     if (!props.userInfo) {
         return (
             <div>
