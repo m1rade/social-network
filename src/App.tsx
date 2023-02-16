@@ -2,6 +2,7 @@ import React from 'react';
 import { Route, Switch } from "react-router-dom";
 import "./App.css";
 import HeaderContainer from './components/Header/HeaderContainer';
+import { LoginPage } from './components/Login/LoginPage';
 import { Messages } from "./components/Messages/Messages";
 import { Music } from "./components/Music";
 import { Navbar } from "./components/Navbar/Navbar";
@@ -24,6 +25,7 @@ const App: React.FC<any> = () => {
                     <Route exact path="/news" render={() => <News />} />
                     <Route exact path="/music" render={() => <Music />} />
                     <Route exact path="/settings" render={() => <Settings />} />
+                    <Route exact path="/login" render={() => <LoginPage />} />
                 </Switch>
             </div>
         </div>
