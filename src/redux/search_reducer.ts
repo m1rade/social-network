@@ -1,5 +1,5 @@
 import { ServerResultCode, userAPI, UsersResponseType, UserType } from "../api/social-networkAPI";
-import { AppDispatchType } from "./store";
+import { AppThunkType } from "./store";
 
 const SET_USERS = "SET_USERS";
 const SET_TOTAL_COUNT = "SET_TOTAL_COUNT";
@@ -97,59 +97,63 @@ const toggleFollowingInProgress = (value: boolean, userID: number) =>
     } as const);
 
 // thunks
-export const getUsersThunk = (itemsPerPage: number, curPage: number) => async (dispatch: AppDispatchType) => {
-    dispatch(toggleIsFetching(true));
+export const getUsersThunk =
+    (itemsPerPage: number, curPage: number): AppThunkType =>
+    async (dispatch) => {
+        dispatch(toggleIsFetching(true));
 
-    try {
-        const resp = await userAPI.getUsers(itemsPerPage, curPage);
-        if (resp.data.error === null) {
-            curPage !== 1 && dispatch(setCurrentPage(curPage));
-            dispatch(setUsers(resp.data.items));
-            dispatch(setTotalCount(resp.data.totalCount));
-        } else {
-            alert(resp.data.error);
-        }
-    } catch (err) {
-        alert(err);
-    } finally {
-        dispatch(toggleIsFetching(false));
-    }
-};
-
-export const follow_UnfollowUserThunk = (userID: number, followed: boolean) => async (dispatch: AppDispatchType) => {
-    dispatch(toggleFollowingInProgress(true, userID));
-
-    try {
-        const isUserFollowed = await userAPI.isUserFollowed(userID);
-        if (!isUserFollowed) {
-            try {
-                const resp = await userAPI.followUser(userID);
-                if (resp.data.resultCode === ServerResultCode.OK) {
-                    dispatch(follow_unfollowHandler(userID, !followed));
-                } else {
-                    alert(resp.data.messages);
-                }
-            } catch (err) {
-                alert(err);
+        try {
+            const resp = await userAPI.getUsers(itemsPerPage, curPage);
+            if (resp.data.error === null) {
+                curPage !== 1 && dispatch(setCurrentPage(curPage));
+                dispatch(setUsers(resp.data.items));
+                dispatch(setTotalCount(resp.data.totalCount));
+            } else {
+                alert(resp.data.error);
             }
-        } else {
-            try {
-                const resp = await userAPI.unfollowUser(userID);
-                if (resp.data.resultCode === ServerResultCode.OK) {
-                    dispatch(follow_unfollowHandler(userID, !followed));
-                } else {
-                    alert(resp.data.messages);
-                }
-            } catch (err) {
-                alert(err);
-            }
+        } catch (err) {
+            alert(err);
+        } finally {
+            dispatch(toggleIsFetching(false));
         }
-    } catch (err) {
-        alert(err);
-    } finally {
-        dispatch(toggleFollowingInProgress(false, userID));
-    }
-};
+    };
+
+export const follow_UnfollowUserThunk =
+    (userID: number, followed: boolean): AppThunkType =>
+    async (dispatch) => {
+        dispatch(toggleFollowingInProgress(true, userID));
+
+        try {
+            const isUserFollowed = await userAPI.isUserFollowed(userID);
+            if (!isUserFollowed) {
+                try {
+                    const resp = await userAPI.followUser(userID);
+                    if (resp.data.resultCode === ServerResultCode.OK) {
+                        dispatch(follow_unfollowHandler(userID, !followed));
+                    } else {
+                        alert(resp.data.messages);
+                    }
+                } catch (err) {
+                    alert(err);
+                }
+            } else {
+                try {
+                    const resp = await userAPI.unfollowUser(userID);
+                    if (resp.data.resultCode === ServerResultCode.OK) {
+                        dispatch(follow_unfollowHandler(userID, !followed));
+                    } else {
+                        alert(resp.data.messages);
+                    }
+                } catch (err) {
+                    alert(err);
+                }
+            }
+        } catch (err) {
+            alert(err);
+        } finally {
+            dispatch(toggleFollowingInProgress(false, userID));
+        }
+    };
 
 //types
 type SearchPageDomainType = UsersResponseType & {

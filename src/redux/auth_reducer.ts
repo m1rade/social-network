@@ -1,7 +1,7 @@
 import { authAPI, AuthUserDataType } from "../api/social-networkAPI";
 import { ServerResultCode } from "./../api/social-networkAPI";
 import { toggleIsFetching, ToggleIsFetchingType } from "./search_reducer";
-import { AppDispatchType } from "./store";
+import { AppThunkType } from "./store";
 
 const SET_USER_LOGIN = "SET_USER_LOGIN";
 const TOGGLE_IS_FETCHING = "TOGGLE_IS_FETCHING";
@@ -11,13 +11,13 @@ const initialState: AuthDomainType = {
     data: {
         id: 2,
         email: "",
-        login: ""
+        login: "",
     },
     isFetching: false,
     isUserLoggedIn: false,
 };
 
-const authReducer = (state: AuthDomainType = initialState, action: ActionType): AuthDomainType => {
+const authReducer = (state: AuthDomainType = initialState, action: AuthActionType): AuthDomainType => {
     switch (action.type) {
         case SET_IS_USER_LOGGED_IN:
             return { ...state, isUserLoggedIn: action.value };
@@ -46,7 +46,7 @@ const setIsUserLoggedIn = (value: boolean) =>
     } as const);
 
 // thunks
-export const checkUserAuthentication = () => async (dispatch: AppDispatchType) => {
+export const checkUserAuthentication = (): AppThunkType => async (dispatch) => {
     dispatch(toggleIsFetching(true));
 
     try {
@@ -71,4 +71,7 @@ export type AuthDomainType = {
     isUserLoggedIn: boolean;
 };
 
-type ActionType = ReturnType<typeof setUserData> | ToggleIsFetchingType | ReturnType<typeof setIsUserLoggedIn>;
+export type AuthActionType =
+    | ReturnType<typeof setUserData>
+    | ToggleIsFetchingType
+    | ReturnType<typeof setIsUserLoggedIn>;

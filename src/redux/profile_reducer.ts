@@ -1,7 +1,7 @@
 import { ProfileResponseType } from "../api/social-networkAPI";
 import { profileAPI } from "./../api/social-networkAPI";
 import { toggleIsFetching, ToggleIsFetchingType } from "./search_reducer";
-import { AppDispatchType } from "./store";
+import { AppThunkType } from "./store";
 
 const UPDATE_NEW_POST_MESSAGE = "UPDATE-NEW-POST-MESSAGE";
 const ADD_POST = "ADD-POST";
@@ -82,22 +82,24 @@ const setUserInfo = (userInfo: ProfileResponseType) =>
     } as const);
 
 //thunks
-export const fetchProfile = (userID: string) => async (dispatch: AppDispatchType) => {
-    dispatch(toggleIsFetching(true));
+export const fetchProfile =
+    (userID: string): AppThunkType =>
+    async (dispatch) => {
+        dispatch(toggleIsFetching(true));
 
-    if (!userID) {
-        userID = "2";
-    }
+        if (!userID) {
+            userID = "2";
+        }
 
-    try {
-        const resp = await profileAPI.fetchProfile(userID);
-        dispatch(setUserInfo(resp.data));
-    } catch (err) {
-        alert(err);
-    } finally {
-        dispatch(toggleIsFetching(false));
-    }
-};
+        try {
+            const resp = await profileAPI.fetchProfile(userID);
+            dispatch(setUserInfo(resp.data));
+        } catch (err) {
+            alert(err);
+        } finally {
+            dispatch(toggleIsFetching(false));
+        }
+    };
 
 //types
 export type PostType = {
