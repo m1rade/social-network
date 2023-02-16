@@ -7,6 +7,7 @@ const FOLLOW_UNFOLLOW_USER = "FOLLOW_UNFOLLOW_USER";
 const SET_CURRENT_PAGE = "SET_CURRENT_PAGE";
 const SET_TOTAL_PAGES = "SET_TOTAL_PAGES";
 const TOGGLE_IS_FETCHING = "TOGGLE_IS_FETCHING";
+const TOGGLE_FOLLOWING_IN_PROGRESS = "TOGGLE_FOLLOWING_IN_PROGRESS";
 
 const initialState: SearchPageDomainType = {
     items: [],
@@ -15,6 +16,7 @@ const initialState: SearchPageDomainType = {
     curPage: 1,
     itemsPerPage: 20,
     isFetching: false,
+    followingInProgress: [],
 };
 
 const searchReducer = (
@@ -37,6 +39,13 @@ const searchReducer = (
             return { ...state, itemsPerPage: action.totalPages };
         case TOGGLE_IS_FETCHING:
             return { ...state, isFetching: action.value };
+        case TOGGLE_FOLLOWING_IN_PROGRESS:
+            return {
+                ...state,
+                followingInProgress: action.value
+                    ? [...state.followingInProgress, action.userID]
+                    : state.followingInProgress.filter(id => id !== action.userID),
+            };
         default:
             return state;
     }
@@ -80,6 +89,13 @@ export const toggleIsFetching = (value: boolean) =>
         value,
     } as const);
 
+const toggleFollowingInProgress = (value: boolean, userID: number) =>
+    ({
+        type: TOGGLE_FOLLOWING_IN_PROGRESS,
+        value,
+        userID,
+    } as const);
+
 // thunks
 export const getUsersThunk = (itemsPerPage: number, curPage: number) => async (dispatch: AppDispatchType) => {
     dispatch(toggleIsFetching(true));
@@ -101,7 +117,7 @@ export const getUsersThunk = (itemsPerPage: number, curPage: number) => async (d
 };
 
 export const follow_UnfollowUserThunk = (userID: number, followed: boolean) => async (dispatch: AppDispatchType) => {
-    dispatch(toggleIsFetching(true));
+    dispatch(toggleFollowingInProgress(true, userID));
 
     try {
         const isUserFollowed = await userAPI.isUserFollowed(userID);
@@ -110,7 +126,6 @@ export const follow_UnfollowUserThunk = (userID: number, followed: boolean) => a
                 const resp = await userAPI.followUser(userID);
                 if (resp.data.resultCode === ServerResultCode.OK) {
                     dispatch(follow_unfollowHandler(userID, !followed));
-                    dispatch(toggleIsFetching(false));
                 } else {
                     alert(resp.data.messages);
                 }
@@ -118,18 +133,21 @@ export const follow_UnfollowUserThunk = (userID: number, followed: boolean) => a
                 alert(err);
             }
         } else {
-            const resp = await userAPI.unfollowUser(userID);
-            if (resp.data.resultCode === ServerResultCode.OK) {
-                dispatch(follow_unfollowHandler(userID, !followed));
-                dispatch(toggleIsFetching(false));
-            } else {
-                alert(resp.data.messages);
+            try {
+                const resp = await userAPI.unfollowUser(userID);
+                if (resp.data.resultCode === ServerResultCode.OK) {
+                    dispatch(follow_unfollowHandler(userID, !followed));
+                } else {
+                    alert(resp.data.messages);
+                }
+            } catch (err) {
+                alert(err);
             }
         }
     } catch (err) {
         alert(err);
     } finally {
-        dispatch(toggleIsFetching(false));
+        dispatch(toggleFollowingInProgress(false, userID));
     }
 };
 
@@ -138,6 +156,7 @@ type SearchPageDomainType = UsersResponseType & {
     curPage: number;
     itemsPerPage: number;
     isFetching: boolean;
+    followingInProgress: Array<number>;
 };
 
 export type ToggleIsFetchingType = ReturnType<typeof toggleIsFetching>;
@@ -147,4 +166,5 @@ export type SearchPageActionType =
     | ReturnType<typeof setCurrentPage>
     | ReturnType<typeof setTotalPages>
     | ReturnType<typeof setTotalCount>
-    | ToggleIsFetchingType;
+    | ToggleIsFetchingType
+    | ReturnType<typeof toggleFollowingInProgress>;

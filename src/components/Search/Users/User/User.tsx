@@ -7,6 +7,7 @@ import { UserType } from "../../../../api/social-networkAPI";
 type UserPropsType = {
     user: UserType;
     followUnfollowHandler: () => void;
+    followingInProgress: Array<number>;
 };
 
 export const User: React.FC<UserPropsType> = (props) => {
@@ -23,7 +24,7 @@ export const User: React.FC<UserPropsType> = (props) => {
                         </NavLink>
                     </div>
                     <div className={s.follow}>
-                        <button onClick={() => props.followUnfollowHandler()}>
+                        <button disabled={props.followingInProgress.some(id => id === props.user.id)} onClick={() => props.followUnfollowHandler()}>
                             {!props.user.followed ? "Follow" : "Unfollow"}
                         </button>
                     </div>

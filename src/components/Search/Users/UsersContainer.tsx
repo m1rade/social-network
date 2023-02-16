@@ -35,6 +35,7 @@ class UsersContainer extends React.Component<UsersContainerPropsType, AppStateTy
                         itemsPerPage={this.props.itemsPerPage}
                         followUnfollowHandler={this.followUnfollowHandler}
                         changePageHandler={this.changePageHandler}
+                        followingInProgress={this.props.followingInProgress}
                     />
                 )}
             </>
@@ -48,6 +49,7 @@ const mapStateToProps = (state: AppStateType): mapStateToPropsType => ({
     curPage: state.search.curPage,
     itemsPerPage: state.search.itemsPerPage,
     isFetching: state.search.isFetching,
+    followingInProgress: state.search.followingInProgress,
 });
 
 export default connect(mapStateToProps, {
@@ -62,6 +64,7 @@ type mapStateToPropsType = {
     curPage: number;
     itemsPerPage: number;
     isFetching: boolean;
+    followingInProgress: Array<number>;
 };
 
 type mapDispatchToPropsType = {

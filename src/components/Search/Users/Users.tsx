@@ -10,6 +10,7 @@ type UsersPropsType = {
     itemsPerPage: number;
     followUnfollowHandler: (id: number, value: boolean) => void;
     changePageHandler: (curPage: number) => void;
+    followingInProgress: Array<number>;
 };
 
 export const Users: React.FC<UsersPropsType> = (props) => {
@@ -18,6 +19,7 @@ export const Users: React.FC<UsersPropsType> = (props) => {
             <User
                 key={u.id}
                 user={u}
+                followingInProgress={props.followingInProgress}
                 followUnfollowHandler={() => props.followUnfollowHandler(u.id, u.followed)}
             />
         );
