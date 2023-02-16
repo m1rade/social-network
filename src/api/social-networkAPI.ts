@@ -9,9 +9,8 @@ const instance = axios.create({
 });
 
 export const userAPI = {
-    async getUsers(itemsPerPage: number, curPage: number) {
-        const resp = await instance.get<UsersResponseType>(`users?count=${itemsPerPage}&page=${curPage}`);
-        return resp.data;
+    getUsers(itemsPerPage: number, curPage: number) {
+        return instance.get<UsersResponseType>(`users?count=${itemsPerPage}&page=${curPage}`);
     },
     async isUserFollowed(userID: number) {
         const resp = await instance.get<boolean>(`follow/${userID}`);
@@ -26,16 +25,14 @@ export const userAPI = {
 };
 
 export const authAPI = {
-    async authorizeUser() {
-        const resp = await instance.get<ServerResponseType<AuthUserDataType>>(`auth/me`);
-        return resp.data;
+    authorizeUser() {
+        return instance.get<ServerResponseType<AuthUserDataType>>(`auth/me`);
     },
 };
 
 export const profileAPI = {
-    async fetchProfile(userID: string) {
-        const resp = await instance.get<ProfileResponseType>(`profile/${userID}`);
-        return resp.data;
+    fetchProfile(userID: string) {
+        return instance.get<ProfileResponseType>(`profile/${userID}`);
     }
 };
 

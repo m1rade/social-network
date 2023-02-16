@@ -75,7 +75,7 @@ export const addPostMessage = () =>
         type: ADD_POST,
     } as const);
 
-export const setUserInfo = (userInfo: ProfileResponseType) =>
+const setUserInfo = (userInfo: ProfileResponseType) =>
     ({
         type: SET_USER_INFO,
         userInfo,
@@ -90,8 +90,8 @@ export const fetchProfile = (userID: string) => async (dispatch: AppDispatchType
     }
 
     try {
-        const userRespData = await profileAPI.fetchProfile(userID);
-        dispatch(setUserInfo(userRespData));
+        const resp = await profileAPI.fetchProfile(userID);
+        dispatch(setUserInfo(resp.data));
     } catch (err) {
         alert(err);
     } finally {

@@ -1,4 +1,4 @@
-import { authAPI } from "../api/social-networkAPI";
+import { authAPI, AuthUserDataType } from "../api/social-networkAPI";
 import { ServerResultCode } from "./../api/social-networkAPI";
 import { toggleIsFetching, ToggleIsFetchingType } from "./search_reducer";
 import { AppDispatchType } from "./store";
@@ -8,7 +8,11 @@ const TOGGLE_IS_FETCHING = "TOGGLE_IS_FETCHING";
 const SET_IS_USER_LOGGED_IN = "SET_IS_USER_LOGGED_IN";
 
 const initialState: AuthDomainType = {
-    login: "",
+    data: {
+        id: 2,
+        email: "",
+        login: ""
+    },
     isFetching: false,
     isUserLoggedIn: false,
 };
@@ -18,7 +22,7 @@ const authReducer = (state: AuthDomainType = initialState, action: ActionType): 
         case SET_IS_USER_LOGGED_IN:
             return { ...state, isUserLoggedIn: action.value };
         case SET_USER_LOGIN:
-            return { ...state, login: action.login };
+            return { ...state, data: { ...action.data } };
         case TOGGLE_IS_FETCHING:
             return { ...state, isFetching: action.value };
         default:
@@ -29,13 +33,13 @@ const authReducer = (state: AuthDomainType = initialState, action: ActionType): 
 export default authReducer;
 
 //actions
-export const setUserLogin = (login: string) =>
+const setUserData = (data: AuthUserDataType) =>
     ({
         type: SET_USER_LOGIN,
-        login,
+        data,
     } as const);
 
-export const setIsUserLoggedIn = (value: boolean) =>
+const setIsUserLoggedIn = (value: boolean) =>
     ({
         type: SET_IS_USER_LOGGED_IN,
         value,
@@ -46,12 +50,12 @@ export const checkUserAuthentication = () => async (dispatch: AppDispatchType) =
     dispatch(toggleIsFetching(true));
 
     try {
-        const data = await authAPI.authorizeUser();
-        if (data.resultCode === ServerResultCode.OK) {
+        const resp = await authAPI.authorizeUser();
+        if (resp.data.resultCode === ServerResultCode.OK) {
             dispatch(setIsUserLoggedIn(true));
-            dispatch(setUserLogin(data.data.login));
+            dispatch(setUserData(resp.data.data));
         } else {
-            alert(data.messages);
+            alert(resp.data.messages);
         }
     } catch (err) {
         alert(err);
@@ -62,9 +66,9 @@ export const checkUserAuthentication = () => async (dispatch: AppDispatchType) =
 
 //types
 export type AuthDomainType = {
-    login: string;
+    data: AuthUserDataType;
     isFetching: boolean;
     isUserLoggedIn: boolean;
 };
 
-type ActionType = ReturnType<typeof setUserLogin> | ToggleIsFetchingType | ReturnType<typeof setIsUserLoggedIn>;
+type ActionType = ReturnType<typeof setUserData> | ToggleIsFetchingType | ReturnType<typeof setIsUserLoggedIn>;

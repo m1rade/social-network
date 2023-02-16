@@ -85,13 +85,13 @@ export const getUsersThunk = (itemsPerPage: number, curPage: number) => async (d
     dispatch(toggleIsFetching(true));
 
     try {
-        const data = await userAPI.getUsers(itemsPerPage, curPage);
-        if (data.error === null) {
+        const resp = await userAPI.getUsers(itemsPerPage, curPage);
+        if (resp.data.error === null) {
             curPage !== 1 && dispatch(setCurrentPage(curPage));
-            dispatch(setUsers(data.items));
-            dispatch(setTotalCount(data.totalCount));
+            dispatch(setUsers(resp.data.items));
+            dispatch(setTotalCount(resp.data.totalCount));
         } else {
-            alert(data.error);
+            alert(resp.data.error);
         }
     } catch (err) {
         alert(err);
