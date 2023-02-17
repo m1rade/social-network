@@ -3,12 +3,12 @@ import { Route, Switch } from "react-router-dom";
 import "./App.css";
 import HeaderContainer from './components/Header/HeaderContainer';
 import { LoginPage } from './components/Login/LoginPage';
-import { Messages } from "./components/Messages/Messages";
+import MessagesContainer from './components/Messages/Messages';
 import { Music } from "./components/Music";
 import { Navbar } from "./components/Navbar/Navbar";
 import { News } from "./components/News";
 import ProfileContainer from "./components/Profile/ProfileContainer";
-import { SearchPage } from "./components/Search/SearchPage";
+import SearchPageContainer from "./components/Search/SearchPage";
 import { Settings } from "./components/Settings";
 
 const App: React.FC<any> = () => {
@@ -20,8 +20,8 @@ const App: React.FC<any> = () => {
                 <Switch>
                     <Route exact path={"/"} render={() => <ProfileContainer />} />
                     <Route exact path="/profile/:userID?" render={() => <ProfileContainer />} />
-                    <Route exact path="/messages" render={() => <Messages />} />
-                    <Route exact path="/search" render={() => <SearchPage />} />
+                    <Route exact path="/messages" render={() => <MessagesContainer />} />
+                    <Route exact path="/search" render={() => <SearchPageContainer />} />
                     <Route exact path="/news" render={() => <News />} />
                     <Route exact path="/music" render={() => <Music />} />
                     <Route exact path="/settings" render={() => <Settings />} />

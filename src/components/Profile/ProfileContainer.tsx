@@ -1,7 +1,9 @@
 import React from "react";
 import { connect } from "react-redux";
 import { RouteComponentProps, withRouter } from "react-router-dom";
+import { compose } from "redux";
 import { ProfileResponseType } from "../../api/social-networkAPI";
+import withAuthRedirect from "../../HOC/withAuthRedirect";
 import { addPostMessage, fetchProfile, PostType, updatePostMessage } from "../../redux/profile_reducer";
 import { AppStateType } from "../../redux/store";
 import Preloader from "../common/Preloader";
@@ -14,7 +16,7 @@ class ProfileContainer extends React.Component<ProfileContainerPropsType> {
 
     render() {
         const { history, location, match, staticContext, fetchProfile, ...restProps } = this.props;
-        
+
         return <>{this.props.isFetching ? <Preloader /> : <Profile {...restProps} />}</>;
     }
 }
@@ -26,13 +28,15 @@ const mapStateToProps = (state: AppStateType): MapStatePropsType => ({
     posts: state.profile.posts,
 });
 
-const WithURLProfileContainer = withRouter(ProfileContainer);
-
-export default connect<MapStatePropsType, MapDispatchPropsType, {}, AppStateType>(mapStateToProps, {
-    addPostMessage,
-    updatePostMessage,
-    fetchProfile,
-})(WithURLProfileContainer);
+export default compose<React.ComponentType>(
+    connect(mapStateToProps, {
+        addPostMessage,
+        updatePostMessage,
+        fetchProfile,
+    }),
+    withRouter,
+    withAuthRedirect,
+)(ProfileContainer);
 
 //types
 type MapStatePropsType = {
