@@ -2,17 +2,19 @@
     height: auto;
     width: 90%;
     
-    border: 1px solid;
+    /* border: 1px solid; */
     position: relative;
 }
 
 
 .row_1 {
     display: flex;
+    margin-bottom: 20px;
 }
 
 .row_2 {
-    border: 1px solid;
+    /* border: 1px solid; */
+    margin-bottom: 20px;
 }
 
 .pictureCol {
@@ -20,11 +22,10 @@
 }
 
 .infoCol {
-    margin: 20px;
+    margin-left: 30px;
 }
 
 .avatar {
-    border: 1px solid;
 }
 
 .avatar img {
@@ -34,7 +35,7 @@
 
 .personalInfo {
     margin-bottom: 15px;
-    border: 1px solid;
+    /* border: 1px solid; */
 }
 
 .fullName {
