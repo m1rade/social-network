@@ -1,4 +1,4 @@
-import { ProfileResponseType } from "../api/social-networkAPI";
+import { ProfileResponseType, ServerResultCode } from "../api/social-networkAPI";
 import { profileAPI } from "./../api/social-networkAPI";
 import { toggleIsFetching, ToggleIsFetchingType } from "./search_reducer";
 import { AppThunkType } from "./store";
@@ -7,6 +7,7 @@ const UPDATE_NEW_POST_MESSAGE = "UPDATE-NEW-POST-MESSAGE";
 const ADD_POST = "ADD-POST";
 const SET_USER_INFO = "SET_USER_INFO";
 const TOGGLE_IS_FETCHING = "TOGGLE_IS_FETCHING";
+const SET_PROFILE_STATUS = "SET_PROFILE_STATUS";
 
 const initState: ProfileDomainType = {
     userInfo: {
@@ -24,12 +25,13 @@ const initState: ProfileDomainType = {
         lookingForAJob: false,
         lookingForAJobDescription: "gfgf",
         fullName: "Cooool cat",
-        userId: 1,
+        userId: undefined,
         photos: {
             small: "https://i.pinimg.com/originals/ae/24/87/ae24874dd301843548c034a3d2973658.png",
             large: "",
         },
     },
+    status: "",
     posts: [
         { id: 1, message: "How are you today?" },
         { id: 2, message: "Hello world!" },
@@ -57,6 +59,8 @@ const profileReducer = (state: ProfileDomainType = initState, action: ProfileAct
             };
         case TOGGLE_IS_FETCHING:
             return { ...state, isFetching: action.value };
+        case SET_PROFILE_STATUS:
+            return { ...state, status: action.status };
         default:
             return state;
     }
@@ -81,6 +85,12 @@ const setUserInfo = (userInfo: ProfileResponseType) =>
         userInfo,
     } as const);
 
+const setProfileStatus = (status: string) =>
+    ({
+        type: SET_PROFILE_STATUS,
+        status,
+    } as const);
+
 //thunks
 export const fetchProfile =
     (userID: string): AppThunkType =>
@@ -88,7 +98,7 @@ export const fetchProfile =
         dispatch(toggleIsFetching(true));
 
         if (!userID) {
-            userID = "2";
+            userID = "25832";
         }
 
         try {
@@ -101,6 +111,38 @@ export const fetchProfile =
         }
     };
 
+export const getProfileStatus =
+    (userID: string): AppThunkType =>
+    async (dispatch) => {
+        if (!userID) {
+            userID = "25832";
+        }
+
+        try {
+            const resp = await profileAPI.getProfileStatus(userID);
+            if (resp.status === 200) {
+                dispatch(setProfileStatus(resp.data));
+            }
+        } catch (err) {
+            alert(err);
+        }
+    };
+
+export const updateProfileStatus =
+    (status: string): AppThunkType =>
+    async (dispatch) => {
+        try {
+            const resp = await profileAPI.updateProfileStatus(status);
+            if (resp.status === 200) {
+                if (resp.data.resultCode === ServerResultCode.OK) {
+                    dispatch(setProfileStatus(status));
+                }
+            }
+        } catch (err) {
+            alert(err);
+        }
+    };
+
 //types
 export type PostType = {
     id: number;
@@ -109,6 +151,7 @@ export type PostType = {
 
 export type ProfileDomainType = {
     userInfo: ProfileResponseType;
+    status: string;
     posts: PostType[];
     newPostMessage: string;
     isFetching: boolean;
@@ -118,4 +161,5 @@ export type ProfileActionType =
     | ReturnType<typeof updatePostMessage>
     | ReturnType<typeof addPostMessage>
     | ReturnType<typeof setUserInfo>
+    | ReturnType<typeof setProfileStatus>
     | ToggleIsFetchingType;

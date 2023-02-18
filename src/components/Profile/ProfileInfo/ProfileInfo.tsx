@@ -6,6 +6,8 @@ import { ProfileStatus } from "./ProfileStatus";
 
 type ProfileInfoPropsType = {
     userInfo: ProfileResponseType;
+    userStatus: string;
+    updateProfileStatus: (status: string) => void;
 };
 
 export const ProfileInfo: React.FC<ProfileInfoPropsType> = (props) => {
@@ -33,7 +35,7 @@ export const ProfileInfo: React.FC<ProfileInfoPropsType> = (props) => {
                 <div className={s.infoCol}>
                     <div className={s.personalInfo}>
                         <div className={s.fullName}>{props.userInfo.fullName}</div>
-                        <ProfileStatus status="Hello world!"/>
+                        <ProfileStatus status={props.userStatus} updateProfileStatus={props.updateProfileStatus} />
                     </div>
                     <div className={s.description}>
                         <div className={s.aboutMe}>
