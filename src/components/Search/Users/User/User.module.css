@@ -41,20 +41,6 @@
     color: black;
 }
 
-.follow button {
-    background-color: #aadd77;
-    border: none;
-    width: 70px;
-    height: 25px;
-    font-size: 100%;
-}
-.follow button:hover {
-    background-color: #7dad4eb6;
-}
-.follow button:active {
-    background-color: #568923;
-}
-
 .userFrame {
     width: 18rem;
     height: 80%;

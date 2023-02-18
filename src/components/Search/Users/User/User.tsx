@@ -3,6 +3,7 @@ import s from "./User.module.css";
 import userImagePlaceholder from "../../../../assets/icons/user.png";
 import { NavLink } from "react-router-dom";
 import { UserType } from "../../../../api/social-networkAPI";
+import YellowButton from "../../../common/Buttons/YellowButton";
 
 type UserPropsType = {
     user: UserType;
@@ -24,9 +25,11 @@ export const User: React.FC<UserPropsType> = (props) => {
                         </NavLink>
                     </div>
                     <div className={s.follow}>
-                        <button disabled={props.followingInProgress.some(id => id === props.user.id)} onClick={() => props.followUnfollowHandler()}>
+                        <YellowButton
+                            disabled={props.followingInProgress.some((id) => id === props.user.id)}
+                            onClick={() => props.followUnfollowHandler()}>
                             {!props.user.followed ? "Follow" : "Unfollow"}
-                        </button>
+                        </YellowButton>
                     </div>
                 </div>
                 <div className={s.column_2}>
