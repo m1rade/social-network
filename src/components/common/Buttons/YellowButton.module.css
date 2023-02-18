@@ -1,0 +1,15 @@
+.yellowButton {
+    background-color: #aadd77;
+    border: none;
+    width: 70px;
+    height: 25px;
+    font-size: 100%;
+}
+
+.yellowButton:hover {
+    background-color: #7dad4eb6;
+}
+
+.yellowButton:active {
+    background-color: #568923;
+}
