@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import { compose } from "redux";
 import { ProfileResponseType } from "../../api/social-networkAPI";
-import withAuthRedirect from "../../HOC/withAuthRedirect";
+// import withAuthRedirect from "../../HOC/withAuthRedirect";
 import { addPostMessage, fetchProfile, PostType, updatePostMessage } from "../../redux/profile_reducer";
 import { AppStateType } from "../../redux/store";
 import Preloader from "../common/Preloader";
@@ -35,7 +35,7 @@ export default compose<React.ComponentType>(
         fetchProfile,
     }),
     withRouter,
-    withAuthRedirect,
+    // withAuthRedirect,
 )(ProfileContainer);
 
 //types

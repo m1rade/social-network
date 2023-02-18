@@ -2,6 +2,7 @@ import React from "react";
 import s from "./ProfileInfo.module.css";
 import userImagePlaceholder from "./../../../assets/icons/user.png";
 import { ProfileResponseType } from "../../../api/social-networkAPI";
+import { ProfileStatus } from "./ProfileStatus";
 
 type ProfileInfoPropsType = {
     userInfo: ProfileResponseType;
@@ -32,11 +33,17 @@ export const ProfileInfo: React.FC<ProfileInfoPropsType> = (props) => {
                 <div className={s.infoCol}>
                     <div className={s.personalInfo}>
                         <div className={s.fullName}>{props.userInfo.fullName}</div>
-                        <div className={s.aboutMe}>{props.userInfo.aboutMe}</div>
+                        <ProfileStatus status="Hello world!"/>
                     </div>
-                    <div className={s.jobSeeking}>
-                        <span>В поиске работы: </span>
-                        <span>{props.userInfo.lookingForAJob ? "Да" : "Нет"}</span>
+                    <div className={s.description}>
+                        <div className={s.aboutMe}>
+                            <span>Обо мне: </span>
+                            <span>{props.userInfo.aboutMe}</span>
+                        </div>
+                        <div>
+                            <span>В поиске работы: </span>
+                            <span>{props.userInfo.lookingForAJob ? "Да" : "Нет"}</span>
+                        </div>
                         <div>
                             <span>Описание: </span>
                             <span>{props.userInfo.lookingForAJobDescription}</span>
