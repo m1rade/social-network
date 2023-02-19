@@ -3,7 +3,6 @@ import { profileAPI } from "./../api/social-networkAPI";
 import { toggleIsFetching, ToggleIsFetchingType } from "./search_reducer";
 import { AppThunkType } from "./store";
 
-const UPDATE_NEW_POST_MESSAGE = "UPDATE-NEW-POST-MESSAGE";
 const ADD_POST = "ADD-POST";
 const SET_USER_INFO = "SET_USER_INFO";
 const TOGGLE_IS_FETCHING = "TOGGLE_IS_FETCHING";
@@ -37,7 +36,6 @@ const initState: ProfileDomainType = {
         { id: 2, message: "Hello world!" },
         { id: 3, message: "I ate" },
     ],
-    newPostMessage: "",
     isFetching: false,
 };
 
@@ -45,17 +43,14 @@ const profileReducer = (state: ProfileDomainType = initState, action: ProfileAct
     switch (action.type) {
         case SET_USER_INFO:
             return { ...state, userInfo: action.userInfo };
-        case UPDATE_NEW_POST_MESSAGE:
-            return { ...state, newPostMessage: action.newPostMessage };
         case ADD_POST:
             const newPostObj = {
                 id: new Date().getTime(),
-                message: state.newPostMessage,
+                message: action.newPostMessage,
             };
             return {
                 ...state,
                 posts: [newPostObj, ...state.posts],
-                newPostMessage: "",
             };
         case TOGGLE_IS_FETCHING:
             return { ...state, isFetching: action.value };
@@ -68,15 +63,10 @@ const profileReducer = (state: ProfileDomainType = initState, action: ProfileAct
 export default profileReducer;
 
 //actions
-export const updatePostMessage = (newPostMessage: string) =>
-    ({
-        type: UPDATE_NEW_POST_MESSAGE,
-        newPostMessage,
-    } as const);
-
-export const addPostMessage = () =>
+export const addPostMessage = (newPostMessage: string) =>
     ({
         type: ADD_POST,
+        newPostMessage,
     } as const);
 
 const setUserInfo = (userInfo: ProfileResponseType) =>
@@ -153,12 +143,10 @@ export type ProfileDomainType = {
     userInfo: ProfileResponseType;
     status: string;
     posts: PostType[];
-    newPostMessage: string;
     isFetching: boolean;
 };
 
 export type ProfileActionType =
-    | ReturnType<typeof updatePostMessage>
     | ReturnType<typeof addPostMessage>
     | ReturnType<typeof setUserInfo>
     | ReturnType<typeof setProfileStatus>

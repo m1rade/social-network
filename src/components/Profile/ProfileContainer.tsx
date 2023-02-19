@@ -3,13 +3,13 @@ import { connect } from "react-redux";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import { compose } from "redux";
 import { ProfileResponseType } from "../../api/social-networkAPI";
+import withAuthRedirect from "../../HOC/withAuthRedirect";
 // import withAuthRedirect from "../../HOC/withAuthRedirect";
 import {
     addPostMessage,
     fetchProfile,
     getProfileStatus,
     PostType,
-    updatePostMessage,
     updateProfileStatus,
 } from "../../redux/profile_reducer";
 import { AppStateType } from "../../redux/store";
@@ -34,20 +34,18 @@ const mapStateToProps = (state: AppStateType): MapStatePropsType => ({
     userInfo: state.profile.userInfo,
     userStatus: state.profile.status,
     isFetching: state.profile.isFetching,
-    newPostMessage: state.profile.newPostMessage,
     posts: state.profile.posts,
 });
 
 export default compose<React.ComponentType>(
-    connect(mapStateToProps, {
+    connect<MapStatePropsType, MapDispatchPropsType, {}, AppStateType>(mapStateToProps, {
         addPostMessage,
-        updatePostMessage,
         fetchProfile,
         getProfileStatus,
         updateProfileStatus,
     }),
-    withRouter
-    // withAuthRedirect,
+    withRouter,
+    withAuthRedirect,
 )(ProfileContainer);
 
 //types
@@ -56,15 +54,13 @@ type MapStatePropsType = {
     userStatus: string;
     posts: PostType[];
     isFetching: boolean;
-    newPostMessage: string;
 };
 
 type MapDispatchPropsType = {
     fetchProfile: (userID: string) => void;
     getProfileStatus: (userID: string) => void;
-    updateProfileStatus: (status: string) => void
-    addPostMessage: () => void;
-    updatePostMessage: (newPostMessage: string) => void;
+    updateProfileStatus: (status: string) => void;
+    addPostMessage: (newPostMessage: string) => void;
 };
 
 type PathParamsType = {

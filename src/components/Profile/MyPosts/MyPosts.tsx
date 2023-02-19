@@ -1,26 +1,23 @@
 import React from "react";
 import s from "./MyPosts.module.css";
 import {Post} from "./Post/Post";
-import CommonTextArea from "../../common/CommonTextArea";
 import { PostType } from "../../../redux/profile_reducer";
-import YellowButton from "../../common/Buttons/YellowButton";
+import MessageForm, { MessageDataType } from "../../common/MessageForm";
 
 type MyPostsPropsType = {
-    newPostMessage: string;
     posts: PostType[];
     photo: string | null;
-    addNewPost: () => void
-    onPostChange: (newTextValue: string) => void
+    addNewPost: (newPostMessage: string) => void
 };
 
 export const MyPosts: React.FC<MyPostsPropsType> = (props) => {
-    const onClickAddNewPost = () => {
-        props.addNewPost();
+    const addNewPostHandler = (newPostMessage: MessageDataType) => {
+        props.addNewPost(newPostMessage.messageBody);
     };
 
-    const onTextareaChange = (newTextValue: string) => {
+    /* const onTextareaChange = (newTextValue: string) => {
         props.onPostChange(newTextValue);
-    };
+    }; */
 
     const mappedPosts = props.posts.map((p) => (
         <Post key={p.id} postID={p.id} message={p.message} avatar={props.photo}/>
@@ -30,14 +27,14 @@ export const MyPosts: React.FC<MyPostsPropsType> = (props) => {
         <>
             <div className={s.container}>
                 <div>my posts</div>
-                <CommonTextArea
-                    value={props.newPostMessage}
+                <MessageForm
                     placeholder="Share your thoughts..."
-                    onTextChange={onTextareaChange}
+                    buttonName="Send"
+                    component="textarea"
+                    onSubmit={addNewPostHandler}
                 />
-                <YellowButton onClick={onClickAddNewPost}>Send</YellowButton>
             </div>
-            <hr className={s.solid_line}/>
+            <hr className={s.solid_line} />
             <div>{mappedPosts}</div>
         </>
     );

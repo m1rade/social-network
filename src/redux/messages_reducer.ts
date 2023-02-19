@@ -1,4 +1,3 @@
-const UPDATE_MESSAGE = "UPDATE-MESSAGE";
 const ADD_MESSAGE = "ADD-MESSAGE";
 
 const initState: MessagesType = {
@@ -17,21 +16,17 @@ const initState: MessagesType = {
             text: "Sometimes it's easier to cry than try to figure out why",
         },
     ],
-    newMessageText: "",
 };
 
 const messagesReducer = (state: MessagesType = initState, action: MessagesActionType): MessagesType => {
     switch (action.type) {
-        case UPDATE_MESSAGE:
-            return { ...state, newMessageText: action.newMessageValue };
         case ADD_MESSAGE:
             const newMessageObj = {
                 id: new Date().getTime(),
-                text: state.newMessageText,
+                text: action.newMessage,
             };
             return {
                 all_messages: [...state.all_messages, newMessageObj],
-                newMessageText: "",
             };
         default:
             return state;
@@ -41,17 +36,11 @@ const messagesReducer = (state: MessagesType = initState, action: MessagesAction
 export default messagesReducer;
 
 // actions
-export type updateMessageACType = ReturnType<typeof updateMessage>;
-export const updateMessage = (newMessageValue: string) =>
-    ({
-        type: UPDATE_MESSAGE,
-        newMessageValue,
-    } as const);
-
 export type addMessageACType = ReturnType<typeof addMessage>;
-export const addMessage = () =>
+export const addMessage = (newMessage: string) =>
     ({
         type: ADD_MESSAGE,
+        newMessage
     } as const);
 
 //types
@@ -62,7 +51,6 @@ export type MessageType = {
 
 type MessagesType = {
     all_messages: MessageType[];
-    newMessageText: string;
 };
 
-export type MessagesActionType = updateMessageACType | addMessageACType;
+export type MessagesActionType = addMessageACType;

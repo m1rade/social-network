@@ -22,9 +22,7 @@ export const Profile: React.FC<ProfileSuperPropsType> = (props) => {
             <MyPosts
                 posts={props.posts}
                 photo={props.userInfo.photos.small}
-                newPostMessage={props.newPostMessage}
                 addNewPost={props.addPostMessage}
-                onPostChange={props.updatePostMessage}
             />
         </div>
     );

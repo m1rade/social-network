@@ -1,18 +1,17 @@
 import React from "react";
-import YellowButton from "../../common/Buttons/YellowButton";
-import CommonTextArea from "../../common/CommonTextArea";
+import MessageForm, { MessageDataType } from "../../common/MessageForm";
 import style from "./Dialog.module.css";
 import { DialogPropsType } from "./DialogContainer";
 import { MessageBubble } from "./MessageBubble/MessageBubble";
 
 export const Dialog: React.FC<DialogPropsType> = (props) => {
-    const onButtonClick = () => {
-        props.addMessage();
+    const onSubmitHandler = (messageBody: MessageDataType) => {
+        props.addMessage(messageBody.messageBody);
     };
 
-    const onTextareaChange = (newTextValue: string) => {
+    /* const onTextareaChange = (newTextValue: string) => {
         props.updateMessage(newTextValue);
-    };
+    }; */
 
     const receivedMessageBubbles1 = props.receivedMessages.map((m) => (
         <MessageBubble key={m.id} messageID={m.id} text={m.text} />
@@ -28,12 +27,12 @@ export const Dialog: React.FC<DialogPropsType> = (props) => {
                 <div className={style.sent_messages}>{sentMessageBubbles1}</div>
             </div>
             <div className={style.inputField}>
-                <CommonTextArea
-                    value={props.currentValue}
+                <MessageForm
                     placeholder="Enter your message..."
-                    onTextChange={onTextareaChange}
+                    buttonName="Send"
+                    component="textarea"
+                    onSubmit={onSubmitHandler}
                 />
-                <YellowButton onClick={onButtonClick}>Send</YellowButton>
             </div>
         </>
     );
