@@ -81,8 +81,13 @@ export const loginUser =
             const resp = await authAPI.loginUser(formData);
             if (resp.status === 200) {
                 if (resp.data.resultCode === ServerResultCode.OK) {
+                    dispatch(setIsUserLoggedIn(true));
                     dispatch(setUserId(resp.data.data.userId));
+                } else {
+                    alert(resp.data.messages)
                 }
+            } else {
+                alert(resp.statusText)
             }
         } catch (err) {
             alert(err);
