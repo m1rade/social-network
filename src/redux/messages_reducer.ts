@@ -1,15 +1,3 @@
-export type MessageType = {
-    id: number;
-    text: string;
-};
-
-type MessagesType = {
-    all_messages: MessageType[];
-    newMessageText: string;
-};
-
-export type MessagesActionType = updateMessageACType | addMessageACType;
-
 const UPDATE_MESSAGE = "UPDATE-MESSAGE";
 const ADD_MESSAGE = "ADD-MESSAGE";
 
@@ -52,15 +40,29 @@ const messagesReducer = (state: MessagesType = initState, action: MessagesAction
 
 export default messagesReducer;
 
-export type updateMessageACType = ReturnType<typeof updateMessageAC>;
-export const updateMessageAC = (newMessageValue: string) =>
+// actions
+export type updateMessageACType = ReturnType<typeof updateMessage>;
+export const updateMessage = (newMessageValue: string) =>
     ({
         type: UPDATE_MESSAGE,
         newMessageValue,
     } as const);
 
-export type addMessageACType = ReturnType<typeof addMessageAC>;
-export const addMessageAC = () =>
+export type addMessageACType = ReturnType<typeof addMessage>;
+export const addMessage = () =>
     ({
         type: ADD_MESSAGE,
     } as const);
+
+//types
+export type MessageType = {
+    id: number;
+    text: string;
+};
+
+type MessagesType = {
+    all_messages: MessageType[];
+    newMessageText: string;
+};
+
+export type MessagesActionType = updateMessageACType | addMessageACType;

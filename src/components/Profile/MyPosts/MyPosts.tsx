@@ -3,6 +3,7 @@ import s from "./MyPosts.module.css";
 import {Post} from "./Post/Post";
 import CommonTextArea from "../../common/CommonTextArea";
 import { PostType } from "../../../redux/profile_reducer";
+import YellowButton from "../../common/Buttons/YellowButton";
 
 type MyPostsPropsType = {
     newPostMessage: string;
@@ -34,6 +35,7 @@ export const MyPosts: React.FC<MyPostsPropsType> = (props) => {
                     placeholder="Share your thoughts..."
                     onTextChange={onTextareaChange}
                 />
+                <YellowButton onClick={onClickAddNewPost}>Send</YellowButton>
             </div>
             <hr className={s.solid_line}/>
             <div>{mappedPosts}</div>
