@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { Field, reduxForm } from "redux-form";
+import { Field, InjectedFormProps, reduxForm } from "redux-form";
 import { LoginData } from "../../api/social-networkAPI";
 import { loginUser } from "../../redux/auth_reducer";
 import { AppStateType } from "../../redux/store";
@@ -8,8 +8,8 @@ import YellowButton from "../common/Buttons/YellowButton";
 
 type LoginPropsType = dispatchPropsType & {};
 
-const LoginPage: React.FC<LoginPropsType> = ({loginUser}) => {
-    const onSubmit = (formData: any) => {
+const LoginPage: React.FC<LoginPropsType> = ({ loginUser }) => {
+    const onSubmit = (formData: LoginData) => {
         loginUser(formData);
     };
 
@@ -21,12 +21,12 @@ const LoginPage: React.FC<LoginPropsType> = ({loginUser}) => {
     );
 };
 
-const LoginForm: React.FC<any> = ({ handleSubmit }) => {
+const LoginForm: React.FC<InjectedFormProps<LoginData>> = ({ handleSubmit }) => {
     return (
         <>
             <form onSubmit={handleSubmit}>
                 <div>
-                    <Field placeholder="Login" name="login" component={"input"} />
+                    <Field placeholder="email" name="email" component={"input"} />
                 </div>
                 <div>
                     <Field placeholder="Password" name="password" component={"input"} />
@@ -42,23 +42,21 @@ const LoginForm: React.FC<any> = ({ handleSubmit }) => {
     );
 };
 
-
 //HOCs
-const LoginReduxForm = reduxForm({
+const LoginReduxForm = reduxForm<LoginData>({
     form: "login",
 })(LoginForm);
 
 const mapStateToProps = (state: AppStateType) => ({
-    userId: state.auth.data.id
+    userId: state.auth.data.id,
 });
 
 export default connect<mapPropsType, dispatchPropsType, {}, AppStateType>(mapStateToProps, { loginUser })(LoginPage);
 
-
 //types
 type mapPropsType = {
-    userId: number
-}
+    userId: number;
+};
 type dispatchPropsType = {
     loginUser: (data: LoginData) => void;
 };
