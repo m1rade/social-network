@@ -33,11 +33,6 @@ export const MyPosts: React.FC<MyPostsPropsType> = (props) => {
                     value={props.newPostMessage}
                     placeholder="Share your thoughts..."
                     onTextChange={onTextareaChange}
-
-                    buttonProps={{
-                        buttonName: "Send",
-                        onButtonClick: onClickAddNewPost
-                    }}
                 />
             </div>
             <hr className={s.solid_line}/>

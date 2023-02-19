@@ -1,9 +1,6 @@
 import React, {
-    ButtonHTMLAttributes,
     ChangeEvent,
-    DetailedHTMLProps,
-    MouseEvent,
-    TextareaHTMLAttributes
+    DetailedHTMLProps, TextareaHTMLAttributes
 } from "react";
 import s from "./CommonTextArea.module.css";
 
@@ -11,15 +8,11 @@ import s from "./CommonTextArea.module.css";
 type DefaultTextareaPropsType = DetailedHTMLProps<TextareaHTMLAttributes<HTMLTextAreaElement>,
     HTMLTextAreaElement>
 
-type DefaultButtonPropsType = DetailedHTMLProps<ButtonHTMLAttributes<HTMLButtonElement>,
-    HTMLButtonElement>
-
 type CommonTextareaPropsType = Omit<DefaultTextareaPropsType, 'type'> & {
 
     textAreaClassName?: string,
     onTextChange?: (text: string) => void
 
-    buttonProps?: DefaultButtonPropsType & {buttonClassName?: string, buttonName: string, onButtonClick?: () => void}
 };
 
 const CommonTextArea: React.FC<CommonTextareaPropsType> = ({
@@ -28,12 +21,8 @@ const CommonTextArea: React.FC<CommonTextareaPropsType> = ({
     onChange,
     onTextChange,
     textAreaClassName,
-
-    buttonProps,
-
     ...restTextareaProps
 }) => {
-    const {onButtonClick, onClick, buttonName, buttonClassName, ...restButtonProps} = buttonProps || {};
 
     const onTextAreaChangeHandler = (e: ChangeEvent<HTMLTextAreaElement>) => {
         onChange?.(e);
@@ -41,17 +30,9 @@ const CommonTextArea: React.FC<CommonTextareaPropsType> = ({
         onTextChange?.(e.currentTarget.value);
     };
 
-    const onClickButtonHandler = (e: MouseEvent<HTMLButtonElement>) => {
-        onClick?.(e)
-
-        onButtonClick?.();
-    };
-
-    const buttonClass = `${buttonClassName ? buttonClassName : ""} ${s.button_add}`;
     const textAreaClass = `${textAreaClassName ? textAreaClassName : ""} ${s.textarea}`;
 
     return (
-        <>
             <textarea
                 className={textAreaClass}
                 placeholder={placeholder ? placeholder : ""}
@@ -59,13 +40,6 @@ const CommonTextArea: React.FC<CommonTextareaPropsType> = ({
                 value={value}
                 {...restTextareaProps}
             />
-            <button className={buttonClass}
-                    onClick={onClickButtonHandler}
-                    {...restButtonProps}>
-
-                {buttonName}
-            </button>
-        </>
     );
 };
 
