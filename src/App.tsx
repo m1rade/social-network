@@ -2,7 +2,7 @@ import React from 'react';
 import { Route, Switch } from "react-router-dom";
 import "./App.css";
 import HeaderContainer from './components/Header/HeaderContainer';
-import { LoginPage } from './components/Login/LoginPage';
+import LoginPage from './components/Login/LoginPage';
 import MessagesContainer from './components/Messages/Messages';
 import { Music } from "./components/Music";
 import { Navbar } from "./components/Navbar/Navbar";

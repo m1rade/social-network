@@ -28,6 +28,9 @@ export const authAPI = {
     authorizeUser() {
         return instance.get<ServerResponseType<AuthUserDataType>>(`auth/me`);
     },
+    loginUser(formData: LoginData) {
+        return instance.post<LoginData, AxiosResponse<ServerResponseType<{ userId: number }>>>(`auth/login`, formData);
+    },
 };
 
 export const profileAPI = {
@@ -40,8 +43,8 @@ export const profileAPI = {
     },
 
     updateProfileStatus(status: string) {
-        return instance.put<{status: string}, AxiosResponse<ServerResponseType>>(`profile/status`, {status});
-    }
+        return instance.put<{ status: string }, AxiosResponse<ServerResponseType>>(`profile/status`, { status });
+    },
 };
 
 //types
@@ -83,6 +86,13 @@ export type AuthUserDataType = {
     id: number;
     email: string;
     login: string;
+};
+
+export type LoginData = {
+    email: string;
+    password: string;
+    rememberMe?: boolean;
+    captcha?: boolean;
 };
 
 export type ServerResponseType<T = {}> = {

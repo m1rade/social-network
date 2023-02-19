@@ -5,6 +5,7 @@ import friendsReducer from "./friends_reducer";
 import messagesReducer from "./messages_reducer";
 import profileReducer, { ProfileActionType } from "./profile_reducer";
 import searchReducer, { SearchPageActionType } from "./search_reducer";
+import { reducer as formReducer } from "redux-form";
 
 const rootReducer = combineReducers({
     profile: profileReducer,
@@ -12,6 +13,7 @@ const rootReducer = combineReducers({
     friends: friendsReducer,
     search: searchReducer,
     auth: authReducer,
+    form: formReducer,
 });
 
 const store = createStore(rootReducer, applyMiddleware(thunkMiddleware));
