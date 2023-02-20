@@ -15,10 +15,6 @@ export const MyPosts: React.FC<MyPostsPropsType> = (props) => {
         props.addNewPost(newPostMessage.messageBody);
     };
 
-    /* const onTextareaChange = (newTextValue: string) => {
-        props.onPostChange(newTextValue);
-    }; */
-
     const mappedPosts = props.posts.map((p) => (
         <Post key={p.id} postID={p.id} message={p.message} avatar={props.photo}/>
     ));
@@ -30,7 +26,6 @@ export const MyPosts: React.FC<MyPostsPropsType> = (props) => {
                 <MessageForm
                     placeholder="Share your thoughts..."
                     buttonName="Send"
-                    component="textarea"
                     onSubmit={addNewPostHandler}
                 />
             </div>

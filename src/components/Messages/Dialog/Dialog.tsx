@@ -9,10 +9,6 @@ export const Dialog: React.FC<DialogPropsType> = (props) => {
         props.addMessage(messageBody.messageBody);
     };
 
-    /* const onTextareaChange = (newTextValue: string) => {
-        props.updateMessage(newTextValue);
-    }; */
-
     const receivedMessageBubbles1 = props.receivedMessages.map((m) => (
         <MessageBubble key={m.id} messageID={m.id} text={m.text} />
     ));
@@ -30,7 +26,6 @@ export const Dialog: React.FC<DialogPropsType> = (props) => {
                 <MessageForm
                     placeholder="Enter your message..."
                     buttonName="Send"
-                    component="textarea"
                     onSubmit={onSubmitHandler}
                 />
             </div>
