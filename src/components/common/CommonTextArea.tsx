@@ -1,46 +1,32 @@
-import React, {
-    ChangeEvent,
-    DetailedHTMLProps, TextareaHTMLAttributes
-} from "react";
+import React, { ChangeEvent, DetailedHTMLProps, TextareaHTMLAttributes } from "react";
 import s from "./CommonTextArea.module.css";
 
+type DefaultTextareaPropsType = DetailedHTMLProps<TextareaHTMLAttributes<HTMLTextAreaElement>, HTMLTextAreaElement>;
 
-type DefaultTextareaPropsType = DetailedHTMLProps<TextareaHTMLAttributes<HTMLTextAreaElement>,
-    HTMLTextAreaElement>
-
-type CommonTextareaPropsType = Omit<DefaultTextareaPropsType, 'type'> & {
-
-    textAreaClassName?: string,
-    onTextChange?: (text: string) => void
-
+type CommonTextareaPropsType = Omit<DefaultTextareaPropsType, "type"> & {
+    textareaClassName?: string;
+    onTextChange?: (text: string) => void;
 };
 
-const CommonTextArea: React.FC<CommonTextareaPropsType> = ({
-    value,
-    placeholder,
+const CommonTextarea: React.FC<CommonTextareaPropsType> = ({
+    textareaClassName,
     onChange,
     onTextChange,
-    textAreaClassName,
-    ...restTextareaProps
+    ...restProps
 }) => {
-
-    const onTextAreaChangeHandler = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    const onTextareaChangeHandler = (e: ChangeEvent<HTMLTextAreaElement>) => {
         onChange?.(e);
 
         onTextChange?.(e.currentTarget.value);
     };
 
-    const textAreaClass = `${textAreaClassName ? textAreaClassName : ""} ${s.textarea}`;
+    const textareaFinalClass = `${textareaClassName || ""}` + s.textarea;
 
     return (
-            <textarea
-                className={textAreaClass}
-                placeholder={placeholder ? placeholder : ""}
-                onChange={onTextAreaChangeHandler}
-                value={value}
-                {...restTextareaProps}
-            />
+        <div className={s.TextareaContainer}>
+            <textarea className={textareaFinalClass} onChange={onTextareaChangeHandler} {...restProps} />
+        </div>
     );
 };
 
-export default CommonTextArea;
+export default CommonTextarea;
