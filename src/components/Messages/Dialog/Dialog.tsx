@@ -1,8 +1,11 @@
 import React from "react";
+import { maxLengthValidator } from "../../../utils/validators";
 import MessageForm, { MessageDataType } from "../../common/MessageForm";
 import style from "./Dialog.module.css";
 import { DialogPropsType } from "./DialogContainer";
 import { MessageBubble } from "./MessageBubble/MessageBubble";
+
+const MAX_MESSAGE_LENGTH_150 = maxLengthValidator(150);
 
 export const Dialog: React.FC<DialogPropsType> = (props) => {
     const onSubmitHandler = (messageBody: MessageDataType) => {
@@ -27,6 +30,7 @@ export const Dialog: React.FC<DialogPropsType> = (props) => {
                     placeholder="Enter your message..."
                     buttonName="Send"
                     onSubmit={onSubmitHandler}
+                    validators={[MAX_MESSAGE_LENGTH_150]}
                 />
             </div>
         </>

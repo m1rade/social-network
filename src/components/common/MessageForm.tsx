@@ -1,25 +1,23 @@
 import React from "react";
-import { Field, InjectedFormProps, reduxForm, WrappedFieldProps } from "redux-form";
-import { maxLengthValidator, requiredField } from "../../utils/validators";
+import { Field, InjectedFormProps, reduxForm, Validator, WrappedFieldProps } from "redux-form";
 import YellowButton from "./Buttons/YellowButton";
 import s from "./MessageForm.module.css";
 
 type MessageFormPropsType = {
     placeholder?: string;
     buttonName?: string;
-    validate?: {}
+    validators?: Validator | Validator[] | undefined;
 };
 
 export type MessageDataType = {
     messageBody: string;
 };
 
-const MAX_MESSAGE_LENGTH_50 = maxLengthValidator(50);
-
 const MessageForm: React.FC<InjectedFormProps<MessageDataType, MessageFormPropsType> & MessageFormPropsType> = ({
     handleSubmit,
     placeholder,
     buttonName,
+    validators,
     ...restProps
 }) => {
     
@@ -29,7 +27,8 @@ const MessageForm: React.FC<InjectedFormProps<MessageDataType, MessageFormPropsT
                 component={renderTextarea}
                 name="messageBody"
                 placeholder={placeholder || undefined}
-                validate={[requiredField, MAX_MESSAGE_LENGTH_50]}
+                validate={validators}
+                {...restProps}
             />
             <YellowButton>{buttonName || "Send"}</YellowButton>
         </form>
@@ -42,7 +41,7 @@ const renderTextarea: React.FC<WrappedFieldProps> = ({ input, meta, ...restProps
 
     return (
         <div>
-            <textarea className={hasError && s.textareaError} {...input} {...restProps} />
+            <textarea className={hasError ? s.textareaError : ""} {...input} {...restProps} />
             {hasError && <div>{meta.error}</div>}
         </div>
     );
