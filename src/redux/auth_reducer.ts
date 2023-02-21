@@ -5,14 +5,12 @@ import { AppThunkType } from "./store";
 
 const SET_USER_DATA = "SET_USER_DATA";
 const TOGGLE_IS_FETCHING = "TOGGLE_IS_FETCHING";
-const SET_IS_USER_LOGGED_IN = "SET_IS_USER_LOGGED_IN";
-const SET_USER_ID = "SET_USER_ID";
 
 const initialState: AuthDomainType = {
     data: {
-        id: 2,
-        email: "",
-        login: "",
+        id: null,
+        email: null,
+        login: null,
     },
     isFetching: false,
     isUserLoggedIn: false,
@@ -20,14 +18,10 @@ const initialState: AuthDomainType = {
 
 const authReducer = (state: AuthDomainType = initialState, action: AuthActionType): AuthDomainType => {
     switch (action.type) {
-        case SET_IS_USER_LOGGED_IN:
-            return { ...state, isUserLoggedIn: action.value };
         case SET_USER_DATA:
-            return { ...state, data: { ...action.data } };
+            return { ...state, data: { ...action.data }, isUserLoggedIn: action.isUserLoggedIn };
         case TOGGLE_IS_FETCHING:
             return { ...state, isFetching: action.value };
-        case SET_USER_ID:
-            return { ...state, data: { ...state.data, id: action.id } };
         default:
             return state;
     }
@@ -36,22 +30,11 @@ const authReducer = (state: AuthDomainType = initialState, action: AuthActionTyp
 export default authReducer;
 
 //actions
-const setUserData = (data: AuthUserDataType) =>
+const setUserData = (data: AuthUserDataType, isUserLoggedIn: boolean) =>
     ({
         type: SET_USER_DATA,
         data,
-    } as const);
-
-const setIsUserLoggedIn = (value: boolean) =>
-    ({
-        type: SET_IS_USER_LOGGED_IN,
-        value,
-    } as const);
-
-const setUserId = (id: number) =>
-    ({
-        type: SET_USER_ID,
-        id,
+        isUserLoggedIn,
     } as const);
 
 // thunks
@@ -61,8 +44,7 @@ export const checkUserAuthentication = (): AppThunkType => async (dispatch) => {
     try {
         const resp = await authAPI.authorizeUser();
         if (resp.data.resultCode === ServerResultCode.OK) {
-            dispatch(setIsUserLoggedIn(true));
-            dispatch(setUserData(resp.data.data));
+            dispatch(setUserData(resp.data.data, true));
         } else {
             alert(resp.data.messages);
         }
@@ -81,13 +63,12 @@ export const loginUser =
             const resp = await authAPI.loginUser(formData);
             if (resp.status === 200) {
                 if (resp.data.resultCode === ServerResultCode.OK) {
-                    dispatch(setIsUserLoggedIn(true));
-                    dispatch(setUserId(resp.data.data.userId));
+                    dispatch(checkUserAuthentication());
                 } else {
-                    alert(resp.data.messages)
+                    alert(resp.data.messages);
                 }
             } else {
-                alert(resp.statusText)
+                alert(resp.statusText);
             }
         } catch (err) {
             alert(err);
@@ -96,6 +77,26 @@ export const loginUser =
         }
     };
 
+export const logoutUser = (): AppThunkType => async (dispatch) => {
+    dispatch(toggleIsFetching(true));
+    try {
+        const resp = await authAPI.logoutUser();
+        if (resp.status === 200) {
+            if (resp.data.resultCode === ServerResultCode.OK) {
+                dispatch(setUserData({ id: null, email: null, login: null }, false));
+            } else {
+                alert(resp.data.messages);
+            }
+        } else {
+            alert(resp.statusText);
+        }
+    } catch (err) {
+        alert(err);
+    } finally {
+        dispatch(toggleIsFetching(false));
+    }
+};
+
 //types
 export type AuthDomainType = {
     data: AuthUserDataType;
@@ -103,8 +104,4 @@ export type AuthDomainType = {
     isUserLoggedIn: boolean;
 };
 
-export type AuthActionType =
-    | ReturnType<typeof setUserData>
-    | ToggleIsFetchingType
-    | ReturnType<typeof setIsUserLoggedIn>
-    | ReturnType<typeof setUserId>;
+export type AuthActionType = ReturnType<typeof setUserData> | ToggleIsFetchingType;

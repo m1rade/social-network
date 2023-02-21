@@ -31,6 +31,9 @@ export const authAPI = {
     loginUser(formData: LoginData) {
         return instance.post<LoginData, AxiosResponse<ServerResponseType<{ userId: number }>>>(`auth/login`, formData);
     },
+    logoutUser() {
+        return instance.delete <ServerResponseType>("auth/login");
+    }
 };
 
 export const profileAPI = {
@@ -83,9 +86,9 @@ type ContactsDomainType = {
 };
 
 export type AuthUserDataType = {
-    id: number;
-    email: string;
-    login: string;
+    id: number | null;
+    email: string | null;
+    login: string | null;
 };
 
 export type LoginData = {
