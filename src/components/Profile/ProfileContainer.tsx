@@ -1,10 +1,8 @@
 import React from "react";
 import { connect } from "react-redux";
-import { RouteComponentProps, withRouter } from "react-router-dom";
+import { Redirect, RouteComponentProps, withRouter } from "react-router-dom";
 import { compose } from "redux";
 import { ProfileResponseType } from "../../api/social-networkAPI";
-import withAuthRedirect from "../../HOC/withAuthRedirect";
-// import withAuthRedirect from "../../HOC/withAuthRedirect";
 import {
     addPostMessage,
     fetchProfile,
@@ -18,15 +16,25 @@ import { Profile } from "./Profile";
 
 class ProfileContainer extends React.Component<ProfileContainerPropsType> {
     componentDidMount() {
-        let userID = this.props.match.params.userID;
-        this.props.fetchProfile(userID);
-        this.props.getProfileStatus(userID);
+        let userID: string | number | null = this.props.match.params.userID;
+
+        if (!userID) {
+            userID = this.props.loggedUserID;
+            if (!userID) {
+                this.props.history.push("/login");
+            }
+        }
+        
+        if (this.props.isUserLoggedIn && userID) {
+            this.props.fetchProfile(userID);
+            this.props.getProfileStatus(userID);
+        }
     }
 
     render() {
         const { history, location, match, staticContext, fetchProfile, getProfileStatus, ...restProps } = this.props;
 
-        return <>{this.props.isFetching ? <Preloader /> : <Profile {...restProps} />}</>;
+        return <>{this.props.isFetching || !this.props.isUserLoggedIn ? <Preloader /> : <Profile {...restProps} />}</>;
     }
 }
 
@@ -35,17 +43,18 @@ const mapStateToProps = (state: AppStateType): MapStatePropsType => ({
     userStatus: state.profile.status,
     isFetching: state.profile.isFetching,
     posts: state.profile.posts,
+    loggedUserID: state.auth.data.id,
+    isUserLoggedIn: state.auth.isUserLoggedIn,
 });
 
 export default compose<React.ComponentType>(
     connect<MapStatePropsType, MapDispatchPropsType, {}, AppStateType>(mapStateToProps, {
-        addPostMessage,
         fetchProfile,
         getProfileStatus,
         updateProfileStatus,
+        addPostMessage,
     }),
-    withRouter,
-    withAuthRedirect,
+    withRouter
 )(ProfileContainer);
 
 //types
@@ -54,11 +63,13 @@ type MapStatePropsType = {
     userStatus: string;
     posts: PostType[];
     isFetching: boolean;
+    loggedUserID: number | null;
+    isUserLoggedIn: boolean;
 };
 
 type MapDispatchPropsType = {
-    fetchProfile: (userID: string) => void;
-    getProfileStatus: (userID: string) => void;
+    fetchProfile: (userID: string | number) => void;
+    getProfileStatus: (userID: string | number) => void;
     updateProfileStatus: (status: string) => void;
     addPostMessage: (newPostMessage: string) => void;
 };

@@ -3,7 +3,7 @@ import withAuthRedirect from '../../HOC/withAuthRedirect';
 import UsersContainer from './Users/UsersContainer';
 
 
-const SearchPage: React.FC<any> = (props) => {
+const SearchPage: React.FC = (props) => {
     return (
         <div>
             <UsersContainer />

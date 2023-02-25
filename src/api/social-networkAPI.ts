@@ -37,12 +37,12 @@ export const authAPI = {
 };
 
 export const profileAPI = {
-    fetchProfile(userID: string) {
-        return instance.get<ProfileResponseType>(`profile/${userID}`);
+    fetchProfile(userID: string | number) {
+        return instance.get<ProfileResponseType>(`profile/` + userID);
     },
 
-    getProfileStatus(userID: string) {
-        return instance.get<string>(`profile/status/${userID}`);
+    getProfileStatus(userID: string | number) {
+        return instance.get<string>(`profile/status/` + userID);
     },
 
     updateProfileStatus(status: string) {
@@ -77,7 +77,7 @@ export type ProfileResponseType = {
     lookingForAJob: boolean;
     lookingForAJobDescription: string;
     fullName: string;
-    userId: number | undefined;
+    userId: number | null;
     photos: UserPhotoType;
 };
 

@@ -24,7 +24,7 @@ const initState: ProfileDomainType = {
         lookingForAJob: false,
         lookingForAJobDescription: "gfgf",
         fullName: "Cooool cat",
-        userId: undefined,
+        userId: null,
         photos: {
             small: "https://i.pinimg.com/originals/ae/24/87/ae24874dd301843548c034a3d2973658.png",
             large: "",
@@ -83,13 +83,9 @@ const setProfileStatus = (status: string) =>
 
 //thunks
 export const fetchProfile =
-    (userID: string): AppThunkType =>
+    (userID: string | number): AppThunkType =>
     async (dispatch) => {
         dispatch(toggleIsFetching(true));
-
-        if (!userID) {
-            userID = "25832";
-        }
 
         try {
             const resp = await profileAPI.fetchProfile(userID);
@@ -102,11 +98,8 @@ export const fetchProfile =
     };
 
 export const getProfileStatus =
-    (userID: string): AppThunkType =>
+    (userID: string | number): AppThunkType =>
     async (dispatch) => {
-        if (!userID) {
-            userID = "25832";
-        }
 
         try {
             const resp = await profileAPI.getProfileStatus(userID);

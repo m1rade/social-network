@@ -6,7 +6,7 @@ import messagesReducer from "./messages_reducer";
 import profileReducer, { ProfileActionType } from "./profile_reducer";
 import searchReducer, { SearchPageActionType } from "./search_reducer";
 import { FormAction, reducer as formReducer } from "redux-form";
-import appReducer from "./app_reducer";
+import appReducer, { AppActionType } from "./app_reducer";
 
 const rootReducer = combineReducers({
     profile: profileReducer,
@@ -23,7 +23,7 @@ const store = createStore(rootReducer, applyMiddleware(thunkMiddleware));
 export default store;
 
 export type AppStateType = ReturnType<typeof rootReducer>;
-type rootActionsType = SearchPageActionType | ProfileActionType | AuthActionType | FormAction;
+type rootActionsType = SearchPageActionType | ProfileActionType | AuthActionType | FormAction | AppActionType;
 export type AppThunkType<ReturnType = void> = ThunkAction<ReturnType, AppStateType, unknown, rootActionsType>;
 
 // @ts-ignore

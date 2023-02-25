@@ -42,4 +42,4 @@ type InitialStateType = {
     isInitialized: boolean;
 };
 
-type AppActionType = ReturnType<typeof setInitialization>;
+export type AppActionType = ReturnType<typeof setInitialization>;
