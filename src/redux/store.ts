@@ -5,7 +5,8 @@ import friendsReducer from "./friends_reducer";
 import messagesReducer from "./messages_reducer";
 import profileReducer, { ProfileActionType } from "./profile_reducer";
 import searchReducer, { SearchPageActionType } from "./search_reducer";
-import { reducer as formReducer } from "redux-form";
+import { FormAction, reducer as formReducer } from "redux-form";
+import appReducer from "./app_reducer";
 
 const rootReducer = combineReducers({
     profile: profileReducer,
@@ -13,6 +14,7 @@ const rootReducer = combineReducers({
     friends: friendsReducer,
     search: searchReducer,
     auth: authReducer,
+    app: appReducer,
     form: formReducer,
 });
 
@@ -21,8 +23,8 @@ const store = createStore(rootReducer, applyMiddleware(thunkMiddleware));
 export default store;
 
 export type AppStateType = ReturnType<typeof rootReducer>;
-type AppActionsType = SearchPageActionType | ProfileActionType | AuthActionType;
-export type AppThunkType<ReturnType = void> = ThunkAction<ReturnType, AppStateType, unknown, AppActionsType>;
+type rootActionsType = SearchPageActionType | ProfileActionType | AuthActionType | FormAction;
+export type AppThunkType<ReturnType = void> = ThunkAction<ReturnType, AppStateType, unknown, rootActionsType>;
 
 // @ts-ignore
 window.store = store;

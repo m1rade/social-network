@@ -1,3 +1,4 @@
+import { stopSubmit } from "redux-form";
 import { authAPI, AuthUserDataType, LoginData } from "../api/social-networkAPI";
 import { ServerResultCode } from "./../api/social-networkAPI";
 import { toggleIsFetching, ToggleIsFetchingType } from "./search_reducer";
@@ -38,11 +39,13 @@ const setUserData = (data: AuthUserDataType, isUserLoggedIn: boolean) =>
     } as const);
 
 // thunks
-export const checkUserAuthentication = (): AppThunkType => async (dispatch) => {
+export const authorizeUser = (): AppThunkType => async (dispatch) => {
     dispatch(toggleIsFetching(true));
 
+    let resp;
+
     try {
-        const resp = await authAPI.authorizeUser();
+        resp = await authAPI.authorizeUser();
         if (resp.data.resultCode === ServerResultCode.OK) {
             dispatch(setUserData(resp.data.data, true));
         } else {
@@ -53,6 +56,8 @@ export const checkUserAuthentication = (): AppThunkType => async (dispatch) => {
     } finally {
         dispatch(toggleIsFetching(false));
     }
+
+    return resp;
 };
 
 export const loginUser =
@@ -63,9 +68,13 @@ export const loginUser =
             const resp = await authAPI.loginUser(formData);
             if (resp.status === 200) {
                 if (resp.data.resultCode === ServerResultCode.OK) {
-                    dispatch(checkUserAuthentication());
+                    dispatch(authorizeUser());
                 } else {
-                    alert(resp.data.messages);
+                    dispatch(
+                        stopSubmit("login", {
+                            _error: resp.data.messages.length > 0 ? resp.data.messages[0] : "Some error",
+                        })
+                    );
                 }
             } else {
                 alert(resp.statusText);
