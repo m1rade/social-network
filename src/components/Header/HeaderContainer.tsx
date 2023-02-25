@@ -1,13 +1,10 @@
 import React from "react";
 import { connect } from "react-redux";
-import { checkUserAuthentication, logoutUser } from "../../redux/auth_reducer";
+import { logoutUser } from "../../redux/auth_reducer";
 import { AppStateType } from "../../redux/store";
 import { Header } from "./Header";
 
 class HeaderContainer extends React.Component<HeaderContainerPropsType> {
-    componentDidMount() {
-        this.props.checkUserAuthentication();
-    }
 
     render() {
         return (
@@ -26,7 +23,6 @@ const mapStateToProps = (state: AppStateType): MapStatePropsType => ({
 });
 
 export default connect<MapStatePropsType, MapDispatchPropsType, {}, AppStateType>(mapStateToProps, {
-    checkUserAuthentication,
     logoutUser,
 })(HeaderContainer);
 
@@ -36,7 +32,6 @@ type MapStatePropsType = {
     login: string | null;
 };
 type MapDispatchPropsType = {
-    checkUserAuthentication: () => void;
     logoutUser: () => void;
 };
 
