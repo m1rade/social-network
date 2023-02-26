@@ -10,7 +10,7 @@ import { Music } from "../components/Music";
 import { Navbar } from "../components/Navbar/Navbar";
 import { News } from "../components/News";
 import ProfileContainer from "../components/Profile/ProfileContainer";
-import SearchPageContainer from "../components/Search/SearchPage";
+import { SearchPage } from "../components/Search/SearchPage";
 import { Settings } from "../components/Settings";
 import { initializeApp } from "../redux/app_reducer";
 import { AppStateType } from "../redux/store";
@@ -22,7 +22,7 @@ class App extends React.Component<AppPropsType> {
     }
 
     render() {
-        if (!this.props.isInitialized) return <Preloader />
+        if (!this.props.isInitialized) return <Preloader />;
 
         return (
             <div className="app-wrapper">
@@ -33,7 +33,7 @@ class App extends React.Component<AppPropsType> {
                         <Route exact path={"/"} render={() => <ProfileContainer />} />
                         <Route exact path="/profile/:userID?" render={() => <ProfileContainer />} />
                         <Route exact path="/messages" render={() => <MessagesContainer />} />
-                        <Route exact path="/search" render={() => <SearchPageContainer />} />
+                        <Route exact path="/search" render={() => <SearchPage />} />
                         <Route exact path="/news" render={() => <News />} />
                         <Route exact path="/music" render={() => <Music />} />
                         <Route exact path="/settings" render={() => <Settings />} />

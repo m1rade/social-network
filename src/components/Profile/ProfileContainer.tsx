@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { Redirect, RouteComponentProps, withRouter } from "react-router-dom";
+import { RouteComponentProps, withRouter } from "react-router-dom";
 import { compose } from "redux";
 import { ProfileResponseType } from "../../api/social-networkAPI";
 import {
@@ -20,12 +20,12 @@ class ProfileContainer extends React.Component<ProfileContainerPropsType> {
 
         if (!userID) {
             userID = this.props.loggedUserID;
-            if (!userID) {
+            if (!userID && !this.props.isUserLoggedIn) {
                 this.props.history.push("/login");
             }
         }
-        
-        if (this.props.isUserLoggedIn && userID) {
+
+        if (userID) {
             this.props.fetchProfile(userID);
             this.props.getProfileStatus(userID);
         }
@@ -34,7 +34,7 @@ class ProfileContainer extends React.Component<ProfileContainerPropsType> {
     render() {
         const { history, location, match, staticContext, fetchProfile, getProfileStatus, ...restProps } = this.props;
 
-        return <>{this.props.isFetching || !this.props.isUserLoggedIn ? <Preloader /> : <Profile {...restProps} />}</>;
+        return <>{this.props.isFetching ? <Preloader /> : <Profile {...restProps} />}</>;
     }
 }
 
