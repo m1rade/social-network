@@ -4,10 +4,9 @@ import { Redirect } from "react-router-dom";
 import { LoginData } from "../../api/social-networkAPI";
 import { loginUser } from "../../redux/auth_reducer";
 import { AppStateType } from "../../redux/store";
-import Preloader from "../common/Preloader";
 import LoginForm from "./LoginForm";
 
-const LoginPage: React.FC<LoginPropsType> = ({ loginUser, isUserLoggedIn, isFetching }) => {
+const LoginPage: React.FC<LoginPropsType> = ({ loginUser, isUserLoggedIn }) => {
     const onSubmit = (formData: LoginData) => {
         loginUser(formData);
     };
@@ -15,23 +14,16 @@ const LoginPage: React.FC<LoginPropsType> = ({ loginUser, isUserLoggedIn, isFetc
     if (isUserLoggedIn) return <Redirect to="/profile" />;
 
     return (
-        <>
-            {isFetching ? (
-                <Preloader />
-            ) : (
-                <div>
-                    <h1>LoginPage</h1>
-                    <LoginForm onSubmit={onSubmit} />
-                </div>
-            )}
-        </>
+        <div>
+            <h1>LoginPage</h1>
+            <LoginForm onSubmit={onSubmit} />
+        </div>
     );
 };
 
 //HOC
 const mapStateToProps = (state: AppStateType): MapPropsType => ({
     isUserLoggedIn: state.auth.isUserLoggedIn,
-    isFetching: state.auth.isFetching,
 });
 
 export default connect<MapPropsType, DispatchPropsType, {}, AppStateType>(mapStateToProps, { loginUser })(LoginPage);
@@ -39,7 +31,6 @@ export default connect<MapPropsType, DispatchPropsType, {}, AppStateType>(mapSta
 //types
 type MapPropsType = {
     isUserLoggedIn: boolean;
-    isFetching: boolean;
 };
 type DispatchPropsType = {
     loginUser: (data: LoginData) => void;

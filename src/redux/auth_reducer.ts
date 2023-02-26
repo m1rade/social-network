@@ -46,10 +46,10 @@ export const authorizeUser = (): AppThunkType => async (dispatch) => {
 
     try {
         resp = await authAPI.authorizeUser();
-        if (resp.data.resultCode === ServerResultCode.OK) {
-            dispatch(setUserData(resp.data.data, true));
-        } else {
-            alert(resp.data.messages);
+        if (resp.status === 200) {
+            if (resp.data.resultCode === ServerResultCode.OK) {
+                dispatch(setUserData(resp.data.data, true));
+            }
         }
     } catch (err) {
         alert(err);

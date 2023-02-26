@@ -29,7 +29,7 @@ const LOGIN_FIELDS: LoginFieldType[] = [
     },
 ];
 
-const LoginForm: React.FC<InjectedFormProps<LoginData>> = ({ handleSubmit }) => {
+const LoginForm: React.FC<InjectedFormProps<LoginData>> = ({ handleSubmit, error }) => {
     const renderField = (field: LoginFieldType) => {
         return (
             <Field
@@ -48,6 +48,7 @@ const LoginForm: React.FC<InjectedFormProps<LoginData>> = ({ handleSubmit }) => 
         <>
             <form onSubmit={handleSubmit}>
                 {LOGIN_FIELDS.map((f) => renderField(f))}
+                {error && <div className={s.formDataError}>{error}</div>}
                 <div>
                     <YellowButton>Log in</YellowButton>
                 </div>
