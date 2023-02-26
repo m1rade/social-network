@@ -28,7 +28,6 @@ const MessageForm: React.FC<InjectedFormProps<MessageDataType, MessageFormPropsT
                 name="messageBody"
                 placeholder={placeholder || undefined}
                 validate={validators}
-                {...restProps}
             />
             <YellowButton>{buttonName || "Send"}</YellowButton>
         </form>
