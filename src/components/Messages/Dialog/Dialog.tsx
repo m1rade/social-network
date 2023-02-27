@@ -8,6 +8,8 @@ import { MessageBubble } from "./MessageBubble/MessageBubble";
 const MAX_MESSAGE_LENGTH_150 = maxLengthValidator(150);
 
 export const Dialog: React.FC<DialogPropsType> = (props) => {
+    console.log("RERENDER dialog", props);
+    
     const onSubmitHandler = (messageBody: MessageDataType) => {
         props.addMessage(messageBody.messageBody);
     };

@@ -10,7 +10,14 @@ import {
     PostType,
     updateProfileStatus,
 } from "../../redux/profile_reducer";
-import { selectIsFetching, selectIsUserLoggedIn, selectLoggedUserID, selectPosts, selectUserInfo, selectUserStatus } from "../../redux/selectors/selectors";
+import {
+    selectIsFetching,
+    selectIsUserLoggedIn,
+    selectLoggedUserID,
+    selectPosts,
+    selectUserInfo,
+    selectUserStatus,
+} from "../../redux/selectors/selectors";
 import { AppStateType } from "../../redux/store";
 import Preloader from "../common/Preloader";
 import { Profile } from "./Profile";

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import style from "./MessageBubble.module.css";
 
 type PropsType = {
@@ -6,10 +6,12 @@ type PropsType = {
     text: string
 }
 
-export const MessageBubble = (props: PropsType) => {
+export const MessageBubble = memo((props: PropsType) => {
+    console.log("RERENDER BUBBLE");
+    
     return (
         <div className={style.message_bubble}>
             <span className={style.m_text}>{props.text}</span>
         </div>
     );
-};
+});

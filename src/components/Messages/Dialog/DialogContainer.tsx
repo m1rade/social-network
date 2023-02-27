@@ -1,18 +1,18 @@
 import React from "react";
 import { connect } from "react-redux";
 import { addMessage, MessageType } from "../../../redux/messages_reducer";
+import { selectMessages, selectReversedMessages } from "../../../redux/selectors/selectors";
 import { AppStateType } from "../../../redux/store";
 import { Dialog } from "./Dialog";
 
 const mapStateToProps = (state: AppStateType): MapStateToPropsType => {
-    const reversed_messages = [...state.messages.all_messages].reverse();
     return {
-        receivedMessages: state.messages.all_messages,
-        sentMessages: reversed_messages,
+        receivedMessages: selectMessages(state),
+        sentMessages: selectReversedMessages(state),
     };
 };
 
-export const DialogContainer = connect<MapStateToPropsType, MapDispatchToPropsType, {}, AppStateType>(mapStateToProps, {
+export default connect<MapStateToPropsType, MapDispatchToPropsType, {}, AppStateType>(mapStateToProps, {
     addMessage,
 })(Dialog);
 

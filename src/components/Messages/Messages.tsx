@@ -1,7 +1,7 @@
 import React from "react";
-import ChatsContainer from "../../containers/ChatsContainer";
 import withAuthRedirect from "../../HOC/withAuthRedirect";
-import { DialogContainer } from "./Dialog/DialogContainer";
+import ChatsContainer from "./Chats/ChatsContainer";
+import DialogContainer from "./Dialog/DialogContainer";
 import style from "./Messages.module.css";
 
 const Messages: React.FC<any> = (props) => {

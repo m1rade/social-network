@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import s from "./MyPosts.module.css";
 import {Post} from "./Post/Post";
 import { PostType } from "../../../redux/profile_reducer";
@@ -13,7 +13,7 @@ type MyPostsPropsType = {
 
 const MAX_MESSAGE_LENGTH_50 = maxLengthValidator(50);
 
-export const MyPosts: React.FC<MyPostsPropsType> = (props) => {
+export const MyPosts: React.FC<MyPostsPropsType> = memo((props) => {
     const addNewPostHandler = (newPostMessage: MessageDataType) => {
         props.addNewPost(newPostMessage.messageBody);
     };
@@ -37,4 +37,4 @@ export const MyPosts: React.FC<MyPostsPropsType> = (props) => {
             <div>{mappedPosts}</div>
         </>
     );
-};
+});
