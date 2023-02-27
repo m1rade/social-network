@@ -7,8 +7,6 @@ type PropsType = {
 }
 
 export const MessageBubble = memo((props: PropsType) => {
-    console.log("RERENDER BUBBLE");
-    
     return (
         <div className={style.message_bubble}>
             <span className={style.m_text}>{props.text}</span>
