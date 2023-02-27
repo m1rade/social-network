@@ -10,6 +10,7 @@ import {
     PostType,
     updateProfileStatus,
 } from "../../redux/profile_reducer";
+import { selectIsFetching, selectIsUserLoggedIn, selectLoggedUserID, selectPosts, selectUserInfo, selectUserStatus } from "../../redux/selectors/selectors";
 import { AppStateType } from "../../redux/store";
 import Preloader from "../common/Preloader";
 import { Profile } from "./Profile";
@@ -39,12 +40,12 @@ class ProfileContainer extends React.Component<ProfileContainerPropsType> {
 }
 
 const mapStateToProps = (state: AppStateType): MapStatePropsType => ({
-    userInfo: state.profile.userInfo,
-    userStatus: state.profile.status,
-    isFetching: state.profile.isFetching,
-    posts: state.profile.posts,
-    loggedUserID: state.auth.data.id,
-    isUserLoggedIn: state.auth.isUserLoggedIn,
+    userInfo: selectUserInfo(state),
+    userStatus: selectUserStatus(state),
+    isFetching: selectIsFetching(state),
+    posts: selectPosts(state),
+    loggedUserID: selectLoggedUserID(state),
+    isUserLoggedIn: selectIsUserLoggedIn(state),
 });
 
 export default compose<React.ComponentType>(
