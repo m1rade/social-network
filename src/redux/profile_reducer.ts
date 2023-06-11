@@ -1,9 +1,10 @@
 import { ProfileResponseType, ServerResultCode } from "../api/social-networkAPI";
 import { profileAPI } from "./../api/social-networkAPI";
-import { toggleIsFetching, ToggleIsFetchingType } from "./search_reducer";
+import { ToggleIsFetchingType, toggleIsFetching } from "./search_reducer";
 import { AppThunkType } from "./store";
 
 const ADD_POST = "ADD-POST";
+const DELETE_POST = "DELETE_POST";
 const SET_USER_INFO = "SET_USER_INFO";
 const TOGGLE_IS_FETCHING = "TOGGLE_IS_FETCHING";
 const SET_PROFILE_STATUS = "SET_PROFILE_STATUS";
@@ -52,6 +53,8 @@ const profileReducer = (state: ProfileDomainType = initState, action: ProfileAct
                 ...state,
                 posts: [newPostObj, ...state.posts],
             };
+        case DELETE_POST:
+            return { ...state, posts: state.posts.filter(p => p.id !== action.id) };
         case TOGGLE_IS_FETCHING:
             return { ...state, isFetching: action.value };
         case SET_PROFILE_STATUS:
@@ -69,6 +72,12 @@ export const addPostMessage = (newPostMessage: string) =>
         newPostMessage,
     } as const);
 
+export const deletePostMessage = (id: number) =>
+    ({
+        type: DELETE_POST,
+        id,
+    } as const);
+
 const setUserInfo = (userInfo: ProfileResponseType) =>
     ({
         type: SET_USER_INFO,
@@ -84,7 +93,7 @@ const setProfileStatus = (status: string) =>
 //thunks
 export const fetchProfile =
     (userID: string | number): AppThunkType =>
-    async (dispatch) => {
+    async dispatch => {
         dispatch(toggleIsFetching(true));
 
         try {
@@ -99,8 +108,7 @@ export const fetchProfile =
 
 export const getProfileStatus =
     (userID: string | number): AppThunkType =>
-    async (dispatch) => {
-
+    async dispatch => {
         try {
             const resp = await profileAPI.getProfileStatus(userID);
             if (resp.status === 200) {
@@ -113,7 +121,7 @@ export const getProfileStatus =
 
 export const updateProfileStatus =
     (status: string): AppThunkType =>
-    async (dispatch) => {
+    async dispatch => {
         try {
             const resp = await profileAPI.updateProfileStatus(status);
             if (resp.status === 200) {
@@ -143,4 +151,5 @@ export type ProfileActionType =
     | ReturnType<typeof addPostMessage>
     | ReturnType<typeof setUserInfo>
     | ReturnType<typeof setProfileStatus>
+    | ReturnType<typeof deletePostMessage>
     | ToggleIsFetchingType;
