@@ -54,14 +54,14 @@ const searchReducer = (
 export default searchReducer;
 
 //actions
-const follow_unfollowHandler = (id: number, followed: boolean) =>
+export const follow_unfollowUser = (id: number, followed: boolean) =>
     ({
         type: FOLLOW_UNFOLLOW_USER,
         id,
         followed,
     } as const);
 
-const setUsers = (items: UserType[]) =>
+export const setUsers = (items: UserType[]) =>
     ({
         type: SET_USERS,
         items,
@@ -129,7 +129,7 @@ export const follow_UnfollowUserThunk =
                 try {
                     const resp = await userAPI.followUser(userID);
                     if (resp.data.resultCode === ServerResultCode.OK) {
-                        dispatch(follow_unfollowHandler(userID, !followed));
+                        dispatch(follow_unfollowUser(userID, !followed));
                     } else {
                         alert(resp.data.messages);
                     }
@@ -140,7 +140,7 @@ export const follow_UnfollowUserThunk =
                 try {
                     const resp = await userAPI.unfollowUser(userID);
                     if (resp.data.resultCode === ServerResultCode.OK) {
-                        dispatch(follow_unfollowHandler(userID, !followed));
+                        dispatch(follow_unfollowUser(userID, !followed));
                     } else {
                         alert(resp.data.messages);
                     }
@@ -156,7 +156,7 @@ export const follow_UnfollowUserThunk =
     };
 
 //types
-type SearchPageDomainType = UsersResponseType & {
+export type SearchPageDomainType = UsersResponseType & {
     curPage: number;
     itemsPerPage: number;
     isFetching: boolean;
@@ -165,7 +165,7 @@ type SearchPageDomainType = UsersResponseType & {
 
 export type ToggleIsFetchingType = ReturnType<typeof toggleIsFetching>;
 export type SearchPageActionType =
-    | ReturnType<typeof follow_unfollowHandler>
+    | ReturnType<typeof follow_unfollowUser>
     | ReturnType<typeof setUsers>
     | ReturnType<typeof setCurrentPage>
     | ReturnType<typeof setTotalPages>
