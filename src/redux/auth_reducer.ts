@@ -31,7 +31,7 @@ const authReducer = (state: AuthDomainType = initialState, action: AuthActionTyp
 export default authReducer;
 
 //actions
-const setUserData = (data: AuthUserDataType, isUserLoggedIn: boolean) =>
+export const setUserData = (data: AuthUserDataType, isUserLoggedIn: boolean) =>
     ({
         type: SET_USER_DATA,
         data,

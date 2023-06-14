@@ -49,7 +49,7 @@ export type MessageType = {
     text: string;
 };
 
-type MessagesType = {
+export type MessagesType = {
     all_messages: MessageType[];
 };
 
