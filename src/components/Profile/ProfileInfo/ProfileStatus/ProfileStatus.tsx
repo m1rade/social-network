@@ -1,5 +1,5 @@
 import React, { ChangeEvent, FocusEvent } from "react";
-import YellowButton from "../../common/Buttons/YellowButton";
+import YellowButton from "../../../common/Buttons/YellowButton";
 import s from "./ProfileStatus.module.css";
 
 type StateType = {
@@ -19,9 +19,10 @@ export class ProfileStatus extends React.Component<ProfileStatusPropsType, State
     };
 
     componentDidUpdate(prevProps: Readonly<ProfileStatusPropsType>, prevState: Readonly<StateType>) {
-        if (prevProps.status !== this.props.status) {
+        const {status} = this.props;
+        if (prevProps.status !== status) {
             this.setState({
-                status: this.props.status,
+                status: status,
             });
         }
     }
@@ -41,9 +42,10 @@ export class ProfileStatus extends React.Component<ProfileStatusPropsType, State
     };
 
     handleOnBlur = (e: FocusEvent<HTMLInputElement>) => {
+        const {status} = this.props;
         if (!e.relatedTarget) {
             this.setState({
-                status: this.props.status,
+                status: status,
             });
 
             this.toggleEditMode(false);

@@ -31,7 +31,6 @@ beforeEach(() => {
             { id: 2, message: "Hello world!" },
             { id: 3, message: "I ate" },
         ],
-        isFetching: false,
     };
 });
 

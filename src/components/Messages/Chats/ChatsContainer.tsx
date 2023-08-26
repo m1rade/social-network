@@ -5,10 +5,10 @@ import { FriendsType } from "../../../redux/friends_reducer";
 import { AppStateType } from "../../../redux/store";
 import s from "./Chats.module.css";
 
-export const Chats: React.FC<ChatsPropsType> = (props) => {
+export const Chats: React.FC<ChatsPropsType> = ({ friends }) => {
     return (
         <div className={s.dialogs}>
-            {props.friends.map((f) => {
+            {friends.map(f => {
                 return (
                     <div key={f.id} className={s.dialogItem}>
                         <NavLink activeClassName={s.active} to={`/dialog/${f.id}`}>

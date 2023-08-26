@@ -6,15 +6,17 @@ import { ProfileInfo } from "./ProfileInfo/ProfileInfo";
 
 type ProfileSuperPropsType = Omit<ProfileOwnPropsType, "fetchProfile" | "getProfileStatus">;
 
-export const Profile: React.FC<ProfileSuperPropsType> = (props) => {
+export const Profile: React.FC<ProfileSuperPropsType> = ({
+    userInfo,
+    userStatus,
+    updateProfileStatus,
+    posts,
+    addPostMessage,
+}) => {
     return (
         <div className={s.profile}>
-            <ProfileInfo userInfo={props.userInfo} userStatus={props.userStatus} updateProfileStatus={props.updateProfileStatus}/>
-            <MyPosts
-                posts={props.posts}
-                photo={props.userInfo.photos.small}
-                addNewPost={props.addPostMessage}
-            />
+            <ProfileInfo userInfo={userInfo} userStatus={userStatus} updateProfileStatus={updateProfileStatus} />
+            <MyPosts posts={posts} photo={userInfo.photos.small} addNewPost={addPostMessage} />
         </div>
     );
 };

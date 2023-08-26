@@ -1,15 +1,14 @@
 import { ProfileResponseType, ServerResultCode } from "../api/social-networkAPI";
 import { profileAPI } from "./../api/social-networkAPI";
-import { ToggleIsFetchingType, toggleIsFetching } from "./search_reducer";
+import { ToggleIsFetchingType, toggleIsFetching } from "./app_reducer";
 import { AppThunkType } from "./store";
 
-const ADD_POST = "ADD-POST";
-const DELETE_POST = "DELETE_POST";
-const SET_USER_INFO = "SET_USER_INFO";
-const TOGGLE_IS_FETCHING = "TOGGLE_IS_FETCHING";
-const SET_PROFILE_STATUS = "SET_PROFILE_STATUS";
+const ADD_POST = "PROFILE/ADD-POST";
+const DELETE_POST = "PROFILE/DELETE_POST";
+const SET_USER_INFO = "PROFILE/SET_USER_INFO";
+const SET_PROFILE_STATUS = "PROFILE/SET_PROFILE_STATUS";
 
-const initState: ProfileDomainType = {
+const initState = {
     userInfo: {
         aboutMe: "Cooool cat's description here",
         contacts: {
@@ -30,14 +29,9 @@ const initState: ProfileDomainType = {
             small: "https://i.pinimg.com/originals/ae/24/87/ae24874dd301843548c034a3d2973658.png",
             large: "",
         },
-    },
+    } as ProfileResponseType,
     status: "",
-    posts: [
-        { id: 1, message: "How are you today?" },
-        { id: 2, message: "Hello world!" },
-        { id: 3, message: "I ate" },
-    ],
-    isFetching: false,
+    posts: [] as PostType[],
 };
 
 const profileReducer = (state: ProfileDomainType = initState, action: ProfileActionType): ProfileDomainType => {
@@ -55,8 +49,6 @@ const profileReducer = (state: ProfileDomainType = initState, action: ProfileAct
             };
         case DELETE_POST:
             return { ...state, posts: state.posts.filter(p => p.id !== action.id) };
-        case TOGGLE_IS_FETCHING:
-            return { ...state, isFetching: action.value };
         case SET_PROFILE_STATUS:
             return { ...state, status: action.status };
         default:
@@ -140,12 +132,7 @@ export type PostType = {
     message: string;
 };
 
-export type ProfileDomainType = {
-    userInfo: ProfileResponseType;
-    status: string;
-    posts: PostType[];
-    isFetching: boolean;
-};
+export type ProfileDomainType = typeof initState;
 
 export type ProfileActionType =
     | ReturnType<typeof addPostMessage>

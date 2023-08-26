@@ -5,7 +5,6 @@ import { AppStateType } from "../../redux/store";
 import { Header } from "./Header";
 
 class HeaderContainer extends React.Component<HeaderContainerPropsType> {
-
     render() {
         return (
             <Header

@@ -1,0 +1,8 @@
+.avatar {}
+
+.avatar img {
+    width: 125px;
+    height: 125px;
+}
+
+.smallAvatar {}

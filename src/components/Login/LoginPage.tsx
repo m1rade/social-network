@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
 import { LoginData } from "../../api/social-networkAPI";
 import { loginUser } from "../../redux/auth_reducer";
+import { selectIsUserLoggedIn } from "../../redux/selectors/selectors";
 import { AppStateType } from "../../redux/store";
 import LoginForm from "./LoginForm";
 
@@ -23,7 +24,7 @@ const LoginPage: React.FC<LoginPropsType> = ({ loginUser, isUserLoggedIn }) => {
 
 //HOC
 const mapStateToProps = (state: AppStateType): MapPropsType => ({
-    isUserLoggedIn: state.auth.isUserLoggedIn,
+    isUserLoggedIn: selectIsUserLoggedIn(state),
 });
 
 export default connect<MapPropsType, DispatchPropsType, {}, AppStateType>(mapStateToProps, { loginUser })(LoginPage);

@@ -1,5 +1,5 @@
 import React from "react";
-import getPageList from "../../../../utils/getPageList";
+import getPageList from "../../../utils/getPageList";
 import s from "./Pagination.module.css";
 
 type PaginationPropsType = {
@@ -9,12 +9,12 @@ type PaginationPropsType = {
     changeCurrentPage: (curPage: number) => void;
 };
 
-export const Pagination: React.FC<PaginationPropsType> = (props) => {
-    const mappedPages = getPageList(props.totalCount, props.curPage, props.pageSize).map((p) => {
-        const spanPageClass = props.curPage === p ? `${s.currentPage} ${s.page}` : s.page;
+export const Pagination: React.FC<PaginationPropsType> = ({ totalCount, curPage, pageSize, changeCurrentPage }) => {
+    const mappedPages = getPageList(totalCount, curPage, pageSize).map(p => {
+        const spanPageClass = curPage === p ? `${s.currentPage} ${s.page}` : s.page;
 
         return (
-            <span key={p} className={spanPageClass} onClick={() => props.changeCurrentPage(p)}>
+            <span key={p} className={spanPageClass} onClick={() => changeCurrentPage(p)}>
                 {p}{" "}
             </span>
         );

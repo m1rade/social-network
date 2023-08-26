@@ -1,19 +1,13 @@
 import { stopSubmit } from "redux-form";
 import { authAPI, AuthUserDataType, LoginData } from "../api/social-networkAPI";
 import { ServerResultCode } from "./../api/social-networkAPI";
-import { toggleIsFetching, ToggleIsFetchingType } from "./search_reducer";
+import { toggleIsFetching, ToggleIsFetchingType } from "./app_reducer";
 import { AppThunkType } from "./store";
 
-const SET_USER_DATA = "SET_USER_DATA";
-const TOGGLE_IS_FETCHING = "TOGGLE_IS_FETCHING";
+const SET_USER_DATA = "AUTH/SET_USER_DATA";
 
-const initialState: AuthDomainType = {
-    data: {
-        id: null,
-        email: null,
-        login: null,
-    },
-    isFetching: false,
+const initialState = {
+    data: {} as AuthUserDataType,
     isUserLoggedIn: false,
 };
 
@@ -21,8 +15,6 @@ const authReducer = (state: AuthDomainType = initialState, action: AuthActionTyp
     switch (action.type) {
         case SET_USER_DATA:
             return { ...state, data: { ...action.data }, isUserLoggedIn: action.isUserLoggedIn };
-        case TOGGLE_IS_FETCHING:
-            return { ...state, isFetching: action.value };
         default:
             return state;
     }
@@ -107,10 +99,6 @@ export const logoutUser = (): AppThunkType => async (dispatch) => {
 };
 
 //types
-export type AuthDomainType = {
-    data: AuthUserDataType;
-    isFetching: boolean;
-    isUserLoggedIn: boolean;
-};
+export type AuthDomainType = typeof initialState;
 
 export type AuthActionType = ReturnType<typeof setUserData> | ToggleIsFetchingType;

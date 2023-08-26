@@ -4,10 +4,10 @@ import { RouteComponentProps, withRouter } from "react-router-dom";
 import { compose } from "redux";
 import { ProfileResponseType } from "../../api/social-networkAPI";
 import {
+    PostType,
     addPostMessage,
     fetchProfile,
     getProfileStatus,
-    PostType,
     updateProfileStatus,
 } from "../../redux/profile_reducer";
 import {

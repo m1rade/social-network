@@ -1,18 +1,18 @@
 import React, { memo } from "react";
+import userImagePlaceholder from "./../../../../assets/icons/user.png";
 import style from "./Post.module.css";
-import userImagePlaceholder from "./../../../../assets/icons/user.png"
 
 type PostPropsType = {
-    postID: number
-    message: string
-    avatar: string | null
-}
+    postID: number;
+    message: string;
+    avatar: string | null;
+};
 
-export const Post: React.FC<PostPropsType> = memo((props) => {
+export const Post: React.FC<PostPropsType> = memo(({ postID, message, avatar }) => {
     return (
         <div className={style.item}>
-            <img src={props.avatar ? props.avatar : userImagePlaceholder} alt="small-avatar" />
-            <span>{props.message}</span>
+            <img src={avatar ? avatar : userImagePlaceholder} alt="small-avatar" />
+            <span>{message}</span>
         </div>
     );
 });

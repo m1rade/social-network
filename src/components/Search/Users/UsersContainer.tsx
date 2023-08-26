@@ -2,17 +2,27 @@ import React from "react";
 import { connect } from "react-redux";
 import { UserType } from "../../../api/social-networkAPI";
 import { follow_UnfollowUserThunk, getUsersThunk } from "../../../redux/search_reducer";
+import {
+    selectCurPage,
+    selectFollowingInProgress,
+    selectIsFetching,
+    selectItemsPerPage,
+    selectTotalCount,
+    selectUsers,
+} from "../../../redux/selectors/selectors";
 import { AppStateType } from "../../../redux/store";
 import Preloader from "../../common/Preloader";
 import { Users } from "./Users";
 
 class UsersContainer extends React.Component<UsersContainerPropsType> {
     componentDidMount() {
-        this.props.getUsersThunk(this.props.itemsPerPage, this.props.curPage);
+        const { itemsPerPage, curPage } = this.props;
+        this.props.getUsersThunk(itemsPerPage, curPage);
     }
 
     changePageHandler = (curPage: number) => {
-        this.props.getUsersThunk(this.props.itemsPerPage, curPage);
+        const { itemsPerPage } = this.props;
+        this.props.getUsersThunk(itemsPerPage, curPage);
     };
 
     followUnfollowHandler = (userID: number, followed: boolean) => {
@@ -41,12 +51,12 @@ class UsersContainer extends React.Component<UsersContainerPropsType> {
 }
 
 const mapStateToProps = (state: AppStateType): MapStatePropsType => ({
-    users: state.search.items,
-    totalCount: state.search.totalCount,
-    curPage: state.search.curPage,
-    itemsPerPage: state.search.itemsPerPage,
-    isFetching: state.search.isFetching,
-    followingInProgress: state.search.followingInProgress,
+    users: selectUsers(state),
+    totalCount: selectTotalCount(state),
+    curPage: selectCurPage(state),
+    itemsPerPage: selectItemsPerPage(state),
+    isFetching: selectIsFetching(state),
+    followingInProgress: selectFollowingInProgress(state),
 });
 
 export default connect<MapStatePropsType, MapDispatchPropsType, {}, AppStateType>(mapStateToProps, {

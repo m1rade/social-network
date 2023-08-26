@@ -11,7 +11,6 @@ beforeEach(() => {
         error: "",
         curPage: 1,
         itemsPerPage: 20,
-        isFetching: false,
         followingInProgress: [],
     };
 

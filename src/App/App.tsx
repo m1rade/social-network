@@ -2,7 +2,6 @@ import React from "react";
 import { connect } from "react-redux";
 import { Route, Switch, withRouter } from "react-router-dom";
 import { compose } from "redux";
-import Preloader from "../components/common/Preloader";
 import HeaderContainer from "../components/Header/HeaderContainer";
 import LoginPage from "../components/Login/LoginPage";
 import MessagesContainer from "../components/Messages/Messages";
@@ -12,7 +11,9 @@ import { News } from "../components/News";
 import ProfileContainer from "../components/Profile/ProfileContainer";
 import { SearchPage } from "../components/Search/SearchPage";
 import { Settings } from "../components/Settings";
+import Preloader from "../components/common/Preloader";
 import { initializeApp } from "../redux/app_reducer";
+import { selectIsInitialized } from "../redux/selectors/selectors";
 import { AppStateType } from "../redux/store";
 import "./App.css";
 
@@ -22,7 +23,9 @@ class App extends React.Component<AppPropsType> {
     }
 
     render() {
-        if (!this.props.isInitialized) return <Preloader />;
+        const {isInitialized} = this.props;
+
+        if (!isInitialized) return <Preloader />;
 
         return (
             <div className="app-wrapper">
@@ -46,7 +49,7 @@ class App extends React.Component<AppPropsType> {
 }
 
 const mapStateToProps = (state: AppStateType) => ({
-    isInitialized: state.app.isInitialized,
+    isInitialized: selectIsInitialized(state),
 });
 
 export default compose<React.ComponentType>(

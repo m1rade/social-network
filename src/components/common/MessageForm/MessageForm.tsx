@@ -1,6 +1,6 @@
 import React from "react";
 import { Field, InjectedFormProps, reduxForm, Validator, WrappedFieldProps } from "redux-form";
-import YellowButton from "./Buttons/YellowButton";
+import YellowButton from "../Buttons/YellowButton";
 import s from "./MessageForm.module.css";
 
 type MessageFormPropsType = {
@@ -18,9 +18,7 @@ const MessageForm: React.FC<InjectedFormProps<MessageDataType, MessageFormPropsT
     placeholder,
     buttonName,
     validators,
-    ...restProps
 }) => {
-    
     return (
         <form onSubmit={handleSubmit}>
             <Field
@@ -35,7 +33,6 @@ const MessageForm: React.FC<InjectedFormProps<MessageDataType, MessageFormPropsT
 };
 
 const renderTextarea: React.FC<WrappedFieldProps> = ({ input, meta, ...restProps }) => {
-
     const hasError = meta.touched && meta.error;
 
     return (

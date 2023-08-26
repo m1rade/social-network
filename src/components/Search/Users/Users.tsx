@@ -1,6 +1,6 @@
 import React from "react";
 import { UserType } from "../../../api/social-networkAPI";
-import { Pagination } from "./Pagination/Pagination";
+import { Pagination } from "../../common/Pagination/Pagination";
 import { User } from "./User/User";
 
 type UsersPropsType = {
@@ -13,14 +13,22 @@ type UsersPropsType = {
     followingInProgress: Array<number>;
 };
 
-export const Users: React.FC<UsersPropsType> = (props) => {
-    const mappedUsers = props.users.map((u) => {
+export const Users: React.FC<UsersPropsType> = ({
+    users,
+    totalCount,
+    curPage,
+    itemsPerPage,
+    followUnfollowHandler,
+    changePageHandler,
+    followingInProgress,
+}) => {
+    const mappedUsers = users.map(u => {
         return (
             <User
                 key={u.id}
                 user={u}
-                followingInProgress={props.followingInProgress}
-                followUnfollowHandler={() => props.followUnfollowHandler(u.id, u.followed)}
+                followingInProgress={followingInProgress}
+                followUnfollowHandler={() => followUnfollowHandler(u.id, u.followed)}
             />
         );
     });
@@ -32,10 +40,10 @@ export const Users: React.FC<UsersPropsType> = (props) => {
             <hr />
             <div>
                 <Pagination
-                    totalCount={props.totalCount}
-                    curPage={props.curPage}
-                    pageSize={props.itemsPerPage}
-                    changeCurrentPage={props.changePageHandler}
+                    totalCount={totalCount}
+                    curPage={curPage}
+                    pageSize={itemsPerPage}
+                    changeCurrentPage={changePageHandler}
                 />
                 {mappedUsers}
             </div>

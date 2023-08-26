@@ -4,7 +4,7 @@ import ChatsContainer from "./Chats/ChatsContainer";
 import DialogContainer from "./Dialog/DialogContainer";
 import style from "./Messages.module.css";
 
-const Messages: React.FC<any> = (props) => {
+const Messages: React.FC<any> = () => {
     return (
         <div className={style.messages}>
             <div className={style.dialogs_area}>

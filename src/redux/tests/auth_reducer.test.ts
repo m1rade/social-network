@@ -1,5 +1,4 @@
 import authReducer, { AuthDomainType, setUserData } from "../auth_reducer";
-import { toggleIsFetching } from "../search_reducer";
 
 let startState: AuthDomainType;
 
@@ -10,7 +9,6 @@ beforeEach(() => {
             email: null,
             login: null
         },
-        isFetching: false,
         isUserLoggedIn: false,
     };
 });
@@ -24,11 +22,4 @@ describe('auth reducer', () => {
         expect(endState.data).toStrictEqual(userData);
         expect(endState.isUserLoggedIn).not.toBe(false);
     });
-
-    it('should toggle is fetchign', () => {
-        const endState = authReducer(startState, toggleIsFetching(true));
-
-        expect(endState.isFetching).not.toBe(false);
-        expect(endState.isUserLoggedIn).toBe(false);
-    })
 });

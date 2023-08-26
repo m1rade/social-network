@@ -1,26 +1,24 @@
 import React, { memo } from "react";
-import s from "./MyPosts.module.css";
-import {Post} from "./Post/Post";
+import MessageForm, { MessageDataType } from "../../../components/common/MessageForm/MessageForm";
 import { PostType } from "../../../redux/profile_reducer";
-import MessageForm, { MessageDataType } from "../../common/MessageForm";
-import { maxLengthValidator, requiredField } from "../../../utils/validators";
+import { maxLengthValidator } from "../../../utils/validators";
+import s from "./MyPosts.module.css";
+import { Post } from "./Post/Post";
 
 type MyPostsPropsType = {
     posts: PostType[];
     photo: string | null;
-    addNewPost: (newPostMessage: string) => void
+    addNewPost: (newPostMessage: string) => void;
 };
 
 const MAX_MESSAGE_LENGTH_50 = maxLengthValidator(50);
 
-export const MyPosts: React.FC<MyPostsPropsType> = memo((props) => {
+export const MyPosts: React.FC<MyPostsPropsType> = memo(({ posts, photo, addNewPost }) => {
     const addNewPostHandler = (newPostMessage: MessageDataType) => {
-        props.addNewPost(newPostMessage.messageBody);
+        addNewPost(newPostMessage.messageBody);
     };
 
-    const mappedPosts = props.posts.map((p) => (
-        <Post key={p.id} postID={p.id} message={p.message} avatar={props.photo}/>
-    ));
+    const mappedPosts = posts.map(p => <Post key={p.id} postID={p.id} message={p.message} avatar={photo} />);
 
     return (
         <>
@@ -30,7 +28,7 @@ export const MyPosts: React.FC<MyPostsPropsType> = memo((props) => {
                     placeholder="Share your thoughts..."
                     buttonName="Send"
                     onSubmit={addNewPostHandler}
-                    validators={[requiredField, MAX_MESSAGE_LENGTH_50]}
+                    validators={[MAX_MESSAGE_LENGTH_50]}
                 />
             </div>
             <hr className={s.solid_line} />

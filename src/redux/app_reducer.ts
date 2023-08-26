@@ -1,16 +1,20 @@
 import { authorizeUser } from "./auth_reducer";
 import { AppThunkType } from "./store";
-const SET_INITIALIZATION = "SET_INITIALIZATION";
 
-const initialState: InitialStateType = {
+const SET_INITIALIZATION = "APP/SET_INITIALIZATION";
+const TOGGLE_IS_FETCHING = "APP/TOGGLE_IS_FETCHING";
+
+const initialState = {
     isInitialized: false,
+    isFetching: false
 };
 
 const appReducer = (state: InitialStateType = initialState, action: AppActionType): InitialStateType => {
     switch (action.type) {
         case SET_INITIALIZATION:
             return { ...state, isInitialized: action.value };
-
+        case TOGGLE_IS_FETCHING:
+            return { ...state, isFetching: action.value };
         default:
             return state;
     }
@@ -22,6 +26,12 @@ export default appReducer;
 const setInitialization = (value: boolean) =>
     ({
         type: SET_INITIALIZATION,
+        value,
+    } as const);
+
+export const toggleIsFetching = (value: boolean) =>
+    ({
+        type: TOGGLE_IS_FETCHING,
         value,
     } as const);
 
@@ -38,8 +48,7 @@ export const initializeApp = (): AppThunkType => (dispatch) => {
 };
 
 //types
-type InitialStateType = {
-    isInitialized: boolean;
-};
+type InitialStateType = typeof initialState;
 
-export type AppActionType = ReturnType<typeof setInitialization>;
+export type AppActionType = ReturnType<typeof setInitialization> | ToggleIsFetchingType;
+export type ToggleIsFetchingType = ReturnType<typeof toggleIsFetching>;

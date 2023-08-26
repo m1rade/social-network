@@ -8,15 +8,15 @@ type HeaderPropsType = {
     logoutUser: () => void;
 };
 
-export const Header: React.FC<HeaderPropsType> = (props) => {
+export const Header: React.FC<HeaderPropsType> = ({ isUserLoggedIn, userLogin, logoutUser }) => {
     return (
         <header className={s.header}>
             <img src="https://www.seekpng.com/png/detail/58-588581_open-diseos-para-logos-png.png" alt="logo" />
             <div className={s.loginBlock}>
-                {props.isUserLoggedIn ? (
+                {isUserLoggedIn ? (
                     <span>
-                        User name: {props.userLogin} ---
-                        <span className={s.logoutButton} onClick={props.logoutUser}>
+                        User name: {userLogin} ---
+                        <span className={s.logoutButton} onClick={logoutUser}>
                             Log out
                         </span>
                     </span>
