@@ -1,6 +1,7 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 import s from "./Header.module.css";
+import { ROUTES_PATHS } from "../../routes/Routes";
 
 type HeaderPropsType = {
     isUserLoggedIn: boolean;
@@ -21,7 +22,7 @@ export const Header: React.FC<HeaderPropsType> = ({ isUserLoggedIn, userLogin, l
                         </span>
                     </span>
                 ) : (
-                    <NavLink to={"/login"}>Login</NavLink>
+                    <NavLink to={ROUTES_PATHS.login}>Login</NavLink>
                 )}
             </div>
         </header>

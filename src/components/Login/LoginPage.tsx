@@ -5,22 +5,27 @@ import { LoginData } from "../../api/social-networkAPI";
 import { loginUser } from "../../redux/auth_reducer";
 import { selectIsUserLoggedIn } from "../../redux/selectors/selectors";
 import { AppStateType } from "../../redux/store";
+import { ROUTES_PATHS } from "../../routes/Routes";
 import LoginForm from "./LoginForm";
 
-const LoginPage: React.FC<LoginPropsType> = ({ loginUser, isUserLoggedIn }) => {
-    const onSubmit = (formData: LoginData) => {
+class LoginPage extends React.Component<LoginPropsType> {
+    onSubmit(formData: LoginData) {
+        const {loginUser} = this.props;
         loginUser(formData);
-    };
+    }
 
-    if (isUserLoggedIn) return <Redirect to="/profile" />;
+    render(): React.ReactNode {
+        //TODO
+        if (this.props.isUserLoggedIn) return <Redirect to={ROUTES_PATHS.profile} />;
 
-    return (
-        <div>
-            <h1>LoginPage</h1>
-            <LoginForm onSubmit={onSubmit} />
-        </div>
-    );
-};
+        return (
+            <div>
+                <h1>Login</h1>
+                <LoginForm onSubmit={this.onSubmit.bind(this)} />
+            </div>
+        );
+    }
+}
 
 //HOC
 const mapStateToProps = (state: AppStateType): MapPropsType => ({

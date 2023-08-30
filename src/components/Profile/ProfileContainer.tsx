@@ -21,15 +21,17 @@ import {
 import { AppStateType } from "../../redux/store";
 import Preloader from "../common/Preloader";
 import { Profile } from "./Profile";
+import { ROUTES_PATHS } from "../../routes/Routes";
 
 class ProfileContainer extends React.Component<ProfileContainerPropsType> {
     componentDidMount() {
+        //TODO
         let userID: string | number | null = this.props.match.params.userID;
-
+        
         if (!userID) {
             userID = this.props.loggedUserID;
             if (!userID && !this.props.isUserLoggedIn) {
-                this.props.history.push("/login");
+                this.props.history.push(ROUTES_PATHS.login);
             }
         }
 

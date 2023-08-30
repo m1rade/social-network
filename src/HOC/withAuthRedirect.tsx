@@ -2,6 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
 import { AppStateType } from "../redux/store";
+import { ROUTES_PATHS } from "../routes/Routes";
 
 type MapStatePropsType = {
     isUserLoggedIn: boolean;
@@ -17,7 +18,7 @@ function withAuthRedirect<P>(WrappedComponent: React.ComponentType<P>) {
     // inner component
     const WithAuthRedirect: React.FC<MapStatePropsType> = ({isUserLoggedIn, ...restProps}) => {
 
-        if (!isUserLoggedIn) return <Redirect to={"/login"} />;
+        if (!isUserLoggedIn) return <Redirect to={ROUTES_PATHS.login} />;
 
         //@ts-ignore
         return <WrappedComponent {...restProps as P} />
