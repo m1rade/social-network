@@ -10,5 +10,6 @@
 
 .linkItem a.active {
     background-color: chocolate;
+    color: white;
     display: block;
 }
