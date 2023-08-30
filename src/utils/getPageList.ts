@@ -1,4 +1,4 @@
-function getPageList (totalCount: number, currentPage: number, pageSize: number): Array<number> {
+function getPageList(totalCount: number, currentPage: number, pageSize: number): getPageListReturnType {
     const totalPages = Math.ceil(totalCount / pageSize);
     let slicedPages;
     let pagesArr = [];
@@ -7,13 +7,18 @@ function getPageList (totalCount: number, currentPage: number, pageSize: number)
         pagesArr.push(i);
     }
 
-    if (currentPage - 6 < 0) {
-        slicedPages = pagesArr.slice(0, 11);
+    if (currentPage - 5 < 0) {
+        slicedPages = pagesArr.slice(0, 10);
     } else {
-        slicedPages = pagesArr.slice(currentPage - 6, currentPage + 5);
+        slicedPages = pagesArr.slice(currentPage - 5, currentPage + 5);
     }
 
-    return slicedPages;
-};
+    return { pages: slicedPages, totalPages };
+}
 
 export default getPageList;
+
+type getPageListReturnType = {
+    pages: number[];
+    totalPages: number;
+};

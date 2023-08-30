@@ -38,15 +38,13 @@ export const Users: React.FC<UsersPropsType> = ({
             <span>Users</span>
             <br />
             <hr />
-            <div>
-                <Pagination
-                    totalCount={totalCount}
-                    curPage={curPage}
-                    pageSize={itemsPerPage}
-                    changeCurrentPage={changePageHandler}
-                />
-                {mappedUsers}
-            </div>
+            <Pagination
+                totalCount={totalCount}
+                curPage={curPage}
+                pageSize={itemsPerPage}
+                changeCurrentPage={changePageHandler}
+            />
+            {mappedUsers}
         </div>
     );
 };

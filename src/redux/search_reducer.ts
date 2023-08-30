@@ -96,7 +96,7 @@ export const getUsersThunk =
         try {
             const resp = await userAPI.getUsers(itemsPerPage, curPage);
             if (resp.data.error === null) {
-                curPage !== 1 && dispatch(setCurrentPage(curPage));
+                dispatch(setCurrentPage(curPage));
                 dispatch(setUsers(resp.data.items));
                 dispatch(setTotalCount(resp.data.totalCount));
             } else {

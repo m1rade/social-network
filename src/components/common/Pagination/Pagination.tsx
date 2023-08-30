@@ -10,21 +10,54 @@ type PaginationPropsType = {
 };
 
 export const Pagination: React.FC<PaginationPropsType> = ({ totalCount, curPage, pageSize, changeCurrentPage }) => {
-    const mappedPages = getPageList(totalCount, curPage, pageSize).map(p => {
+    const { pages, totalPages } = getPageList(totalCount, curPage, pageSize);
+
+    const mappedPages = pages.map(p => {
         const spanPageClass = curPage === p ? `${s.currentPage} ${s.page}` : s.page;
 
         return (
-            <span key={p} className={spanPageClass} onClick={() => changeCurrentPage(p)}>
-                {p}{" "}
-            </span>
+            <li key={p}>
+                <span key={p} className={spanPageClass} onClick={() => changeCurrentPage(p)}>
+                    {p}
+                </span>
+            </li>
         );
     });
 
     return (
-        <div>
+        <div className={s.container}>
             <span>Pages:</span>
-            <br />
-            {mappedPages}
+            <ul className={s.list}>
+                {curPage !== 1 && (
+                    <>
+                        <li>
+                            <span className={s.arrow} onClick={() => changeCurrentPage(1)}>
+                                {"<<"}
+                            </span>
+                        </li>
+                        <li>
+                            <span className={s.arrow} onClick={() => changeCurrentPage(curPage - 1)}>
+                                {"<"}
+                            </span>
+                        </li>
+                    </>
+                )}
+                {mappedPages}
+                {curPage !== totalPages && (
+                    <>
+                        <li>
+                            <span className={s.arrow} onClick={() => changeCurrentPage(curPage + 1)}>
+                                {">"}
+                            </span>
+                        </li>
+                        <li>
+                            <span className={s.arrow} onClick={() => changeCurrentPage(totalPages)}>
+                                {">>"}
+                            </span>
+                        </li>
+                    </>
+                )}
+            </ul>
         </div>
     );
 };
