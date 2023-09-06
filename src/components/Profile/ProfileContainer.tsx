@@ -6,6 +6,7 @@ import { ProfileResponseType } from "../../api/social-networkAPI";
 import {
     PostType,
     addPostMessage,
+    changeProfilePhoto,
     fetchProfile,
     getProfileStatus,
     updateProfileStatus,
@@ -19,15 +20,14 @@ import {
     selectUserStatus,
 } from "../../redux/selectors/selectors";
 import { AppStateType } from "../../redux/store";
+import { ROUTES_PATHS } from "../../routes/Routes";
 import Preloader from "../common/Preloader";
 import { Profile } from "./Profile";
-import { ROUTES_PATHS } from "../../routes/Routes";
 
 class ProfileContainer extends React.Component<ProfileContainerPropsType> {
-    componentDidMount() {
-        //TODO
+    refreshProfile() {
         let userID: string | number | null = this.props.match.params.userID;
-        
+
         if (!userID) {
             userID = this.props.loggedUserID;
             if (!userID && !this.props.isUserLoggedIn) {
@@ -41,10 +41,28 @@ class ProfileContainer extends React.Component<ProfileContainerPropsType> {
         }
     }
 
+    componentDidMount() {
+        this.refreshProfile();
+    }
+
+    componentDidUpdate(prevProps: Readonly<ProfileContainerPropsType>) {
+        if (this.props.match.params.userID !== prevProps.match.params.userID) {
+            this.refreshProfile();
+        }
+    }
+
     render() {
         const { history, location, match, staticContext, fetchProfile, getProfileStatus, ...restProps } = this.props;
 
-        return <>{this.props.isFetching ? <Preloader /> : <Profile {...restProps} />}</>;
+        return (
+            <>
+                {this.props.isFetching ? (
+                    <Preloader />
+                ) : (
+                    <Profile isOwner={!this.props.match.params.userID} {...restProps} />
+                )}
+            </>
+        );
     }
 }
 
@@ -62,6 +80,7 @@ export default compose<React.ComponentType>(
         fetchProfile,
         getProfileStatus,
         updateProfileStatus,
+        changeProfilePhoto,
         addPostMessage,
     }),
     withRouter
@@ -81,6 +100,7 @@ type MapDispatchPropsType = {
     fetchProfile: (userID: string | number) => void;
     getProfileStatus: (userID: string | number) => void;
     updateProfileStatus: (status: string) => void;
+    changeProfilePhoto: (photo: File) => void;
     addPostMessage: (newPostMessage: string) => void;
 };
 

@@ -1,5 +1,5 @@
 import React, { memo } from "react";
-import userImagePlaceholder from "./../../../../assets/icons/user.png";
+import { UserPhoto } from "../../../common/UserPhoto/UserPhoto";
 import style from "./Post.module.css";
 
 type PostPropsType = {
@@ -11,8 +11,8 @@ type PostPropsType = {
 export const Post: React.FC<PostPropsType> = memo(({ postID, message, avatar }) => {
     return (
         <div className={style.item}>
-            <img src={avatar ? avatar : userImagePlaceholder} alt="small-avatar" />
-            <span>{message}</span>
+            <UserPhoto type="small" srcPhoto={avatar} />
+            <span className={style.message}>{message}</span>
         </div>
     );
 });

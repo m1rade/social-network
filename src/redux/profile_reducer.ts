@@ -1,12 +1,13 @@
-import { ProfileResponseType, ServerResultCode } from "../api/social-networkAPI";
+import { ProfileResponseType, ServerResultCode, UserPhotoType } from "../api/social-networkAPI";
 import { profileAPI } from "./../api/social-networkAPI";
-import { ToggleIsFetchingType, toggleIsFetching } from "./app_reducer";
+import { toggleIsFetching } from "./app_reducer";
 import { AppThunkType } from "./store";
 
 const ADD_POST = "PROFILE/ADD-POST";
 const DELETE_POST = "PROFILE/DELETE_POST";
 const SET_USER_INFO = "PROFILE/SET_USER_INFO";
 const SET_PROFILE_STATUS = "PROFILE/SET_PROFILE_STATUS";
+const SET_PROFILE_PHOTO = "PROFILE/SET_PROFILE_PHOTO";
 
 const initState = {
     userInfo: {
@@ -22,11 +23,11 @@ const initState = {
             mainLink: "",
         },
         lookingForAJob: false,
-        lookingForAJobDescription: "gfgf",
+        lookingForAJobDescription: "",
         fullName: "Cooool cat",
         userId: null,
         photos: {
-            small: "https://i.pinimg.com/originals/ae/24/87/ae24874dd301843548c034a3d2973658.png",
+            small: "",
             large: "",
         },
     } as ProfileResponseType,
@@ -51,6 +52,8 @@ const profileReducer = (state: ProfileDomainType = initState, action: ProfileAct
             return { ...state, posts: state.posts.filter(p => p.id !== action.id) };
         case SET_PROFILE_STATUS:
             return { ...state, status: action.status };
+        case SET_PROFILE_PHOTO:
+            return { ...state, userInfo: { ...state.userInfo, photos: action.photos } };
         default:
             return state;
     }
@@ -76,10 +79,16 @@ const setUserInfo = (userInfo: ProfileResponseType) =>
         userInfo,
     } as const);
 
-const setProfileStatus = (status: string) =>
+export const setProfileStatus = (status: string) =>
     ({
         type: SET_PROFILE_STATUS,
         status,
+    } as const);
+
+export const setProfilePhoto = (photos: UserPhotoType) =>
+    ({
+        type: SET_PROFILE_PHOTO,
+        photos,
     } as const);
 
 //thunks
@@ -114,6 +123,8 @@ export const getProfileStatus =
 export const updateProfileStatus =
     (status: string): AppThunkType =>
     async dispatch => {
+        dispatch(toggleIsFetching(true));
+
         try {
             const resp = await profileAPI.updateProfileStatus(status);
             if (resp.status === 200) {
@@ -123,6 +134,29 @@ export const updateProfileStatus =
             }
         } catch (err) {
             alert(err);
+        } finally {
+            dispatch(toggleIsFetching(false));
+        }
+    };
+
+export const changeProfilePhoto =
+    (photo: File): AppThunkType =>
+    async dispatch => {
+        dispatch(toggleIsFetching(true));
+
+        try {
+            const formData = new FormData();
+            formData.append("image", photo);
+            const resp = await profileAPI.changeProfilePhoto(formData);
+            if (resp.status === 200) {
+                if (resp.data.resultCode === ServerResultCode.OK) {
+                    dispatch(setProfilePhoto(resp.data.data.photos));
+                }
+            }
+        } catch (error) {
+            alert(error);
+        } finally {
+            dispatch(toggleIsFetching(false));
         }
     };
 
@@ -139,4 +173,4 @@ export type ProfileActionType =
     | ReturnType<typeof setUserInfo>
     | ReturnType<typeof setProfileStatus>
     | ReturnType<typeof deletePostMessage>
-    | ToggleIsFetchingType;
+    | ReturnType<typeof setProfilePhoto>;

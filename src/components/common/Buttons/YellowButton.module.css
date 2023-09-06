@@ -1,9 +1,10 @@
 .yellowButton {
     background-color: #aadd77;
     border: none;
-    width: 70px;
-    height: 25px;
     font-size: 100%;
+    padding: 5px 15px 5px;
+
+    cursor: pointer;
 }
 
 .yellowButton:hover {

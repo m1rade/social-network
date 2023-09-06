@@ -32,8 +32,8 @@ export const authAPI = {
         return instance.post<LoginData, AxiosResponse<ServerResponseType<{ userId: number }>>>(`auth/login`, formData);
     },
     logoutUser() {
-        return instance.delete <ServerResponseType>("auth/login");
-    }
+        return instance.delete<ServerResponseType>("auth/login");
+    },
 };
 
 export const profileAPI = {
@@ -47,6 +47,18 @@ export const profileAPI = {
 
     updateProfileStatus(status: string) {
         return instance.put<{ status: string }, AxiosResponse<ServerResponseType>>(`profile/status`, { status });
+    },
+
+    changeProfilePhoto(formData: FormData) {
+        return instance.put<
+            { photos: UserPhotoType },
+            AxiosResponse<ServerResponseType<{ photos: UserPhotoType }>>,
+            FormData
+        >(`profile/photo`, formData, {
+            headers: {
+                "Content-Type": "multipart/form-data",
+            },
+        });
     },
 };
 

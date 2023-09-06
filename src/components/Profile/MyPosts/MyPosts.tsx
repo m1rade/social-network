@@ -32,7 +32,7 @@ export const MyPosts: React.FC<MyPostsPropsType> = memo(({ posts, photo, addNewP
                 />
             </div>
             <hr className={s.solid_line} />
-            <div>{mappedPosts}</div>
+            {mappedPosts}
         </>
     );
 });

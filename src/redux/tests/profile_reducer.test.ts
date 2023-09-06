@@ -1,4 +1,11 @@
-import profileReducer, { ProfileDomainType, addPostMessage, deletePostMessage } from "../profile_reducer";
+import { UserPhotoType } from "../../api/social-networkAPI";
+import profileReducer, {
+    ProfileDomainType,
+    addPostMessage,
+    deletePostMessage,
+    setProfilePhoto,
+    setProfileStatus,
+} from "../profile_reducer";
 
 let startState: ProfileDomainType;
 
@@ -34,7 +41,7 @@ beforeEach(() => {
     };
 });
 
-describe('profile reducer', () => {
+describe("profile reducer", () => {
     it("should add new post", () => {
         const action = addPostMessage("Hello there");
 
@@ -60,5 +67,34 @@ describe('profile reducer', () => {
         const changedState = profileReducer(startState, action);
 
         expect(changedState.posts.length).toBe(3);
+    });
+
+    it("should update profile photo", () => {
+        const photos1: UserPhotoType = {
+            small: "sm-img.jpg",
+            large: "lg-img.jpeg",
+        };
+
+        const photos2: UserPhotoType = {
+            small: "https://i.pinimg.com/originals/ae/24/87/ae24874dd301843548c034a3d2973658.png",
+            large: "large-img.jpg",
+        };
+
+        const changedState = profileReducer(startState, setProfilePhoto(photos1));
+
+        expect(changedState.userInfo.photos).toBe(photos1);
+
+        const changedState2 = profileReducer(startState, setProfilePhoto(photos2));
+
+        expect(changedState2.userInfo.photos.small).toBe(startState.userInfo.photos.small);
+        expect(changedState2.userInfo.photos.large).toBe(photos2.large);
+    });
+
+    it("should update profile status", () => {
+        const newStatus = "New status";
+
+        const changedState = profileReducer(startState, setProfileStatus(newStatus));
+
+        expect(changedState.status).toBe(newStatus);
     })
 });

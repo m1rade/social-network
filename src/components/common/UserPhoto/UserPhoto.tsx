@@ -1,3 +1,4 @@
+import cn from "classnames";
 import React from "react";
 import userImagePlaceholder from "../../../assets/icons/user.png";
 import s from "./UserPhoto.module.css";
@@ -5,12 +6,11 @@ import s from "./UserPhoto.module.css";
 type PropsType = {
     type: "small" | "large";
     srcPhoto: string | null;
+    className?: string;
 };
 
-export const UserPhoto: React.FC<PropsType> = ({ srcPhoto, type }) => {
-    return (
-        <div className={type === "small" ? `${s.smallAvatar}` : `${s.avatar}`}>
-            <img src={srcPhoto || userImagePlaceholder} alt={type === "small" ? "small-avatar" : "avatar"} />
-        </div>
-    );
+export const UserPhoto: React.FC<PropsType> = ({ type, srcPhoto, className }) => {
+    const imgClass = cn(className, `${s.img}`, `${s[`${type}`]}`);
+
+    return <img className={imgClass} src={srcPhoto || userImagePlaceholder} alt={`${type}-avatar`} />;
 };

@@ -4,18 +4,28 @@ import s from "./Profile.module.css";
 import { ProfileOwnPropsType } from "./ProfileContainer";
 import { ProfileInfo } from "./ProfileInfo/ProfileInfo";
 
-type ProfileSuperPropsType = Omit<ProfileOwnPropsType, "fetchProfile" | "getProfileStatus">;
+type ProfileSuperPropsType = Omit<ProfileOwnPropsType, "fetchProfile" | "getProfileStatus"> & {
+    isOwner: boolean;
+};
 
 export const Profile: React.FC<ProfileSuperPropsType> = ({
     userInfo,
     userStatus,
     updateProfileStatus,
     posts,
+    isOwner,
+    changeProfilePhoto,
     addPostMessage,
 }) => {
     return (
         <div className={s.profile}>
-            <ProfileInfo userInfo={userInfo} userStatus={userStatus} updateProfileStatus={updateProfileStatus} />
+            <ProfileInfo
+                isOwner={isOwner}
+                userInfo={userInfo}
+                userStatus={userStatus}
+                updateProfileStatus={updateProfileStatus}
+                changeProfilePhoto={changeProfilePhoto}
+            />
             <MyPosts posts={posts} photo={userInfo.photos.small} addNewPost={addPostMessage} />
         </div>
     );

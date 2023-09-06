@@ -1,16 +1,24 @@
 import React from "react";
 import { ProfileResponseType } from "../../../api/social-networkAPI";
-import { UserPhoto } from "../../common/UserPhoto/UserPhoto";
 import s from "./ProfileInfo.module.css";
+import { ProfilePhoto } from "./ProfilePhoto/ProfilePhoto";
 import { ProfileStatus } from "./ProfileStatus/ProfileStatus";
 
 type ProfileInfoPropsType = {
     userInfo: ProfileResponseType;
     userStatus: string;
+    isOwner: boolean;
     updateProfileStatus: (status: string) => void;
+    changeProfilePhoto: (photo: File) => void;
 };
 
-export const ProfileInfo: React.FC<ProfileInfoPropsType> = ({ userInfo, userStatus, updateProfileStatus }) => {
+export const ProfileInfo: React.FC<ProfileInfoPropsType> = ({
+    userInfo,
+    userStatus,
+    updateProfileStatus,
+    isOwner,
+    changeProfilePhoto,
+}) => {
     const userContacts = Object.keys(userInfo.contacts)
         .filter(c => userInfo.contacts[c] !== null)
         .map((c, i) => (
@@ -24,9 +32,11 @@ export const ProfileInfo: React.FC<ProfileInfoPropsType> = ({ userInfo, userStat
     return (
         <div className={s.container}>
             <div className={s.row_1}>
-                <div className={s.pictureCol}>
-                    <UserPhoto type="large" srcPhoto={userInfo.photos.large} />
-                </div>
+                <ProfilePhoto
+                    isOwner={isOwner}
+                    srcPhoto={userInfo.photos.large}
+                    changeProfilePhoto={changeProfilePhoto}
+                />
                 <div className={s.infoCol}>
                     <div className={s.personalInfo}>
                         <div className={s.fullName}>{userInfo.fullName}</div>

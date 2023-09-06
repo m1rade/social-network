@@ -1,8 +1,16 @@
-.avatar {}
-
-.avatar img {
-    width: 125px;
-    height: 125px;
+.img {
+    object-fit: cover;
+    border: 0;
+    border-radius: inherit;
 }
 
-.smallAvatar {}
+.large {
+    width: 200px;
+    height: 200px;
+}
+
+.small {
+    width: 50px;
+    height: 50px;
+    border-radius: 4px;
+}
