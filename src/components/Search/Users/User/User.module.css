@@ -26,11 +26,6 @@
     align-items: center;
 }
 
-.avatar img {
-    width: 65px;
-    height: 65px;
-}
-
 .userNavLink {
     color: black;
     text-decoration: none;

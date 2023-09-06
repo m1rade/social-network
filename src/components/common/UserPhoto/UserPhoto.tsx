@@ -11,6 +11,7 @@ type PropsType = {
 
 export const UserPhoto: React.FC<PropsType> = ({ type, srcPhoto, className }) => {
     const imgClass = cn(className, `${s.img}`, `${s[`${type}`]}`);
+    // TODO style
 
     return <img className={imgClass} src={srcPhoto || userImagePlaceholder} alt={`${type}-avatar`} />;
 };
