@@ -8,6 +8,7 @@ const DELETE_POST = "PROFILE/DELETE_POST";
 const SET_USER_INFO = "PROFILE/SET_USER_INFO";
 const SET_PROFILE_STATUS = "PROFILE/SET_PROFILE_STATUS";
 const SET_PROFILE_PHOTO = "PROFILE/SET_PROFILE_PHOTO";
+const TOGGLE_UPDATE_IN_PROGRESS = "PROFILE/TOGGLE_UPDATE_IN_PROGRESS";
 
 const initState = {
     userInfo: {
@@ -33,6 +34,7 @@ const initState = {
     } as ProfileResponseType,
     status: "",
     posts: [] as PostType[],
+    updateInProgress: false,
 };
 
 const profileReducer = (state: ProfileDomainType = initState, action: ProfileActionType): ProfileDomainType => {
@@ -54,6 +56,8 @@ const profileReducer = (state: ProfileDomainType = initState, action: ProfileAct
             return { ...state, status: action.status };
         case SET_PROFILE_PHOTO:
             return { ...state, userInfo: { ...state.userInfo, photos: action.photos } };
+        case TOGGLE_UPDATE_IN_PROGRESS:
+            return { ...state, updateInProgress: action.value };
         default:
             return state;
     }
@@ -91,6 +95,12 @@ export const setProfilePhoto = (photos: UserPhotoType) =>
         photos,
     } as const);
 
+const toggleUpdateInProgress = (value: boolean) =>
+    ({
+        type: TOGGLE_UPDATE_IN_PROGRESS,
+        value,
+    } as const);
+
 //thunks
 export const fetchProfile =
     (userID: string | number): AppThunkType =>
@@ -123,7 +133,7 @@ export const getProfileStatus =
 export const updateProfileStatus =
     (status: string): AppThunkType =>
     async dispatch => {
-        dispatch(toggleIsFetching(true));
+        dispatch(toggleUpdateInProgress(true));
 
         try {
             const resp = await profileAPI.updateProfileStatus(status);
@@ -135,15 +145,14 @@ export const updateProfileStatus =
         } catch (err) {
             alert(err);
         } finally {
-            dispatch(toggleIsFetching(false));
+            dispatch(toggleUpdateInProgress(false));
         }
     };
 
 export const changeProfilePhoto =
     (photo: File): AppThunkType =>
     async dispatch => {
-        dispatch(toggleIsFetching(true));
-
+        dispatch(toggleUpdateInProgress(true));
         try {
             const formData = new FormData();
             formData.append("image", photo);
@@ -156,7 +165,7 @@ export const changeProfilePhoto =
         } catch (error) {
             alert(error);
         } finally {
-            dispatch(toggleIsFetching(false));
+            dispatch(toggleUpdateInProgress(false));
         }
     };
 
@@ -173,4 +182,5 @@ export type ProfileActionType =
     | ReturnType<typeof setUserInfo>
     | ReturnType<typeof setProfileStatus>
     | ReturnType<typeof deletePostMessage>
-    | ReturnType<typeof setProfilePhoto>;
+    | ReturnType<typeof setProfilePhoto>
+    | ReturnType<typeof toggleUpdateInProgress>;

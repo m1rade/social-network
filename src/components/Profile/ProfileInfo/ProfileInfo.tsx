@@ -8,6 +8,7 @@ type ProfileInfoPropsType = {
     userInfo: ProfileResponseType;
     userStatus: string;
     isOwner: boolean;
+    updateInProgress: boolean;
     updateProfileStatus: (status: string) => void;
     changeProfilePhoto: (photo: File) => void;
 };
@@ -18,6 +19,7 @@ export const ProfileInfo: React.FC<ProfileInfoPropsType> = ({
     updateProfileStatus,
     isOwner,
     changeProfilePhoto,
+    updateInProgress
 }) => {
     const userContacts = Object.keys(userInfo.contacts)
         .filter(c => userInfo.contacts[c] !== null)
@@ -36,6 +38,7 @@ export const ProfileInfo: React.FC<ProfileInfoPropsType> = ({
                     isOwner={isOwner}
                     srcPhoto={userInfo.photos.large}
                     changeProfilePhoto={changeProfilePhoto}
+                    disabled={updateInProgress}
                 />
                 <div className={s.infoCol}>
                     <div className={s.personalInfo}>

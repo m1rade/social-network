@@ -73,6 +73,7 @@ const mapStateToProps = (state: AppStateType): MapStatePropsType => ({
     posts: selectPosts(state),
     loggedUserID: selectLoggedUserID(state),
     isUserLoggedIn: selectIsUserLoggedIn(state),
+    updateInProgress: state.profile.updateInProgress
 });
 
 export default compose<React.ComponentType>(
@@ -94,6 +95,7 @@ type MapStatePropsType = {
     isFetching: boolean;
     loggedUserID: number | null;
     isUserLoggedIn: boolean;
+    updateInProgress: boolean
 };
 
 type MapDispatchPropsType = {

@@ -3,10 +3,12 @@ import { Icon } from "../../../common/Icon/Icon";
 import { EditPhoto } from "../../../common/Modals/EditPhoto";
 import { UserPhoto } from "../../../common/UserPhoto/UserPhoto";
 import s from "./ProfilePhoto.module.css";
+import Preloader from "../../../common/Preloader";
 
 type Props = {
     srcPhoto: string | null;
     isOwner: boolean;
+    disabled?: boolean;
     changeProfilePhoto: (photo: File) => void;
 };
 
@@ -34,22 +36,28 @@ export class ProfilePhoto extends React.Component<Props, StateType> {
         return (
             <>
                 <div className={s.container}>
-                    <UserPhoto type="large" srcPhoto={this.props.srcPhoto} />
-                    {this.props.isOwner && (
+                    {this.props.disabled ? (
+                        <Preloader />
+                    ) : (
                         <>
-                            <div className={s.editPhoto}>
-                                <button className={s.editIconBtn} onClick={() => this.openEditModal(true)}>
-                                    <span className={s.editIconBtnInner}>
-                                        <Icon name="edit" className={s.editIcon} viewBox="0 0 24 24" />
-                                    </span>
-                                </button>
-                            </div>
-                            <EditPhoto
-                                header="Добавление новой фотографии"
-                                open={this.state.isOpen}
-                                onClose={() => this.openEditModal(false)}
-                                onFileSelected={this.uploadPhoto.bind(this)}
-                            />
+                            <UserPhoto type="large" srcPhoto={this.props.srcPhoto} />
+                            {this.props.isOwner && (
+                                <>
+                                    <div className={s.editPhoto}>
+                                        <button className={s.editIconBtn} onClick={() => this.openEditModal(true)}>
+                                            <span className={s.editIconBtnInner}>
+                                                <Icon name="edit" className={s.editIcon} viewBox="0 0 24 24" />
+                                            </span>
+                                        </button>
+                                    </div>
+                                    <EditPhoto
+                                        header="Добавление новой фотографии"
+                                        open={this.state.isOpen}
+                                        onClose={() => this.openEditModal(false)}
+                                        onFileSelected={this.uploadPhoto.bind(this)}
+                                    />
+                                </>
+                            )}
                         </>
                     )}
                 </div>

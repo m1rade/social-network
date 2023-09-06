@@ -16,6 +16,8 @@ export const Profile: React.FC<ProfileSuperPropsType> = ({
     isOwner,
     changeProfilePhoto,
     addPostMessage,
+    updateInProgress,
+    ...restProps
 }) => {
     return (
         <div className={s.profile}>
@@ -23,6 +25,7 @@ export const Profile: React.FC<ProfileSuperPropsType> = ({
                 isOwner={isOwner}
                 userInfo={userInfo}
                 userStatus={userStatus}
+                updateInProgress={updateInProgress}
                 updateProfileStatus={updateProfileStatus}
                 changeProfilePhoto={changeProfilePhoto}
             />
