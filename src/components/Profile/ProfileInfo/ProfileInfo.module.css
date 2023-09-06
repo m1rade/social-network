@@ -1,7 +1,7 @@
 .container {
     height: auto;
     width: 90%;
-    
+
     /* border: 1px solid; */
     position: relative;
 }
@@ -23,7 +23,7 @@
 
 .personalInfo {
     margin-bottom: 15px;
-    /* border: 1px solid; */
+    max-width: 300px;
 }
 
 .fullName {
@@ -31,9 +31,7 @@
     font-weight: bold;
 }
 
-.aboutMe {
-
-}
+.aboutMe {}
 
 .description {
     margin-bottom: 15px;

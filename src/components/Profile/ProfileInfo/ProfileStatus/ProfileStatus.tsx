@@ -1,6 +1,7 @@
 import React, { ChangeEvent, FocusEvent } from "react";
 import YellowButton from "../../../common/Buttons/YellowButton";
 import s from "./ProfileStatus.module.css";
+import { UserStatus } from "./UserStatus/UserStatus";
 
 type StateType = {
     editMode: boolean;
@@ -9,6 +10,7 @@ type StateType = {
 
 type ProfileStatusPropsType = {
     status: string;
+    isOwner: boolean;
     updateProfileStatus: (status: string) => void;
 };
 
@@ -19,7 +21,7 @@ export class ProfileStatus extends React.Component<ProfileStatusPropsType, State
     };
 
     componentDidUpdate(prevProps: Readonly<ProfileStatusPropsType>, prevState: Readonly<StateType>) {
-        const {status} = this.props;
+        const { status } = this.props;
         if (prevProps.status !== status) {
             this.setState({
                 status: status,
@@ -37,12 +39,12 @@ export class ProfileStatus extends React.Component<ProfileStatusPropsType, State
         });
     };
 
-    handleFocus = (e: FocusEvent<HTMLInputElement>) => {
+    handleFocus = (e: FocusEvent<HTMLTextAreaElement>) => {
         e.currentTarget.select();
     };
 
-    handleOnBlur = (e: FocusEvent<HTMLInputElement>) => {
-        const {status} = this.props;
+    handleOnBlur = (e: FocusEvent<HTMLDivElement>) => {
+        const { status } = this.props;
         if (!e.relatedTarget) {
             this.setState({
                 status: status,
@@ -52,7 +54,7 @@ export class ProfileStatus extends React.Component<ProfileStatusPropsType, State
         }
     };
 
-    handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
         this.setState({
             status: e.currentTarget.value,
         });
@@ -65,23 +67,24 @@ export class ProfileStatus extends React.Component<ProfileStatusPropsType, State
 
     render() {
         return (
-            <div className={s.ProfileStatus}>
+            <div className={s.container}>
                 {!this.state.editMode ? (
-                    <div onClick={() => this.toggleEditMode(true)} className={s.statusText}>
-                        {this.props.status || "Изменить статус"}
-                    </div>
+                    <UserStatus
+                        status={this.props.status}
+                        isOwner={this.props.isOwner}
+                        onClick={() => this.toggleEditMode(true)}
+                    />
                 ) : (
-                    <div className={s.statusBox} onBlur={this.handleOnBlur} tabIndex={1}>
-                        <input
+                    <div className={s.modalContainer} onBlur={this.handleOnBlur} tabIndex={1}>
+                        <textarea
                             value={this.state.status}
-                            //onBlur={this.handleOnBlur}
                             onFocus={this.handleFocus}
                             onChange={this.handleChange}
-                            type="text"
+                            className={s.editInput}
                             autoFocus
                         />
                         <div className={s.saveStatus}>
-                            <YellowButton onClick={this.saveStatusOnClick}>Save</YellowButton>
+                            <YellowButton onClick={this.saveStatusOnClick}>Сохранить</YellowButton>
                         </div>
                     </div>
                 )}

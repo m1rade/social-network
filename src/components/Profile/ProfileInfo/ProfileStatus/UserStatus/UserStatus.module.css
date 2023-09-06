@@ -1,0 +1,44 @@
+.inner {
+    cursor: pointer;
+    width: 100%;
+    padding: 5px 0;
+    margin-left: -5px;
+
+    display: flex;
+    justify-content: space-between;
+
+    background-color: transparent;
+    transition: background-color 300ms ease-in-out;
+}
+
+.inner:hover {
+    background-color: rgba(128, 128, 128, 0.229);
+}
+
+.inner:hover .editIcon {
+    stroke: #000;
+}
+
+.text {
+    font-size: 18px;
+    font-weight: inherit;
+    line-height: 1.2;
+
+    display: inline-block;
+    padding-left: 5px;
+
+    word-break: break-word;
+}
+
+.editIconAfter {
+    padding-right: 5px;
+}
+
+.editIcon {
+    fill: none;
+    stroke: rgba(0, 0, 0, 0.36);
+    width: 18px;
+    height: 18px;
+
+    transition: stroke 300ms ease-in-out;
+}

@@ -19,7 +19,7 @@ export const ProfileInfo: React.FC<ProfileInfoPropsType> = ({
     updateProfileStatus,
     isOwner,
     changeProfilePhoto,
-    updateInProgress
+    updateInProgress,
 }) => {
     const userContacts = Object.keys(userInfo.contacts)
         .filter(c => userInfo.contacts[c] !== null)
@@ -43,7 +43,11 @@ export const ProfileInfo: React.FC<ProfileInfoPropsType> = ({
                 <div className={s.infoCol}>
                     <div className={s.personalInfo}>
                         <div className={s.fullName}>{userInfo.fullName}</div>
-                        <ProfileStatus status={userStatus} updateProfileStatus={updateProfileStatus} />
+                        <ProfileStatus
+                            status={userStatus}
+                            isOwner={isOwner}
+                            updateProfileStatus={updateProfileStatus}
+                        />
                     </div>
                     <div className={s.description}>
                         <div className={s.aboutMe}>
