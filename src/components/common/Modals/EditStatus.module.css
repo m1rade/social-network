@@ -1,0 +1,54 @@
+.modalContainer {
+    display: flex;
+    flex-direction: column;
+
+    padding: 10px;
+    margin-left: -12px;
+    max-width: 300px;
+    position: relative;
+
+    background-color: rgba(127, 255, 212, 0.262);
+    border: 1px solid;
+    box-shadow: 0px 0px 5px 2px #0000007d;
+
+    font-size: 1em;
+}
+
+.editField {
+    outline: 1px solid rgba(81, 79, 79, 0.6);
+    background-color: transparent;
+    border: none;
+    /* resize: none; */
+    overflow-y: auto;
+
+    margin-bottom: 10px;
+    padding: 5px;
+    max-width: 100%;
+
+    font-size: inherit;
+    font-family: inherit;
+    font-weight: inherit;
+}
+
+.editField:hover {
+    background-color: rgba(128, 128, 128, 0.229);
+}
+
+.fieldHasError {
+    border: 1px solid red;
+    background-color: rgba(238, 85, 85, 0.31);
+    margin-bottom: 0;
+}
+
+.fieldHasError:hover {
+    background-color: rgba(238, 85, 85, 0.31);;
+}
+
+.error {
+    font-size: inherit;
+    font-family: inherit;
+    font-weight: inherit;
+
+    color: rgba(255, 0, 0, 0.77);
+    margin-bottom: 10px;
+}
