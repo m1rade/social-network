@@ -9,6 +9,7 @@ import {
     changeProfilePhoto,
     fetchProfile,
     getProfileStatus,
+    updateProfileData,
     updateProfileStatus,
 } from "../../redux/profile_reducer";
 import {
@@ -22,7 +23,9 @@ import {
 import { AppStateType } from "../../redux/store";
 import { ROUTES_PATHS } from "../../routes/Routes";
 import Preloader from "../common/Preloader";
-import { Profile } from "./Profile";
+import { MyPosts } from "./MyPosts/MyPosts";
+import s from "./ProfileContainer.module.css";
+import { Profile } from "./ProfileInfo/Profile";
 
 class ProfileContainer extends React.Component<ProfileContainerPropsType> {
     refreshProfile() {
@@ -52,14 +55,27 @@ class ProfileContainer extends React.Component<ProfileContainerPropsType> {
     }
 
     render() {
-        const { history, location, match, staticContext, fetchProfile, getProfileStatus, ...restProps } = this.props;
+        const {
+            history,
+            location,
+            match,
+            staticContext,
+            fetchProfile,
+            getProfileStatus,
+            posts,
+            addPostMessage,
+            ...restProps
+        } = this.props;
 
         return (
             <>
                 {this.props.isFetching ? (
                     <Preloader />
                 ) : (
-                    <Profile isOwner={!this.props.match.params.userID} {...restProps} />
+                    <div className={s.profile}>
+                        <Profile isOwner={!this.props.match.params.userID} {...restProps} />
+                        <MyPosts posts={posts} photo={restProps.userInfo.photos.small} addNewPost={addPostMessage} />
+                    </div>
                 )}
             </>
         );
@@ -73,7 +89,7 @@ const mapStateToProps = (state: AppStateType): MapStatePropsType => ({
     posts: selectPosts(state),
     loggedUserID: selectLoggedUserID(state),
     isUserLoggedIn: selectIsUserLoggedIn(state),
-    updateInProgress: state.profile.updateInProgress
+    updateInProgress: state.profile.updateInProgress,
 });
 
 export default compose<React.ComponentType>(
@@ -83,6 +99,7 @@ export default compose<React.ComponentType>(
         updateProfileStatus,
         changeProfilePhoto,
         addPostMessage,
+        updateProfileData,
     }),
     withRouter
 )(ProfileContainer);
@@ -95,7 +112,7 @@ type MapStatePropsType = {
     isFetching: boolean;
     loggedUserID: number | null;
     isUserLoggedIn: boolean;
-    updateInProgress: boolean
+    updateInProgress: boolean;
 };
 
 type MapDispatchPropsType = {
@@ -104,6 +121,7 @@ type MapDispatchPropsType = {
     updateProfileStatus: (status: string) => void;
     changeProfilePhoto: (photo: File) => void;
     addPostMessage: (newPostMessage: string) => void;
+    updateProfileData: (formData: any) => void;
 };
 
 type PathParamsType = {

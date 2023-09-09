@@ -60,6 +60,10 @@ export const profileAPI = {
             },
         });
     },
+
+    updateProfileData(formData: ProfileData) {
+        return instance.put<ProfileData, AxiosResponse<ServerResponseType>>("profile", formData);
+    },
 };
 
 //types
@@ -93,7 +97,7 @@ export type ProfileResponseType = {
     photos: UserPhotoType;
 };
 
-type ContactsDomainType = {
+export type ContactsDomainType = {
     [key: string]: string;
 };
 
@@ -121,3 +125,5 @@ export enum ServerResultCode {
     OK = 0,
     Error = 1,
 }
+
+export type ProfileData = Partial<ProfileResponseType>

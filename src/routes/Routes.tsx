@@ -10,6 +10,7 @@ const SearchPage = lazy(() =>
     import("../components/Search/SearchPage").then(module => ({ default: module.SearchPage }))
 );
 const LoginPage = lazy(() => import("../components/Login/LoginPage"));
+const EditProfile = lazy(() => import("../components/Profile/EditProfile/EditProfile"));
 
 export const ROUTES_PATHS = {
     profile: "/profile",
@@ -19,6 +20,7 @@ export const ROUTES_PATHS = {
     music: "/music",
     settings: "/settings",
     login: "/login",
+    edit: "/edit"
 };
 
 export const Routes: React.FC<any> = () => {
@@ -26,7 +28,8 @@ export const Routes: React.FC<any> = () => {
         <Suspense fallback={<Preloader />}>
             <Switch>
                 <Route exact path={"/"} render={() => <ProfileContainer />} />
-                <Route exact path={ROUTES_PATHS.profile + "/:userID?"} render={() => <ProfileContainer />} />
+                <Route exact path={ROUTES_PATHS.profile} render={() => <ProfileContainer />} />
+                <Route exact path={ROUTES_PATHS.edit} render={() => <EditProfile />} />
                 <Route exact path={ROUTES_PATHS.messages} render={() => <Messages />} />
                 <Route exact path={ROUTES_PATHS.search} render={() => <SearchPage />} />
                 <Route exact path={ROUTES_PATHS.news} render={() => <News />} />

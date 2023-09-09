@@ -1,4 +1,4 @@
-import { ProfileResponseType, ServerResultCode, UserPhotoType } from "../api/social-networkAPI";
+import { ProfileData, ProfileResponseType, ServerResultCode, UserPhotoType } from "../api/social-networkAPI";
 import { profileAPI } from "./../api/social-networkAPI";
 import { toggleIsFetching } from "./app_reducer";
 import { AppThunkType } from "./store";
@@ -111,7 +111,7 @@ export const fetchProfile =
             const resp = await profileAPI.fetchProfile(userID);
             dispatch(setUserInfo(resp.data));
         } catch (err) {
-            alert(err);
+            console.log(err);
         } finally {
             dispatch(toggleIsFetching(false));
         }
@@ -126,7 +126,7 @@ export const getProfileStatus =
                 dispatch(setProfileStatus(resp.data));
             }
         } catch (err) {
-            alert(err);
+            console.log(err);
         }
     };
 
@@ -169,6 +169,27 @@ export const changeProfilePhoto =
         }
     };
 
+export const updateProfileData =
+    (formData: ProfileData): AppThunkType =>
+    async (dispatch) => {
+        dispatch(toggleUpdateInProgress(true));
+
+        try {
+            const resp = await profileAPI.updateProfileData(formData);
+            if (resp.status === 200) {
+                if (resp.data.resultCode === ServerResultCode.OK) {
+                    formData.userId && dispatch(fetchProfile(formData.userId));
+                } else {
+                    console.log(resp.data.messages);
+                }
+            }
+        } catch (error) {
+            alert(error);
+        } finally {
+            dispatch(toggleUpdateInProgress(false));
+        }
+    };
+
 //types
 export type PostType = {
     id: number;
@@ -183,4 +204,4 @@ export type ProfileActionType =
     | ReturnType<typeof setProfileStatus>
     | ReturnType<typeof deletePostMessage>
     | ReturnType<typeof setProfilePhoto>
-    | ReturnType<typeof toggleUpdateInProgress>;
+    | ReturnType<typeof toggleUpdateInProgress>
