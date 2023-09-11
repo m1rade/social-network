@@ -10,7 +10,9 @@ const SearchPage = lazy(() =>
     import("../components/Search/SearchPage").then(module => ({ default: module.SearchPage }))
 );
 const LoginPage = lazy(() => import("../components/Login/LoginPage"));
-const EditProfile = lazy(() => import("../components/Profile/EditProfile/EditProfile"));
+const EditProfile = lazy(() =>
+    import("../components/Profile/EditProfile/EditProfile").then(module => ({ default: module.EditProfile }))
+);
 
 export const ROUTES_PATHS = {
     profile: "/profile",
@@ -20,7 +22,7 @@ export const ROUTES_PATHS = {
     music: "/music",
     settings: "/settings",
     login: "/login",
-    edit: "/edit"
+    edit: "/edit",
 };
 
 export const Routes: React.FC<any> = () => {

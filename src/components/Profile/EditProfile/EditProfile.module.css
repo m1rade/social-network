@@ -2,3 +2,7 @@
     text-align: center;
     color: #222;
 }
+
+.fieldHasError {
+    color: red;
+}

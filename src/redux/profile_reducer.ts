@@ -9,6 +9,7 @@ const SET_USER_INFO = "PROFILE/SET_USER_INFO";
 const SET_PROFILE_STATUS = "PROFILE/SET_PROFILE_STATUS";
 const SET_PROFILE_PHOTO = "PROFILE/SET_PROFILE_PHOTO";
 const TOGGLE_UPDATE_IN_PROGRESS = "PROFILE/TOGGLE_UPDATE_IN_PROGRESS";
+const UPDATE_FAILED = "PROFILE/UPDATE_FAILED";
 
 const initState = {
     userInfo: {
@@ -35,6 +36,7 @@ const initState = {
     status: "",
     posts: [] as PostType[],
     updateInProgress: false,
+    errorsOnUpdate: null as null | string[],
 };
 
 const profileReducer = (state: ProfileDomainType = initState, action: ProfileActionType): ProfileDomainType => {
@@ -58,6 +60,8 @@ const profileReducer = (state: ProfileDomainType = initState, action: ProfileAct
             return { ...state, userInfo: { ...state.userInfo, photos: action.photos } };
         case TOGGLE_UPDATE_IN_PROGRESS:
             return { ...state, updateInProgress: action.value };
+        case UPDATE_FAILED:
+            return { ...state, errorsOnUpdate: action.messages };
         default:
             return state;
     }
@@ -99,6 +103,11 @@ const toggleUpdateInProgress = (value: boolean) =>
     ({
         type: TOGGLE_UPDATE_IN_PROGRESS,
         value,
+    } as const);
+const setErrorsOnFailedUpdate = (messages: string[] | null) =>
+    ({
+        type: UPDATE_FAILED,
+        messages,
     } as const);
 
 //thunks
@@ -171,7 +180,7 @@ export const changeProfilePhoto =
 
 export const updateProfileData =
     (formData: ProfileData): AppThunkType =>
-    async (dispatch) => {
+    async dispatch => {
         dispatch(toggleUpdateInProgress(true));
 
         try {
@@ -180,7 +189,7 @@ export const updateProfileData =
                 if (resp.data.resultCode === ServerResultCode.OK) {
                     formData.userId && dispatch(fetchProfile(formData.userId));
                 } else {
-                    console.log(resp.data.messages);
+                    dispatch(setErrorsOnFailedUpdate(resp.data.messages));
                 }
             }
         } catch (error) {
@@ -205,3 +214,4 @@ export type ProfileActionType =
     | ReturnType<typeof deletePostMessage>
     | ReturnType<typeof setProfilePhoto>
     | ReturnType<typeof toggleUpdateInProgress>
+    | ReturnType<typeof setErrorsOnFailedUpdate>;

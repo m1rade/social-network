@@ -1,140 +1,115 @@
-import React from "react";
-import { connect } from "react-redux";
-import s from "./EditProfile.module.css";
-import { ProfileData, ProfileResponseType } from "../../../api/social-networkAPI";
-import { AppStateType } from "../../../redux/store";
-import { selectIsFetching, selectUserInfo } from "../../../redux/selectors/selectors";
+import React, { useEffect } from "react";
+import { SubmitHandler, UseFormRegister, useForm } from "react-hook-form";
+import { ProfileData } from "../../../api/social-networkAPI";
+import { useAppDispatch, useAppSelector } from "../../../hooks/hooks";
 import { fetchProfile, updateProfileData } from "../../../redux/profile_reducer";
-import withAuthRedirect from "../../../HOC/withAuthRedirect";
-import { compose } from "redux";
-import { Form, Field } from "react-final-form";
+import { selectIsFetching, selectUserInfo } from "../../../redux/selectors/selectors";
 import YellowButton from "../../common/Buttons/YellowButton";
 import Preloader from "../../common/Preloader";
+import s from "./EditProfile.module.css";
 
-type Props = MapStateType & MapDispatchType;
+export const EditProfile: React.FC = () => {
+    const userInfo = useAppSelector(selectUserInfo);
+    const updateInProgress = useAppSelector(state => state.profile.updateInProgress);
+    const userID = useAppSelector(state => state.auth.data.id);
+    const isFetching = useAppSelector(selectIsFetching);
+    const serverErrors = useAppSelector(state => state.profile.errorsOnUpdate);
 
-type State = {
-    isSuccessful: boolean;
-};
+    const dispatch = useAppDispatch();
 
-class EditProfile extends React.Component<Props, State> {
-    state = {
-        isSuccessful: false,
-    };
+    const {
+        register,
+        handleSubmit,
+        setError,
+        formState: { errors },
+    } = useForm<ProfileData>({ values: userInfo });
 
-    componentDidMount() {
-        
-        const {fetchProfile, userID, userInfo} = this.props;
-
+    useEffect(() => {
         if (!userInfo.userId) {
             if (userID) {
-                fetchProfile(userID);
+                dispatch(fetchProfile(userID));
             }
         }
-    }
+    }, []);
 
-    handleSubmit(formData: ProfileData) {
-        this.props.updateProfileData(formData);
-    }
+    useEffect(() => {
+        //regex
+        const matchFieldName = /\((\w+)/g;
+        const cutErrorMessage = /\s\((\w+)\)/;
+        if (serverErrors) {
+            serverErrors.forEach(e => {
+                const match = e.match(matchFieldName);
+                if (match) {
+                    const field = match[0].slice(1);
+                    const fieldName = field.charAt(0).toLowerCase() + field.slice(1);
 
-    render() {
-        const {isFetching, updateInProgress, userInfo} = this.props;
+                    //@ts-ignore
+                    setError(fieldName, { type: "manual", message: e.replace(cutErrorMessage, "") });
+                }
+            });
+        }
+    }, [serverErrors, setError]);
 
-        if (isFetching || updateInProgress) return <Preloader />
+    const onSubmit: SubmitHandler<ProfileData> = formData => {
+        dispatch(updateProfileData(formData));
+    };
 
-        return (
-            <div className={s.container}>
-                <h1 className={s.header}>Редактирование профиля</h1>
-                <Form
-                    onSubmit={this.handleSubmit.bind(this)}
-                    initialValues={userInfo}
-                    render={({ handleSubmit }) => {
-                        return (
-                            <form onSubmit={handleSubmit}>
-                                <h2>Личная информация</h2>
-                                <div>
-                                    <label>Ваше имя</label>
-                                    <Field name="fullName" component="input" type="text" />
-                                </div>
-                                <div>
-                                    <label>Краткая информация</label>
-                                    <Field name="aboutMe" component="textarea" placeholder="Расскажите о себе" />
-                                </div>
-                                <div>
-                                    <label>В поиске работы</label>
-                                    <Field name="lookingForAJob" component="input" type="checkbox" />
-                                </div>
-                                <div>
-                                    <label>Описание</label>
-                                    <Field name="lookingForAJobDescription" component="textarea" />
-                                </div>
-                                <hr />
-                                <h2>Контакты</h2>
-                                <div>
-                                    <label>Facebook</label>
-                                    <Field name="facebook" component="input" type="text" />
-                                </div>
-                                <div>
-                                    <label>Website</label>
-                                    <Field name="website" component="input" type="text" />
-                                </div>
-                                <div>
-                                    <label>Vk</label>
-                                    <Field name="vk" component="input" type="text" />
-                                </div>
-                                <div>
-                                    <label>Twitter</label>
-                                    <Field name="twitter" component="input" type="text" />
-                                </div>
-                                <div>
-                                    <label>Instagram</label>
-                                    <Field name="instagram" component="input" type="text" />
-                                </div>
-                                <div>
-                                    <label>Youtube</label>
-                                    <Field name="youtube" component="input" type="text" />
-                                </div>
-                                <div>
-                                    <label>Github</label>
-                                    <Field name="github" component="input" type="text" />
-                                </div>
-                                <div>
-                                    <label>MainLink</label>
-                                    <Field name="mainLink" component="input" type="text" />
-                                </div>
-                                <div>
-                                    <YellowButton type="submit">Сохранить</YellowButton>
-                                </div>
-                            </form>
-                        );
-                    }}
-                />
+    if (isFetching || updateInProgress) return <Preloader />;
+
+    return (
+        <div className={s.container}>
+            <h1 className={s.header}>Редактирование профиля</h1>
+
+            <form onSubmit={handleSubmit(onSubmit)}>
+                <h2>Личная информация</h2>
+                <div>
+                    <label>Ваше имя</label>
+                    <input {...register("fullName")} type="text" />
+                    {errors.fullName && <span className={s.fieldHasError}>{errors.fullName.message}</span>}
+                </div>
+                <div>
+                    <div>
+                        <label>Краткая информация</label>
+                        <textarea {...register("aboutMe")} placeholder="Расскажите о себе" />
+                        {errors.aboutMe && <span className={s.fieldHasError}>{errors.aboutMe.message}</span>}
+                    </div>
+                </div>
+                <div>
+                    <label>В поиске работы</label>
+                    <input {...register("lookingForAJob")} type="checkbox" />
+                </div>
+                <div>
+                    <label>Описание</label>
+                    <textarea {...register("lookingForAJobDescription")} />
+                    {errors.lookingForAJobDescription && (
+                        <span className={s.fieldHasError}>{errors.lookingForAJobDescription.message}</span>
+                    )}
+                </div>
+                <hr />
+                <h2>Контакты</h2>
+                {createContactFields(userInfo.contacts, "input", register).map(c => c)}
+                <div>
+                    <YellowButton type="submit">Сохранить</YellowButton>
+                </div>
+            </form>
+        </div>
+    );
+};
+
+const createContactFields = (
+    contacts: Object,
+    Component: React.ComponentType | "input" | "select" | "textarea",
+    register: UseFormRegister<ProfileData>
+): JSX.Element[] => {
+    const contactsJSX: JSX.Element[] = [];
+
+    for (const [key, value] of Object.entries(contacts)) {
+        contactsJSX.push(
+            <div key={key}>
+                <label>{key.charAt(0).toUpperCase() + key.slice(1)}</label>
+                <Component {...register(`contacts.${key}`)} type="text" placeholder={value} />
             </div>
         );
     }
-}
-
-const mapStateToProps = (state: AppStateType): MapStateType => ({
-    userInfo: selectUserInfo(state),
-    updateInProgress: state.profile.updateInProgress,
-    userID: state.auth.data.id,
-    isFetching: selectIsFetching(state)
-});
-
-export default compose<React.ComponentType>(
-    connect<MapStateType, MapDispatchType, {}, AppStateType>(mapStateToProps, { updateProfileData, fetchProfile }),
-    withAuthRedirect
-)(EditProfile);
-
-//types
-type MapStateType = {
-    userInfo: ProfileResponseType;
-    updateInProgress: boolean;
-    userID: number | null;
-    isFetching: boolean;
-};
-
-type MapDispatchType = {
-    updateProfileData: (formData: ProfileData) => void;
-    fetchProfile: (id: number | string) => void;
+    return contactsJSX;
 };
