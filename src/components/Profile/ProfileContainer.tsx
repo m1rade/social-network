@@ -5,10 +5,12 @@ import { compose } from "redux";
 import { ProfileResponseType } from "../../api/social-networkAPI";
 import {
     PostType,
+    UpdateProfileType,
     addPostMessage,
     changeProfilePhoto,
     fetchProfile,
     getProfileStatus,
+    toggleUpdateInProgress,
     updateProfileData,
     updateProfileStatus,
 } from "../../redux/profile_reducer";
@@ -89,7 +91,7 @@ const mapStateToProps = (state: AppStateType): MapStatePropsType => ({
     posts: selectPosts(state),
     loggedUserID: selectLoggedUserID(state),
     isUserLoggedIn: selectIsUserLoggedIn(state),
-    updateInProgress: state.profile.updateInProgress,
+    updateInProgress: state.profile.update.updateInProgress,
 });
 
 export default compose<React.ComponentType>(
@@ -100,6 +102,7 @@ export default compose<React.ComponentType>(
         changeProfilePhoto,
         addPostMessage,
         updateProfileData,
+        toggleUpdateInProgress,
     }),
     withRouter
 )(ProfileContainer);
@@ -112,7 +115,7 @@ type MapStatePropsType = {
     isFetching: boolean;
     loggedUserID: number | null;
     isUserLoggedIn: boolean;
-    updateInProgress: boolean;
+    updateInProgress: UpdateProfileType;
 };
 
 type MapDispatchPropsType = {
@@ -122,6 +125,7 @@ type MapDispatchPropsType = {
     changeProfilePhoto: (photo: File) => void;
     addPostMessage: (newPostMessage: string) => void;
     updateProfileData: (formData: any) => void;
+    toggleUpdateInProgress: (state: UpdateProfileType) => void;
 };
 
 type PathParamsType = {

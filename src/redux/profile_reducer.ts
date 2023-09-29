@@ -13,7 +13,7 @@ const UPDATE_FAILED = "PROFILE/UPDATE_FAILED";
 
 const initState = {
     userInfo: {
-        aboutMe: "Cooool cat's description here",
+        aboutMe: "",
         contacts: {
             facebook: "",
             website: "",
@@ -26,7 +26,7 @@ const initState = {
         },
         lookingForAJob: false,
         lookingForAJobDescription: "",
-        fullName: "Cooool cat",
+        fullName: "",
         userId: null,
         photos: {
             small: "",
@@ -35,8 +35,10 @@ const initState = {
     } as ProfileResponseType,
     status: "",
     posts: [] as PostType[],
-    updateInProgress: false,
-    errorsOnUpdate: null as null | string[],
+    update: {
+        updateInProgress: "Idle" as UpdateProfileType,
+        errors: null as null | string[],
+    },
 };
 
 const profileReducer = (state: ProfileDomainType = initState, action: ProfileActionType): ProfileDomainType => {
@@ -59,9 +61,9 @@ const profileReducer = (state: ProfileDomainType = initState, action: ProfileAct
         case SET_PROFILE_PHOTO:
             return { ...state, userInfo: { ...state.userInfo, photos: action.photos } };
         case TOGGLE_UPDATE_IN_PROGRESS:
-            return { ...state, updateInProgress: action.value };
+            return { ...state, update: { ...state.update, updateInProgress: action.value } };
         case UPDATE_FAILED:
-            return { ...state, errorsOnUpdate: action.messages };
+            return { ...state, update: { ...state.update, errors: action.messages } };
         default:
             return state;
     }
@@ -99,12 +101,12 @@ export const setProfilePhoto = (photos: UserPhotoType) =>
         photos,
     } as const);
 
-const toggleUpdateInProgress = (value: boolean) =>
+export const toggleUpdateInProgress = (value: UpdateProfileType) =>
     ({
         type: TOGGLE_UPDATE_IN_PROGRESS,
         value,
     } as const);
-const setErrorsOnFailedUpdate = (messages: string[] | null) =>
+export const setErrorsOnFailedUpdate = (messages: string[] | null) =>
     ({
         type: UPDATE_FAILED,
         messages,
@@ -142,60 +144,68 @@ export const getProfileStatus =
 export const updateProfileStatus =
     (status: string): AppThunkType =>
     async dispatch => {
-        dispatch(toggleUpdateInProgress(true));
+        dispatch(toggleUpdateInProgress("InProgress"));
 
         try {
             const resp = await profileAPI.updateProfileStatus(status);
             if (resp.status === 200) {
                 if (resp.data.resultCode === ServerResultCode.OK) {
+                    dispatch(toggleUpdateInProgress("Successful"));
                     dispatch(setProfileStatus(status));
                 }
+            } else {
+                dispatch(toggleUpdateInProgress("Failed"));
+                dispatch(setErrorsOnFailedUpdate(resp.data.messages));
             }
         } catch (err) {
+            dispatch(toggleUpdateInProgress("Failed"));
             alert(err);
-        } finally {
-            dispatch(toggleUpdateInProgress(false));
         }
     };
 
 export const changeProfilePhoto =
     (photo: File): AppThunkType =>
     async dispatch => {
-        dispatch(toggleUpdateInProgress(true));
+        dispatch(toggleUpdateInProgress("InProgress"));
         try {
             const formData = new FormData();
             formData.append("image", photo);
             const resp = await profileAPI.changeProfilePhoto(formData);
             if (resp.status === 200) {
                 if (resp.data.resultCode === ServerResultCode.OK) {
+                    dispatch(toggleUpdateInProgress("Successful"));
                     dispatch(setProfilePhoto(resp.data.data.photos));
                 }
+            } else {
+                dispatch(toggleUpdateInProgress("Failed"));
+                dispatch(setErrorsOnFailedUpdate(resp.data.messages));
             }
         } catch (error) {
+            dispatch(toggleUpdateInProgress("Failed"));
             alert(error);
-        } finally {
-            dispatch(toggleUpdateInProgress(false));
         }
     };
 
 export const updateProfileData =
     (formData: ProfileData): AppThunkType =>
-    async dispatch => {
-        dispatch(toggleUpdateInProgress(true));
+    async (dispatch, getState) => {
+        dispatch(toggleUpdateInProgress("InProgress"));
+        getState().profile.update.errors && dispatch(setErrorsOnFailedUpdate(null));
 
         try {
             const resp = await profileAPI.updateProfileData(formData);
             if (resp.status === 200) {
                 if (resp.data.resultCode === ServerResultCode.OK) {
+                    dispatch(toggleUpdateInProgress("Successful"));
                     formData.userId && dispatch(fetchProfile(formData.userId));
                 } else {
+                    dispatch(toggleUpdateInProgress("Failed"));
                     dispatch(setErrorsOnFailedUpdate(resp.data.messages));
                 }
             }
         } catch (error) {
+            dispatch(toggleUpdateInProgress("Failed"));
             alert(error);
-        } finally {
-            dispatch(toggleUpdateInProgress(false));
         }
     };
 
@@ -204,6 +214,8 @@ export type PostType = {
     id: number;
     message: string;
 };
+
+export type UpdateProfileType = "Successful" | "Failed" | "InProgress" | "Idle";
 
 export type ProfileDomainType = typeof initState;
 

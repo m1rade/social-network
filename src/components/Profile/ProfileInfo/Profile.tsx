@@ -24,6 +24,7 @@ export const Profile: React.FC<ProfileInfoPropsType> = ({
     changeProfilePhoto,
     updateInProgress,
     updateProfileData,
+    toggleUpdateInProgress,
     ...restProps
 }) => {
     return (
@@ -33,7 +34,7 @@ export const Profile: React.FC<ProfileInfoPropsType> = ({
                     isOwner={isOwner}
                     srcPhoto={userInfo.photos.large}
                     changeProfilePhoto={changeProfilePhoto}
-                    disabled={updateInProgress}
+                    disabled={updateInProgress === "InProgress"}
                 />
                 <div className={s.infoCol}>
                     <div className={s.personalInfo}>
@@ -42,6 +43,8 @@ export const Profile: React.FC<ProfileInfoPropsType> = ({
                             status={userStatus}
                             isOwner={isOwner}
                             updateProfileStatus={updateProfileStatus}
+                            updateInProgress={updateInProgress}
+                            toggleUpdateInProgress={toggleUpdateInProgress}
                         />
                     </div>
                     <ProfileInfo
