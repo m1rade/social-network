@@ -66,6 +66,12 @@ export const profileAPI = {
     },
 };
 
+export const securityAPI = {
+    getCaptchaURL() {
+        return instance.get<{ url: string }>("security/get-captcha-url");
+    },
+};
+
 //types
 export type UserType = {
     name: string;
@@ -111,7 +117,7 @@ export type LoginData = {
     email: string;
     password: string;
     rememberMe?: boolean;
-    captcha?: boolean;
+    captcha?: string;
 };
 
 export type ServerResponseType<T = {}> = {
@@ -124,6 +130,7 @@ export type ServerResponseType<T = {}> = {
 export enum ServerResultCode {
     OK = 0,
     Error = 1,
+    Captcha = 10
 }
 
-export type ProfileData = Partial<ProfileResponseType>
+export type ProfileData = Partial<ProfileResponseType>;

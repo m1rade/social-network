@@ -2246,6 +2246,11 @@
   resolved "https://registry.yarnpkg.com/@xtuc/long/-/long-4.2.2.tgz#d291c6a4e97989b5c61d9acf396ae4fe133a718d"
   integrity sha512-NuHqBY1PB/D8xU6s/thBgOAiAP7HOYDQ32+BFZILJ8ivkUkAHQnWfn6WhL79Owj1qmUnoN/YPhktdIoucipkAQ==
 
+"@yandex/smart-captcha@^2.4.12":
+  version "2.4.12"
+  resolved "https://registry.yarnpkg.com/@yandex/smart-captcha/-/smart-captcha-2.4.12.tgz#f5ede6c89a1c43a0544554500b3b9266755da762"
+  integrity sha512-ZLV8xZLPt4H6enCRhbo5JaPY1A9mPhTSlO6n/mEkC86Hc+IspDWv2O9PA/7QwrQTp4k9TKJmGKX75EfKq6kGpg==
+
 abab@^2.0.3, abab@^2.0.5:
   version "2.0.5"
   resolved "https://registry.yarnpkg.com/abab/-/abab-2.0.5.tgz#c0b678fb32d60fc1219c784d6a826fe385aeb79a"

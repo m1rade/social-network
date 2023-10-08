@@ -10,6 +10,8 @@ beforeEach(() => {
             login: null
         },
         isUserLoggedIn: false,
+        captcha: "",
+        fieldsErrors: null
     };
 });
 

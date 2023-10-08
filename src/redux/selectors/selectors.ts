@@ -18,6 +18,8 @@ export const selectLoggedUserID: StoreSelectorType<number | null> = state => sta
 
 export const selectIsUserLoggedIn: StoreSelectorType<boolean> = state => state.auth.isUserLoggedIn;
 
+export const selectCaptchaURL: StoreSelectorType<string | null> = state => state.auth.captcha;
+
 export const selectMessages: StoreSelectorType<MessageType[]> = state => state.messages.all_messages;
 
 export const selectReversedMessages: StoreSelectorType<MessageType[]> = createSelector(selectMessages, messages =>
