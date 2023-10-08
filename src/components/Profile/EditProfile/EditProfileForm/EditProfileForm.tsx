@@ -70,53 +70,56 @@ export const EditProfileForm: React.FC<Props> = ({ userInfo }) => {
     return (
         <div className={s.container}>
             <h1 className={s.header}>Редактирование профиля</h1>
+            <div className={s.formContainer}>
+                <Form<ProfileData>
+                    onSubmit={onSubmit}
+                    options={{ defaultValues: userInfo, values: userInfo }}
+                    serverErrors={serverErrors}>
+                    {({ register, formState }) => (
+                        <>
+                            <div className={s.blockContainer}>
+                                {updateInProgress === "Successful" && (
+                                    <UpdateResultMessage message="Изменения сохранены" />
+                                )}
+                                <h2 className={s.blockHeader}>Личная информация</h2>
+                                {PROFILE_FIELDS.map(field => {
+                                    return (
+                                        <field.htmlTag
+                                            key={field.name}
+                                            registration={register(field.name)}
+                                            type={field.type}
+                                            label={field.label}
+                                            placeholder={
+                                                field.name === "fullName" ? userInfo[field.name] : field.placeholder
+                                            }
+                                            error={formState.errors[field.name]}
+                                        />
+                                    );
+                                })}
+                            </div>
 
-            <Form<ProfileData>
-                onSubmit={onSubmit}
-                options={{ defaultValues: userInfo, values: userInfo }}
-                serverErrors={serverErrors}>
-                {({ register, formState }) => (
-                    <>
-                        <div className={s.blockContainer}>
-                            {updateInProgress === "Successful" && <UpdateResultMessage message="Изменения сохранены" />}
-                            <h2 className={s.blockHeader}>Личная информация</h2>
-                            {PROFILE_FIELDS.map(field => {
-                                return (
-                                    <field.htmlTag
-                                        key={field.name}
-                                        registration={register(field.name)}
-                                        type={field.type}
-                                        label={field.label}
-                                        placeholder={
-                                            field.name === "fullName" ? userInfo[field.name] : field.placeholder
-                                        }
-                                        error={formState.errors[field.name]}
-                                    />
-                                );
-                            })}
-                        </div>
-
-                        <hr />
-                        <div className={s.blockContainer}>
-                            <h2 className={s.blockHeader}>Контакты</h2>
-                            {Object.entries(userInfo.contacts).map(([key, value]) => {
-                                return (
-                                    <Input
-                                        key={key}
-                                        registration={register(`contacts.${key}`)}
-                                        type="text"
-                                        placeholder={value}
-                                        label={key.charAt(0).toUpperCase() + key.slice(1)}
-                                    />
-                                );
-                            })}
-                        </div>
-                        <div className={s.editButton}>
-                            <YellowButton type="submit">Сохранить</YellowButton>
-                        </div>
-                    </>
-                )}
-            </Form>
+                            <hr />
+                            <div className={s.blockContainer}>
+                                <h2 className={s.blockHeader}>Контакты</h2>
+                                {Object.entries(userInfo.contacts).map(([key, value]) => {
+                                    return (
+                                        <Input
+                                            key={key}
+                                            registration={register(`contacts.${key}`)}
+                                            type="text"
+                                            placeholder={value}
+                                            label={key.charAt(0).toUpperCase() + key.slice(1)}
+                                        />
+                                    );
+                                })}
+                            </div>
+                            <div className={s.editButton}>
+                                <YellowButton type="submit">Сохранить</YellowButton>
+                            </div>
+                        </>
+                    )}
+                </Form>
+            </div>
         </div>
     );
 };

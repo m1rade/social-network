@@ -6,11 +6,10 @@ import s from "./Fields.module.css";
 
 type Props = React.InputHTMLAttributes<HTMLInputElement> &
     FieldWrapperPassThroughProps & {
-        validation?: Object;
         registration: Partial<UseFormRegisterReturn>;
     };
 
-export const Input: React.FC<Props> = ({ label, className, error, validation, registration, ...restProps }) => {
+export const Input: React.FC<Props> = ({ label, className, error, registration, ...restProps }) => {
     return (
         <FieldWrapper label={label} error={error} labelClassName={s.inputLabel}>
             <input

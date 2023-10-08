@@ -24,6 +24,7 @@ export const Form = <TFormValues extends FieldValues = FieldValues>({
 
     useEffect(() => {
         //"Invalid url format (Contacts->Facebook)"
+        // TODO
         const matchFieldName = /\((\w+)/g;
         const cutErrorMessage = /\s\((\w+)\)/;
         if (serverErrors) {
@@ -41,12 +42,10 @@ export const Form = <TFormValues extends FieldValues = FieldValues>({
     }, [serverErrors, methods.setError]);
 
     return (
-        <div className={s.container}>
-            <form className={cn(className)} onSubmit={methods.handleSubmit(onSubmit)} id={id}>
-                <fieldset className={s.fieldset} disabled={methods.formState.isSubmitting}>
-                    {children(methods)}
-                </fieldset>
-            </form>
-        </div>
+        <form className={cn(className)} onSubmit={methods.handleSubmit(onSubmit)} id={id}>
+            <fieldset className={s.fieldset} disabled={methods.formState.isSubmitting}>
+                {children(methods)}
+            </fieldset>
+        </form>
     );
 };

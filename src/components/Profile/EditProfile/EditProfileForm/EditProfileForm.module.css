@@ -10,6 +10,15 @@
     color: #222;
 }
 
+.formContainer {
+    width: 100%;
+    padding-bottom: 20px;
+    background-color: ghostwhite;
+    border-radius: 12px;
+    border: 1px solid #dce1e6;
+    box-shadow: 3px 3px 10px 0px grey;
+}
+
 .blockHeader {
     margin: 0;
     padding: 0 20px;

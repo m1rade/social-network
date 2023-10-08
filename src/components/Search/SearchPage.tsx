@@ -17,7 +17,7 @@ class SearchContainer extends React.Component<SearchContainerPropsType> {
         this.props.getUsersThunk(itemsPerPage, curPage);
     };
 
-    render(): React.ReactNode {
+    render() {
         const { totalCount, curPage, itemsPerPage } = this.props;
 
         return (
