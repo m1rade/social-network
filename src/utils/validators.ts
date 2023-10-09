@@ -1,7 +1,7 @@
-export type ValidatorsType = (value: string) => string | undefined;
+export type ValidatorsType = <Type extends string>(value: Type) => boolean | string | undefined;
 
 export const requiredField: ValidatorsType = (value) => {
-    return !value ? undefined : "Обязательное поле";
+    return !value || "Обязательное поле";
 };
 
 export const maxLengthValidator =
@@ -20,4 +20,4 @@ export const minLengthValidator =
 
 //login validators
 export const verifyEmail: ValidatorsType = (value) =>
-    value && !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value) ? "Неверный e-mail" : undefined;
+    value && !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value) ? "Некорректный формат" : undefined;
