@@ -11,7 +11,7 @@ type Props = React.InputHTMLAttributes<HTMLInputElement> &
 
 export const Input: React.FC<Props> = ({ label, className, error, registration, ...restProps }) => {
     return (
-        <FieldWrapper label={label} error={error} labelClassName={s.inputLabel}>
+        <FieldWrapper label={label} error={error} labelClassName={s.inputLabel} id={restProps.id}>
             <input
                 {...restProps}
                 className={cn(s.inputField, className, { [`${s.fieldHasError}`]: error })}

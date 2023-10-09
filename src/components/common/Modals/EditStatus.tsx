@@ -15,6 +15,7 @@ const validateFieldLength = maxLengthValidator(MAX_LENGTH);
 const validateField = (currentValue: string, setError: (value: string) => void) => {
     const returnValue = validateFieldLength(currentValue);
     if (returnValue) {
+        if (typeof returnValue === "string")
         setError(returnValue);
     } else {
         setError("");

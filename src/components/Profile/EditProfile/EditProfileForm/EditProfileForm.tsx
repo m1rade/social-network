@@ -86,6 +86,7 @@ export const EditProfileForm: React.FC<Props> = ({ userInfo }) => {
                                     return (
                                         <field.htmlTag
                                             key={field.name}
+                                            id={field.name}
                                             registration={register(field.name)}
                                             type={field.type}
                                             label={field.label}
@@ -105,6 +106,7 @@ export const EditProfileForm: React.FC<Props> = ({ userInfo }) => {
                                     return (
                                         <Input
                                             key={key}
+                                            id={key}
                                             registration={register(`contacts.${key}`)}
                                             type="text"
                                             placeholder={value}
