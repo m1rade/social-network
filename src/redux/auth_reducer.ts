@@ -1,18 +1,20 @@
-import { stopSubmit } from "redux-form";
-import { authAPI, AuthUserDataType, LoginData, securityAPI } from "../api/social-networkAPI";
+import { authAPI, AuthUserDataType, FieldsErrorsType, LoginData, securityAPI } from "../api/social-networkAPI";
 import { ServerResultCode } from "./../api/social-networkAPI";
 import { toggleIsFetching, ToggleIsFetchingType } from "./app_reducer";
 import { AppThunkType } from "./store";
 
 const SET_USER_DATA = "AUTH/SET_USER_DATA";
 const SET_CAPTCHA_URL = "AUTH/SET_CAPTCHA_URL";
-const SET_FIELDS_ERRORS = "AUTH/SET_FIELDS_ERRORS";
+const SET_ERRORS = "AUTH/SET_ERRORS";
 
 const initialState = {
     data: {} as AuthUserDataType,
     isUserLoggedIn: false,
     captcha: null as null | string,
-    fieldsErrors: null as null | string[],
+    errors: {
+        fieldsErrors: [] as FieldsErrorsType[],
+        message: null as null | string,
+    },
 };
 
 const authReducer = (state: AuthDomainType = initialState, action: AuthActionType): AuthDomainType => {
@@ -21,8 +23,15 @@ const authReducer = (state: AuthDomainType = initialState, action: AuthActionTyp
             return { ...state, data: { ...action.data }, isUserLoggedIn: action.isUserLoggedIn };
         case SET_CAPTCHA_URL:
             return { ...state, captcha: action.url };
-        case SET_FIELDS_ERRORS:
-            return { ...state, fieldsErrors: action.errors };
+        case SET_ERRORS:
+            return {
+                ...state,
+                errors: {
+                    ...state.errors,
+                    message: action.message,
+                    fieldsErrors: action.fieldsErrors ? [...action.fieldsErrors] : [],
+                },
+            };
         default:
             return state;
     }
@@ -42,10 +51,12 @@ const setCaptchaURL = (url: string | null) =>
         type: SET_CAPTCHA_URL,
         url,
     } as const);
-export const setFieldsErrors = (errors: null | string[]) => ({
-    type: SET_FIELDS_ERRORS,
-    errors,
-} as const);
+export const setErrors = (message: null | string, fieldsErrors?: FieldsErrorsType[]) =>
+    ({
+        type: SET_ERRORS,
+        message,
+        fieldsErrors,
+    } as const);
 
 // thunks
 export const authorizeUser = (): AppThunkType => async dispatch => {
@@ -82,15 +93,16 @@ export const loginUser =
             if (resp.status === 200) {
                 if (resp.data.resultCode === ServerResultCode.OK) {
                     dispatch(authorizeUser());
+                    dispatch(setErrors(null));
                 } else {
                     if (resp.data.resultCode === ServerResultCode.Captcha) {
                         dispatch(getCaptchaURL());
                     }
-                    dispatch(
-                        stopSubmit("login", {
-                            _error: resp.data.messages.length > 0 ? resp.data.messages[0] : "Some error",
-                        })
-                    );
+                    if (resp.data.messages.length > 0 && resp.data.fieldsErrors.length > 0) {
+                        dispatch(setErrors(resp.data.messages[0], resp.data.fieldsErrors));
+                    } else {
+                        dispatch(setErrors(resp.data.messages.length !== 0 ? resp.data.messages[0] : "Some error"));
+                    }
                 }
             } else {
                 alert(resp.statusText);
@@ -142,4 +154,4 @@ export type AuthActionType =
     | ReturnType<typeof setUserData>
     | ToggleIsFetchingType
     | ReturnType<typeof setCaptchaURL>
-    | ReturnType<typeof setFieldsErrors>;
+    | ReturnType<typeof setErrors>;

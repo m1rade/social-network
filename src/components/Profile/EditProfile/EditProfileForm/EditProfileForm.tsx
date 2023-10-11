@@ -41,7 +41,7 @@ type Props = {
 };
 
 export const EditProfileForm: React.FC<Props> = ({ userInfo }) => {
-    const serverErrors = useAppSelector(state => state.profile.update.errors);
+    //const serverErrors = useAppSelector(state => state.profile.update.errors);
     const updateInProgress = useAppSelector(state => state.profile.update.updateInProgress);
     const dispatch = useAppDispatch();
 
@@ -71,10 +71,7 @@ export const EditProfileForm: React.FC<Props> = ({ userInfo }) => {
         <div className={s.container}>
             <h1 className={s.header}>Редактирование профиля</h1>
             <div className={s.formContainer}>
-                <Form<ProfileData>
-                    onSubmit={onSubmit}
-                    options={{ defaultValues: userInfo, values: userInfo }}
-                    serverErrors={serverErrors}>
+                <Form<ProfileData> onSubmit={onSubmit} options={{ defaultValues: userInfo, values: userInfo }}>
                     {({ register, formState }) => (
                         <>
                             <div className={s.blockContainer}>

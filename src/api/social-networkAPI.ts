@@ -123,9 +123,14 @@ export type LoginData = {
 export type ServerResponseType<T = {}> = {
     data: T;
     messages: string[];
-    fieldErrors: string[];
+    fieldsErrors: FieldsErrorsType[]
     resultCode: number;
 };
+
+export type FieldsErrorsType = {
+    field: string;
+    error: string
+}
 
 export enum ServerResultCode {
     OK = 0,

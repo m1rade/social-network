@@ -1,13 +1,13 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
-import { LoginData } from "../../api/social-networkAPI";
-import { loginUser, setFieldsErrors } from "../../redux/auth_reducer";
+import { FieldsErrorsType, LoginData } from "../../api/social-networkAPI";
+import { loginUser } from "../../redux/auth_reducer";
 import { selectCaptchaURL, selectIsUserLoggedIn } from "../../redux/selectors/selectors";
 import { AppStateType } from "../../redux/store";
 import { ROUTES_PATHS } from "../../routes/Routes";
 import { LoginForm } from "./LoginForm";
-import s from "./LoginPage.module.css"
+import s from "./LoginPage.module.css";
 
 class LoginPage extends React.Component<LoginPropsType> {
     onSubmit(formData: LoginData) {
@@ -25,8 +25,7 @@ class LoginPage extends React.Component<LoginPropsType> {
                 <LoginForm
                     onSubmit={this.onSubmit.bind(this)}
                     captcha={this.props.captcha}
-                    fieldsErrors={this.props.fieldsErrors}
-                    setFieldsErrors={this.props.setFieldsErrors}
+                    errors={this.props.errors}
                 />
             </div>
         );
@@ -37,22 +36,20 @@ class LoginPage extends React.Component<LoginPropsType> {
 const mapStateToProps = (state: AppStateType): MapPropsType => ({
     isUserLoggedIn: selectIsUserLoggedIn(state),
     captcha: selectCaptchaURL(state),
-    fieldsErrors: state.auth.fieldsErrors,
+    errors: state.auth.errors
 });
 
 export default connect<MapPropsType, DispatchPropsType, {}, AppStateType>(mapStateToProps, {
     loginUser,
-    setFieldsErrors,
 })(LoginPage);
 
 //types
 type MapPropsType = {
     isUserLoggedIn: boolean;
     captcha: string | null;
-    fieldsErrors: null | string[];
+    errors: { fieldsErrors: FieldsErrorsType[]; message: null | string };
 };
 type DispatchPropsType = {
     loginUser: (data: LoginData) => void;
-    setFieldsErrors: (errors: null | string[]) => void;
 };
 export type LoginPropsType = MapPropsType & DispatchPropsType;

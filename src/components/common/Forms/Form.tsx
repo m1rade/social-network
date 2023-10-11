@@ -11,7 +11,6 @@ type Props<TFormValues extends FieldValues, Schema> = {
     children: (methods: UseFormReturn<TFormValues>) => React.ReactNode;
     options?: UseFormProps<TFormValues>;
     id?: string;
-    serverErrors?: string[] | null;
     schema?: Schema;
 };
 
@@ -24,7 +23,6 @@ export const Form = <
     className,
     options,
     id,
-    serverErrors,
     schema,
 }: Props<TFormValues, Schema>) => {
     // @ts-ignore
@@ -52,9 +50,7 @@ export const Form = <
     return (
         <form
             className={cn(className)}
-            onSubmit={methods.handleSubmit(onSubmit, (err: any) => {
-                console.log(err);
-            })}
+            onSubmit={methods.handleSubmit(onSubmit)}
             id={id}>
             <fieldset className={s.fieldset} disabled={methods.formState.isSubmitting}>
                 {children(methods)}

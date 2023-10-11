@@ -39,25 +39,25 @@ type Props = Omit<LoginPropsType, "isUserLoggedIn" | "loginUser"> & {
     onSubmit: (formData: LoginData) => void;
 };
 
-export const LoginForm: React.FC<Props> = ({ onSubmit, captcha, fieldsErrors, setFieldsErrors }) => {
+export const LoginForm: React.FC<Props> = ({ onSubmit, captcha, errors }) => {
     return (
         <div className={s.formContainer}>
-            <Form<LoginData, typeof schemaValidation>
-                onSubmit={onSubmit}
-                serverErrors={fieldsErrors}
-                schema={schemaValidation}>
-                {({ register, formState}) => (
+            {errors.message && <span className={s.errorFromServer}>{errors.message}</span>}
+            <Form<LoginData, typeof schemaValidation> onSubmit={onSubmit} schema={schemaValidation}>
+                {({ register, formState }) => (
                     <div className={s.innerWrapper}>
-                        {LOGIN_FIELDS.map(field => (
-                            <field.htmlTag
-                                key={field.name}
-                                id={field.name}
-                                registration={register(field.name)}
-                                type={field.type}
-                                label={field.label}
-                                error={formState.errors[field.name]}
-                            />
-                        ))}
+                        {LOGIN_FIELDS.map(field => {
+                            return (
+                                <field.htmlTag
+                                    key={field.name}
+                                    id={field.name}
+                                    registration={register(field.name)}
+                                    type={field.type}
+                                    label={field.label}
+                                    error={formState.errors[field.name]}
+                                />
+                            );
+                        })}
                         {captcha && (
                             <>
                                 <img src={captcha} alt="captcha" />

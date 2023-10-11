@@ -1,4 +1,8 @@
-.container {}
+.container {
+    max-width: max-content;
+    min-width: 200px;
+    margin: 0 auto;
+}
 
 .header {
     text-align: center;
@@ -19,4 +23,14 @@
 
 .LoginBtn {
     margin-top: 15px;
+}
+
+.errorFromServer {
+    color: whitesmoke;
+    background-color: rgb(255, 75, 75);
+    display: inline-block;
+    text-align: center;
+
+    width: 100%;
+    line-height: 2.5em;
 }
